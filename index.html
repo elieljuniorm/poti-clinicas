@@ -409,27 +409,60 @@
         border-radius: 16px;
         border: 1px solid #e0e0e0;
         background: #fff;
+        transition: all 0.2s ease;
+        cursor: pointer;
       }
 
       .faq-item .question {
         display: flex;
         justify-content: space-between;
+        align-items: center;
         font-weight: 600;
         font-size: 1.05rem;
         margin-bottom: 0.5rem;
-        cursor: default;
+        user-select: none;
       }
 
       .faq-item .question .arrow {
         color: #197e90;
         font-size: 1.2rem;
-        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.25s ease;
+        width: 24px;
+        height: 24px;
+      }
+
+      .faq-item .question .arrow img {
+        width: 100%;
+        height: auto;
+        display: block;
+        transition: transform 0.25s ease;
       }
 
       .faq-item .answer {
         color: #595959;
         font-size: 0.95rem;
         padding-right: 2rem;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition:
+          max-height 0.3s ease,
+          opacity 0.25s ease,
+          margin 0.2s ease;
+        margin-top: 0;
+      }
+
+      .faq-item.open .answer {
+        max-height: 300px;
+        opacity: 1;
+        margin-top: 0.8rem;
+      }
+
+      .faq-item.open .arrow img {
+        transform: rotate(180deg);
       }
 
       .question-span {
@@ -439,6 +472,116 @@
         font-style: normal;
         font-weight: 600;
         line-height: normal;
+      }
+
+      /* ===== MODAL ===== */
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition:
+          opacity 0.3s ease,
+          visibility 0.3s ease;
+        padding: 20px;
+      }
+
+      .modal-overlay.active {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .modal {
+        background: #fff;
+        border-radius: 32px;
+        max-width: 600px;
+        width: 100%;
+        padding: 2.5rem 2.5rem 2rem 2.5rem;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        transform: scale(0.95);
+        transition: transform 0.3s ease;
+        position: relative;
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+
+      .modal-overlay.active .modal {
+        transform: scale(1);
+      }
+
+      .modal-close {
+        position: absolute;
+        top: 16px;
+        right: 20px;
+        background: none;
+        border: none;
+        font-size: 28px;
+        line-height: 1;
+        color: #8c8c8c;
+        cursor: pointer;
+        transition: color 0.2s;
+        padding: 0 8px;
+      }
+
+      .modal-close:hover {
+        color: #02222b;
+      }
+
+      .modal h3 {
+        font-family: "Poppins", sans-serif;
+        font-size: 28px;
+        font-weight: 700;
+        color: #02222b;
+        margin-bottom: 1rem;
+        padding-right: 30px;
+      }
+
+      .modal p {
+        color: #595959;
+        font-size: 16px;
+        line-height: 1.6;
+        margin-bottom: 1rem;
+      }
+
+      .modal ul {
+        list-style: none;
+        padding: 0;
+        margin: 1rem 0 0.5rem;
+      }
+
+      .modal ul li {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.6rem;
+        padding: 0.4rem 0;
+        color: #595959;
+        font-size: 15px;
+        line-height: 1.5;
+      }
+
+      .modal ul li::before {
+        content: "✓";
+        color: #197e90;
+        font-weight: 700;
+        font-size: 18px;
+        flex-shrink: 0;
+        margin-top: -1px;
+      }
+
+      .modal .badge {
+        margin-bottom: 0.8rem;
+      }
+
+      .modal .btn {
+        margin-top: 1.2rem;
       }
 
       /* ===== CTA ===== */
@@ -547,6 +690,13 @@
         text-decoration: none;
         font-size: 0.9rem;
         margin-bottom: 0.6rem;
+        cursor: pointer;
+        transition: color 0.2s;
+        background: none;
+        border: none;
+        padding: 0;
+        font-family: "Nunito Sans", sans-serif;
+        text-align: left;
       }
 
       .footer-links a:hover {
@@ -587,6 +737,9 @@
         .container {
           padding: 0 30px;
         }
+        .modal {
+          padding: 2rem 1.5rem;
+        }
       }
 
       @media (max-width: 700px) {
@@ -614,6 +767,28 @@
         .heading-md {
           font-size: 1.6rem;
         }
+        .cta-form {
+          flex-direction: column;
+          align-items: center;
+        }
+        .cta-form input {
+          width: 100%;
+          max-width: 320px;
+        }
+        .faq-item .answer {
+          padding-right: 0;
+        }
+        .modal h3 {
+          font-size: 22px;
+        }
+        .modal {
+          padding: 1.5rem;
+        }
+        .modal-close {
+          top: 12px;
+          right: 16px;
+          font-size: 24px;
+        }
       }
     </style>
   </head>
@@ -633,6 +808,9 @@
         <a href="#beneficios">Benefícios</a>
         <a href="#funcionalidades">Funcionalidades</a>
         <a href="#quem-atendemos">Quem Atendemos</a>
+        <a href="#" data-modal="sobre-nos">Sobre nós</a>
+        <a href="#" data-modal="contato">Contato</a>
+        <a href="#" data-modal="seguranca">Segurança</a>
       </nav>
 
       <div class="container-btn-header">
@@ -872,11 +1050,11 @@
               </li>
               <li>
                 <img src="assets/Icon-success.svg" alt="" />Gestão otimizada de
-                ocupação de salas
+                ocupação de salas e atendimentos domiciliares
               </li>
               <li>
                 <img src="assets/Icon-success.svg" alt="" />Faturamento
-                centralizado e emissão de guias
+                centralizado com cálculo automático de repasses
               </li>
             </ul>
           </div>
@@ -894,7 +1072,7 @@
             <ul>
               <li>
                 <img src="assets/Icon-success.svg" alt="" />Agenda individual e
-                notificações em tempo real
+                geolocalização de atendimentos domiciliares
               </li>
               <li>
                 <img src="assets/Icon-success.svg" alt="" />Modelos de evolução
@@ -923,8 +1101,8 @@
                 consultar datas e horários
               </li>
               <li>
-                <img src="assets/Icon-success.svg" alt="" />Lembretes de
-                agendamentos no WhatsApp
+                <img src="assets/Icon-success.svg" alt="" />Consulta e download
+                de evoluções clínicas, contratos e recibos
               </li>
               <li>
                 <img src="assets/Icon-success.svg" alt="" />Histórico de
@@ -943,7 +1121,7 @@
           <span class="badge">FAQ</span>
           <h2 class="heading-md">Perguntas Frequentes</h2>
         </div>
-        <div class="faq-list">
+        <div class="faq-list" id="faqList">
           <div class="faq-item">
             <div class="question">
               <span class="question-span"
@@ -997,19 +1175,6 @@
               conferência rápida.
             </div>
           </div>
-          <div class="faq-item">
-            <div class="question">
-              <span class="question-span"
-                >Tem suporte para planos de saúde e faturamento TISS?</span
-              >
-              <span class="arrow"><img src="assets/arrow_back.svg" /></span>
-            </div>
-            <div class="answer">
-              Sim. O Le Poti Tech gera os arquivos XML no padrão TISS exigidos
-              pelos convênios, além de emitir guias unificadas automaticamente
-              no agendamento do paciente.
-            </div>
-          </div>
         </div>
       </div>
     </section>
@@ -1049,15 +1214,15 @@
           <div class="footer-links">
             <div>
               <h5>Produto</h5>
-              <a href="#">Benefícios</a>
-              <a href="#">Funcionalidades</a>
-              <a href="#">Quem Atendemos</a>
+              <a href="#beneficios">Benefícios</a>
+              <a href="#funcionalidades">Funcionalidades</a>
+              <a href="#quem-atendemos">Quem Atendemos</a>
             </div>
             <div>
               <h5>Sobre</h5>
-              <a href="#">Sobre nós</a>
-              <a href="#">Contato</a>
-              <a href="#">Segurança</a>
+              <a href="#" data-modal="sobre-nos">Sobre nós</a>
+              <a href="#" data-modal="contato">Contato</a>
+              <a href="#" data-modal="seguranca">Segurança</a>
             </div>
           </div>
         </div>
@@ -1069,5 +1234,203 @@
         </div>
       </div>
     </footer>
+
+    <!-- ===== MODAIS ===== -->
+
+    <!-- SOBRE NÓS -->
+    <div class="modal-overlay" id="modal-sobre-nos">
+      <div class="modal">
+        <button class="modal-close" aria-label="Fechar modal">&times;</button>
+        <span class="badge">Sobre nós</span>
+        <h3>Quem somos</h3>
+        <p>
+          A Le Poti Tech nasceu para transformar a gestão de clínicas de
+          reabilitação multidisciplinar. Somos uma equipe apaixonada por
+          tecnologia e saúde, que entende os desafios diários de gestores,
+          terapeutas e pacientes.
+        </p>
+        <p>
+          Nossa missão é simplificar processos, integrar equipes e devolver o
+          foco no que realmente importa: o cuidado com as pessoas. Cada
+          funcionalidade da nossa plataforma é desenhada com base na experiência
+          real de quem vive a reabilitação todos os dias.
+        </p>
+        <p>
+          Acreditamos que a tecnologia deve ser uma aliada silenciosa, eficiente
+          e confiável — e é isso que entregamos a cada clínica parceira.
+        </p>
+        <a href="#" class="btn btn-primary" onclick="closeModal(event)"
+          >Conheça nossa história</a
+        >
+      </div>
+    </div>
+
+    <!-- CONTATO -->
+    <div class="modal-overlay" id="modal-contato">
+      <div class="modal">
+        <button class="modal-close" aria-label="Fechar modal">&times;</button>
+        <span class="badge">Contato</span>
+        <h3>Entre em contato</h3>
+        <p>
+          Estamos prontos para atender você e sua clínica. Tire dúvidas, agende
+          uma demonstração ou solicite um orçamento personalizado.
+        </p>
+        <ul>
+          <li><strong>E-mail:</strong> contato@lepoti.tech</li>
+          <li><strong>WhatsApp:</strong> (11) 99999-9999</li>
+          <li>
+            <strong>Horário de atendimento:</strong> Segunda a sexta, das 8h às
+            18h
+          </li>
+        </ul>
+        <p style="margin-top: 0.5rem">
+          Nossa equipe de especialistas está à disposição para entender as
+          necessidades da sua clínica e oferecer a melhor solução em tecnologia
+          para reabilitação.
+        </p>
+        <a href="#" class="btn btn-primary" onclick="closeModal(event)"
+          >Falar com um especialista</a
+        >
+      </div>
+    </div>
+
+    <!-- SEGURANÇA / LGPD -->
+    <div class="modal-overlay" id="modal-seguranca">
+      <div class="modal">
+        <button class="modal-close" aria-label="Fechar modal">&times;</button>
+        <span class="badge">Segurança e LGPD</span>
+        <h3>Seus dados protegidos</h3>
+        <p>
+          A Le Poti Tech segue rigorosamente a Lei Geral de Proteção de Dados
+          (LGPD - Lei nº 13.709/2018), garantindo que todos os dados pessoais e
+          clínicos tratados em nossa plataforma estejam em conformidade com a
+          legislação brasileira.
+        </p>
+        <p>
+          Implementamos políticas e mecanismos de segurança para assegurar a
+          proteção dos dados sensíveis de saúde, que são classificados como
+          dados pessoais sensíveis pela LGPD.
+        </p>
+        <ul>
+          <li>
+            <strong>Criptografia ponta a ponta</strong> – todos os dados são
+            criptografados em trânsito e em repouso.
+          </li>
+          <li>
+            <strong>Controle de acesso baseado em função</strong> – apenas
+            profissionais autorizados visualizam informações específicas.
+          </li>
+          <li>
+            <strong>Registro de auditoria</strong> – todas as ações realizadas
+            na plataforma são registradas para rastreabilidade.
+          </li>
+          <li>
+            <strong>Anonimização de dados</strong> – quando necessário, os dados
+            são anonimizados para análises e melhorias do sistema.
+          </li>
+          <li>
+            <strong>Direito do titular</strong> – garantimos o direito de
+            acesso, retificação, eliminação e portabilidade dos dados, conforme
+            previsto na LGPD.
+          </li>
+        </ul>
+        <p>
+          Além disso, mantemos um encarregado de dados (DPO) disponível para
+          tratar de questões relacionadas ao tratamento de informações pessoais.
+          Nossos servidores estão hospedados na AWS, com certificações de
+          segurança de nível internacional.
+        </p>
+        <a href="#" class="btn btn-primary" onclick="closeModal(event)"
+          >Saiba mais sobre nossa política de privacidade</a
+        >
+      </div>
+    </div>
+
+    <!-- ===== SCRIPT FAQ E MODAIS ===== -->
+    <script>
+      (function () {
+        // ---- FAQ ----
+        const faqItems = document.querySelectorAll(".faq-item");
+
+        faqItems.forEach((item) => {
+          item.addEventListener("click", function (e) {
+            e.stopPropagation();
+            const isOpen = this.classList.contains("open");
+            if (!isOpen) {
+              faqItems.forEach((other) => {
+                if (other !== this) other.classList.remove("open");
+              });
+            }
+            this.classList.toggle("open");
+          });
+        });
+
+        // ---- MODAIS ----
+        const modals = {
+          "sobre-nos": document.getElementById("modal-sobre-nos"),
+          contato: document.getElementById("modal-contato"),
+          seguranca: document.getElementById("modal-seguranca"),
+        };
+
+        const modalLinks = document.querySelectorAll("[data-modal]");
+        const closeButtons = document.querySelectorAll(".modal-close");
+
+        function openModal(modalId) {
+          const modal = modals[modalId];
+          if (!modal) return;
+          modal.classList.add("active");
+          document.body.style.overflow = "hidden";
+        }
+
+        function closeModal() {
+          document.querySelectorAll(".modal-overlay").forEach((m) => {
+            m.classList.remove("active");
+          });
+          document.body.style.overflow = "";
+        }
+
+        // Abrir modal via links do footer
+        modalLinks.forEach((link) => {
+          link.addEventListener("click", function (e) {
+            e.preventDefault();
+            const modalId = this.getAttribute("data-modal");
+            openModal(modalId);
+          });
+        });
+
+        // Fechar com botão X
+        closeButtons.forEach((btn) => {
+          btn.addEventListener("click", function (e) {
+            e.preventDefault();
+            closeModal();
+          });
+        });
+
+        // Fechar ao clicar no overlay (fundo escuro)
+        document.querySelectorAll(".modal-overlay").forEach((overlay) => {
+          overlay.addEventListener("click", function (e) {
+            if (e.target === this) {
+              closeModal();
+            }
+          });
+        });
+
+        // Fechar com tecla ESC
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") {
+            closeModal();
+          }
+        });
+
+        // Função global para fechar modal via onclick nos botões internos
+        window.closeModal = function (event) {
+          if (event) event.preventDefault();
+          closeModal();
+        };
+
+        // torna openModal acessível para uso em outros contextos
+        window.openModal = openModal;
+      })();
+    </script>
   </body>
 </html>
