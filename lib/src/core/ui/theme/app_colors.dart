@@ -21,7 +21,7 @@ class AppColors {
   // ---------- App geral ----------
   static const Color primary = Color(0xFF0F4C5C);
   static const Color accent = Color(0xFF4BA3B8);
-  static const Color background = Color(0xFFF5F7FA);
+  static const Color background = Color.fromRGBO(210, 221, 225, 1,);
   static const Color surface = Colors.white;
 
   // ---------- Texto ----------

@@ -28,18 +28,21 @@ class AppScaffold extends StatelessWidget {
     return Scaffold(
       backgroundColor: backgroundColor,
       drawer: mostrarMenu ? AppDrawer(rotaAtual: rotaAtual) : null,
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _Cabecalho(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Cabeçalho com SafeArea apenas no topo (respeita status bar)
+          SafeArea(
+            bottom: false, // Não reserva espaço embaixo
+            child: _Cabecalho(
               titulo: titulo,
               mostrarMenu: mostrarMenu,
               actions: actions,
             ),
-            Expanded(child: body),
-          ],
-        ),
+          ),
+          // Body expandido, sem SafeArea, ocupa até a borda física inferior
+          Expanded(child: body),
+        ],
       ),
       floatingActionButton: floatingActionButton,
     );
