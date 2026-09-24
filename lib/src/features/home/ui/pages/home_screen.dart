@@ -82,7 +82,7 @@ class HomeScreen extends ConsumerWidget {
                   child: Text(
                     'CONFIRA ABAIXO TODOS OS ATENDIMENTOS AGENDADOS\nPARA HOJE, COM HORÁRIO E STATUS ATUALIZADOS',
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 10, color: Colors.grey),
+                    style: TextStyle(fontSize: 12, color: Colors.grey),
                   ),
                 ),
               ),
@@ -100,7 +100,7 @@ class HomeScreen extends ConsumerWidget {
                     ),
                     const SizedBox(width: 16),
                     _buildLegendItem(
-                      Icons.access_time,
+                      Icons.brightness_1_outlined,
                       'Pendente',
                       Colors.orange,
                     ),
@@ -136,7 +136,7 @@ class HomeScreen extends ConsumerWidget {
                 child: Center(
                   child: Text(
                     'CONFIRA ABAIXO AS EVOLUÇÕES DO DIA',
-                    style: TextStyle(fontSize: 10, color: Colors.grey),
+                    style: TextStyle(fontSize: 12, color: Colors.grey),
                   ),
                 ),
               ),
@@ -161,14 +161,14 @@ class HomeScreen extends ConsumerWidget {
                 child: Center(
                   child: Text(
                     'RESUMO MENSAL DE ATENDIMENTOS REALIZADOS',
-                    style: TextStyle(fontSize: 10, color: Colors.grey),
+                    style: TextStyle(fontSize: 12, color: Colors.grey),
                   ),
                 ),
               ),
               const SizedBox(height: 12),
 
               FinancialSummaryWidget(summaries: homeState.financialSummaries),
-              const SizedBox(height: 32),
+              const SizedBox(height: 50),
             ],
           ),
         ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../domain/models/evolution_model.dart';
 
 class EvolutionsWidget extends StatelessWidget {
@@ -22,6 +23,10 @@ class EvolutionsWidget extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white, // Fundo branco
             borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: Colors.black.withValues(alpha: 0.2),
+              width: 1,
+            ),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.04),
@@ -37,10 +42,26 @@ class EvolutionsWidget extends StatelessWidget {
                 child: Row(
                   children: [
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(item.date, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black87)),
-                        Text(item.time, style: TextStyle(color: Colors.grey[600], fontSize: 12)),
+                        Text(
+                          item.date,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Nunito',
+                            fontSize: 20,
+                            color: Colors.black87,
+                          ),
+                        ),
+                        Text(
+                          item.time,
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 14,
+                            fontFamily: 'Nunito',
+                          ),
+                        ),
                       ],
                     ),
                     const SizedBox(width: 16),
@@ -50,17 +71,46 @@ class EvolutionsWidget extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('Profissional', style: TextStyle(fontSize: 10, color: Colors.grey)),
-                          Text(item.professional, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: Colors.black87)),
+                          Text(
+                            'Profissional',
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          Text(
+                            item.professional,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey,
+                            ),
+                          ),
                         ],
                       ),
                     ),
                     Expanded(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text(item.patient, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: Colors.black87)),
-                          Text(item.appointmentType, style: TextStyle(fontSize: 12, color: Colors.grey[600])),
+                          Text(
+                            item.patient,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          Text(
+                            item.appointmentType,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey[600],
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -68,14 +118,20 @@ class EvolutionsWidget extends StatelessWidget {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
                 decoration: BoxDecoration(
                   border: Border(top: BorderSide(color: Colors.grey[200]!)),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text('Ver detalhes da evolução', style: TextStyle(color: Colors.blue, fontSize: 13)),
+                    const Text(
+                      'Ver detalhes da evolução',
+                      style: TextStyle(color: Colors.blue, fontSize: 13),
+                    ),
                     Icon(
                       isOpen ? Icons.open_in_new : Icons.info_outline,
                       color: isOpen ? Colors.blue : Colors.orange,

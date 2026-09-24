@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../domain/models/daily_appointment_model.dart';
 
 class DailyAppointmentsWidget extends StatelessWidget {
@@ -8,17 +9,23 @@ class DailyAppointmentsWidget extends StatelessWidget {
 
   IconData _getStatusIcon(AppointmentStatus status) {
     switch (status) {
-      case AppointmentStatus.confirmed: return Icons.check_circle_outline;
-      case AppointmentStatus.pending: return Icons.access_time;
-      case AppointmentStatus.canceled: return Icons.cancel_outlined;
+      case AppointmentStatus.confirmed:
+        return Icons.check_circle_outline;
+      case AppointmentStatus.pending:
+        return Icons.brightness_1_outlined;
+      case AppointmentStatus.canceled:
+        return Icons.cancel_outlined;
     }
   }
 
   Color _getStatusColor(AppointmentStatus status) {
     switch (status) {
-      case AppointmentStatus.confirmed: return Colors.green;
-      case AppointmentStatus.pending: return Colors.orange;
-      case AppointmentStatus.canceled: return Colors.redAccent;
+      case AppointmentStatus.confirmed:
+        return Colors.green;
+      case AppointmentStatus.pending:
+        return Colors.orange;
+      case AppointmentStatus.canceled:
+        return Colors.redAccent;
     }
   }
 
@@ -27,8 +34,12 @@ class DailyAppointmentsWidget extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-        color: Colors.white, // Fundo branco para destacar do cinza
+        color: Colors.white,
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: Colors.black.withValues(alpha: 0.2),
+          width: 1,
+        ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -37,59 +48,122 @@ class DailyAppointmentsWidget extends StatelessWidget {
           ),
         ],
       ),
-      child: Column(
-        children: [
-          // Cabeçalho da Tabela (Azul Escuro)
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-            decoration: const BoxDecoration(
-              color: Color(0xFF0F4C5C), // Cor escura do topo
-              borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
-            ),
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('PACIENTE', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12)),
-                Text('ATENDIMENTO', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12)),
-                Text('STATUS', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12)),
-              ],
-            ),
-          ),
-          // Linhas da Tabela
-          ...appointments.asMap().entries.map((entry) {
-            final index = entry.key;
-            final item = entry.value;
-            final isEven = index % 2 == 0;
-
-            return Container(
-              // Linhas pares brancas, ímpares cinza clarinho
-              color: isEven ? Colors.white : const Color(0xFFF9F9F9),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: Column(
+          children: [
+            // Cabeçalho da Tabela
+            Container(
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-              child: Row(
+              decoration: const BoxDecoration(color: Color(0xFF0F4C5C)),
+              child: const Row(
                 children: [
                   Expanded(
-                    flex: 3,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(item.patient, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: Colors.black87)),
-                        Text(item.time, style: TextStyle(color: Colors.grey[600], fontSize: 12)),
-                      ],
+                    flex: 2,
+                    child: Text(
+                      'PACIENTE',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 12,
+                      ),
                     ),
                   ),
                   Expanded(
-                    flex: 3,
-                    child: Text(item.appointmentType, style: const TextStyle(fontSize: 13, color: Colors.black87)),
+                    flex: 2,
+                    child: Text(
+                      'ATENDIMENTO',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 12,
+                      ),
+                    ),
                   ),
                   Expanded(
                     flex: 1,
-                    child: Icon(_getStatusIcon(item.status), color: _getStatusColor(item.status), size: 20),
+                    child: Text(
+                      'STATUS',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 12,
+                      ),
+                    ),
                   ),
                 ],
               ),
-            );
-          }),
-        ],
+            ),
+            // Linhas da Tabela
+            ...appointments.asMap().entries.map((entry) {
+              final index = entry.key;
+              final item = entry.value;
+              final isEven = index % 2 == 0;
+
+              return Container(
+                color: isEven
+                    ? const Color.fromRGBO(247, 246, 254, 1)
+                    : const Color.fromRGBO(238, 238, 238, 1),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 12,
+                  horizontal: 16,
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            item.patient,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          Text(
+                            item.time,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.grey[600],
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      flex: 2,
+                      child: Text(
+                        item.appointmentType,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Icon(
+                        _getStatusIcon(item.status),
+                        color: _getStatusColor(item.status),
+                        size: 20,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }),
+          ],
+        ),
       ),
     );
   }

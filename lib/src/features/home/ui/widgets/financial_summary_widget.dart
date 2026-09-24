@@ -1,10 +1,26 @@
 import 'package:flutter/material.dart';
+
 import '../../domain/models/financial_summary_model.dart';
 
 class FinancialSummaryWidget extends StatelessWidget {
   final List<FinancialSummaryModel> summaries;
 
   const FinancialSummaryWidget({super.key, required this.summaries});
+
+  IconData _getPaymentIcon(String paymentMethod) {
+    switch (paymentMethod) {
+      case 'Dinheiro':
+        return Icons.attach_money;
+      case 'PIX':
+        return Icons.pix_sharp;
+      case 'Cartão de Crédito':
+        return Icons.credit_card;
+      case 'Cartão de Débito':
+        return Icons.credit_card_outlined;
+      default:
+        return Icons.payments_outlined;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +37,12 @@ class FinancialSummaryWidget extends StatelessWidget {
           margin: const EdgeInsets.only(bottom: 12),
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.white, // Fundo branco
+            color: Colors.white,
             borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: Colors.black.withValues(alpha: 0.2),
+              width: 1,
+            ),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.04),
@@ -38,20 +58,38 @@ class FinancialSummaryWidget extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      const Icon(Icons.calendar_today_outlined, size: 16, color: Colors.blueGrey),
+                      const Icon(
+                        Icons.calendar_today_outlined,
+                        size: 16,
+                        color: Color.fromRGBO(25, 126, 144, 1),
+                      ),
                       const SizedBox(width: 8),
-                      Text('${item.date} às ${item.time}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Colors.black87)),
+                      Text(
+                        '${item.date} às ${item.time}',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 13,
+                          color: Colors.black87,
+                        ),
+                      ),
                     ],
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
                       color: isPaid ? Colors.green[50] : Colors.orange[50],
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
                       isPaid ? 'Pago' : 'Pendente',
-                      style: TextStyle(color: isPaid ? Colors.green[700] : Colors.orange[700], fontSize: 12, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        color: isPaid ? Colors.green[700] : Colors.orange[700],
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ],
@@ -62,24 +100,46 @@ class FinancialSummaryWidget extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: Colors.blue[50],
+                      color: const Color.fromRGBO(242, 242, 247, 1),
                       shape: BoxShape.circle,
                     ),
-                    child: Icon(Icons.attach_money, color: Colors.blue[700], size: 20),
+                    child: Icon(
+                      _getPaymentIcon(item.paymentMethod),
+                      color: const Color.fromRGBO(25, 126, 144, 1),
+                      size: 20,
+                    ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(item.patient, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.black87)),
-                        Text('${item.appointmentType} - ${item.paymentMethod}', style: TextStyle(color: Colors.grey[600], fontSize: 12)),
+                        Text(
+                          item.patient,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                            color: Colors.black87,
+                          ),
+                        ),
+                        Text(
+                          '${item.appointmentType} - ${item.paymentMethod}',
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 12,
+                          ),
+                        ),
                       ],
                     ),
                   ),
                   Text(
                     'R\$ ${item.amount.toStringAsFixed(2).replaceAll('.', ',')}',
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Color(0xFF0F4C5C)),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Nunito',
+                      fontSize: 17,
+                      color: Color(0xFF0F4C5C),
+                    ),
                   ),
                 ],
               ),
