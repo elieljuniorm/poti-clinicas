@@ -30,7 +30,7 @@ class DrawerMenuItem extends StatelessWidget {
         isActive ? AppColors.menuItemActive : AppColors.menuItem;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
       child: Material(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(30),
@@ -38,10 +38,10 @@ class DrawerMenuItem extends StatelessWidget {
         child: InkWell(
           onTap: onTap,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 12),
             child: Row(
               children: [
-                Icon(icon, color: AppColors.drawerForeground, size: 26),
+                Icon(icon, color: AppColors.drawerForeground, size: 28),
                 const SizedBox(width: 16),
                 Expanded(
                   child: Text(

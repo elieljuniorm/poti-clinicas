@@ -7,7 +7,7 @@ class AppColors {
 
   // ---------- Drawer / menu lateral ----------
   /// Fundo escuro do Drawer (verde-azulado escuro).
-  static const Color drawerBackground = Color(0xFF0F4C5C);
+  static const Color drawerBackground = Color.fromRGBO(14, 90, 104, 1);
 
   /// Cor padrão dos itens do menu (turquesa).
   static const Color menuItem = Color(0xFF4BA3B8);

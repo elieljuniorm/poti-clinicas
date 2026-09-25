@@ -16,13 +16,22 @@ class ProfileHeader extends StatelessWidget {
 
     return Column(
       children: [
-        CircleAvatar(
-          radius: 50,
-          backgroundColor: AppColors.menuItem,
-          backgroundImage: temFoto ? NetworkImage(fotoUrl!) : null,
-          child: temFoto
-              ? null
-              : const Icon(Icons.person, size: 40, color: Colors.white),
+        Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: AppColors.primary, // cor da borda
+              width: 2,          // espessura da borda
+            ),
+          ),
+          child: CircleAvatar(
+            radius: 50,
+            backgroundColor: AppColors.menuItem,
+            backgroundImage: temFoto ? NetworkImage(fotoUrl!) : null,
+            child: temFoto
+                ? null
+                : const Icon(Icons.person, size: 40, color: Colors.white),
+          ),
         ),
         const SizedBox(height: 12),
         Text(nome, textAlign: TextAlign.center, style: AppTextStyles.pageTitle),

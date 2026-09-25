@@ -78,7 +78,7 @@ class AppDrawer extends ConsumerWidget {
       child: SafeArea(
         child: Column(
           children: [
-            const SizedBox(height: 24),
+            const SizedBox(height: 20),
 
             // ---------- Foto + saudação (clicável → Meus dados) ----------
             _CabecalhoUsuario(
@@ -87,7 +87,7 @@ class AppDrawer extends ConsumerWidget {
               onTap: usuario == null ? null : () => _aoTocarCabecalho(context),
             ),
 
-            const SizedBox(height: 32),
+            const SizedBox(height: 20),
 
             // ---------- Itens do menu ----------
             Expanded(
@@ -148,14 +148,17 @@ class _CabecalhoUsuario extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(16),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 2),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  border: Border.all(color: AppColors.menuItem, width: 3),
+                  border: Border.all(
+                    color: AppColors.primary,
+                    width: 2,
+                  ),
                 ),
                 child: CircleAvatar(
                   radius: 50,
@@ -169,7 +172,7 @@ class _CabecalhoUsuario extends StatelessWidget {
               const SizedBox(height: 12),
               Text('Olá, $nome', style: AppTextStyles.drawerGreeting),
               if (onTap != null) ...[
-                const SizedBox(height: 4),
+                const SizedBox(height: 2),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -180,7 +183,7 @@ class _CabecalhoUsuario extends StatelessWidget {
                     const SizedBox(width: 2),
                     const Icon(
                       Icons.chevron_right,
-                      size: 18,
+                      size: 20,
                       color: AppColors.menuItemActive,
                     ),
                   ],
@@ -202,7 +205,7 @@ class _BotaoSair extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 24, top: 8),
+      padding: const EdgeInsets.only(bottom: 2, top: 4),
       child: Column(
         children: [
           Material(
@@ -212,16 +215,16 @@ class _BotaoSair extends StatelessWidget {
             child: InkWell(
               onTap: onTap,
               child: const Padding(
-                padding: EdgeInsets.all(16),
+                padding: EdgeInsets.all(8),
                 child: Icon(
                   Icons.logout,
                   color: AppColors.drawerForeground,
-                  size: 26,
+                  size: 24,
                 ),
               ),
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 4),
           Text('Sair', style: AppTextStyles.drawerLogoutLabel),
         ],
       ),
