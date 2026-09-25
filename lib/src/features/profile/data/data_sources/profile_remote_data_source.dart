@@ -14,13 +14,13 @@ class ProfileDataSource {
     'birth_date': '15/03/1990',
     'photo_url': null,
     'address': {
-      'zip_code': '64000-000',
-      'street': 'Rua das Flores',
-      'number': '100',
-      'complement': 'Sala 2',
-      'neighborhood': 'Centro',
-      'city': 'Teresina',
-      'state': 'PI',
+      'zip_code': '67010-000',
+      'street': 'Rodovia BR-316',
+      'number': '1835',
+      'complement': '303A',
+      'neighborhood': 'Guanabara',
+      'city': 'Ananindeua',
+      'state': 'PA',
     },
   };
 

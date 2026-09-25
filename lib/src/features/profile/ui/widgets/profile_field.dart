@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../../../core/ui/theme/app_colors.dart';
 import '../../../../core/ui/theme/app_text_styles.dart';
@@ -20,6 +21,9 @@ class ProfileField extends StatefulWidget {
   final String? textoAjuda;
   final String? Function(String?)? validator;
 
+  /// Máscaras de digitação (ex.: [CepInputFormatter]).
+  final List<TextInputFormatter>? formatadores;
+
   const ProfileField({
     super.key,
     required this.rotulo,
@@ -31,6 +35,7 @@ class ProfileField extends StatefulWidget {
     this.teclado,
     this.textoAjuda,
     this.validator,
+    this.formatadores,
   });
 
   @override
@@ -67,6 +72,7 @@ class _ProfileFieldState extends State<ProfileField> {
             obscureText: _ocultar,
             keyboardType: widget.teclado,
             validator: widget.validator,
+            inputFormatters: widget.formatadores,
             style: AppTextStyles.fieldValue,
             decoration: InputDecoration(
               isDense: true,

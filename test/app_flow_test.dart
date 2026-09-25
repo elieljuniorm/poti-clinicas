@@ -75,7 +75,7 @@ void main() {
     await tester.pump(const Duration(seconds: 1));
     await tester.pumpAndSettle();
     expect(find.byType(ProfileScreen), findsOneWidget);
-    expect(find.text('EDITAR DADOS'), findsOneWidget);
+    expect(find.text('EDITAR CADASTRO'), findsOneWidget);
 
     // ---------- Logout volta para o login ----------
     await tester.tap(find.byIcon(Icons.menu));

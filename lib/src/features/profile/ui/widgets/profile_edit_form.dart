@@ -1,25 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/ui/formatters/cep_input_formatter.dart';
 import '../../../../core/ui/widgets/app_primary_button.dart';
+import '../../../../core/utils/cep.dart';
+import '../../application/address_map_controller.dart';
 import '../../application/profile_edit_controller.dart';
 import '../../domain/models/address_model.dart';
 import '../../domain/models/profile_model.dart';
 import '../states/profile_edit_state.dart';
+import 'address_map.dart';
 import 'profile_field.dart';
 import 'profile_header.dart';
 import 'profile_section_card.dart';
 
 /// Variação de edição: mesmos campos da visualização, agora liberados,
-/// mais as seções de endereço e troca de senha.
+/// mais as seções de endereço (com mapa) e troca de senha.
 class ProfileEditForm extends ConsumerStatefulWidget {
   final ProfileModel perfil;
   final VoidCallback aoCancelar;
+
+  /// Repassado ao [AddressMap] para a tela travar a rolagem.
+  final ValueChanged<bool>? aoUsarMapa;
 
   const ProfileEditForm({
     super.key,
     required this.perfil,
     required this.aoCancelar,
+    this.aoUsarMapa,
   });
 
   @override
@@ -43,7 +51,7 @@ class _ProfileEditFormState extends ConsumerState<ProfileEditForm> {
 
   // Endereço
   late final _cepController = TextEditingController(
-    text: widget.perfil.address.zipCode,
+    text: Cep.mascarar(widget.perfil.address.zipCode),
   );
   late final _ruaController = TextEditingController(
     text: widget.perfil.address.street,
@@ -68,6 +76,35 @@ class _ProfileEditFormState extends ConsumerState<ProfileEditForm> {
   final _senhaAtualController = TextEditingController();
   final _novaSenhaController = TextEditingController();
   final _confirmarSenhaController = TextEditingController();
+
+  // Campos que mudam o local no mapa. Número e complemento ficam de fora.
+  late final _camposDoMapa = [
+    _cepController,
+    _ruaController,
+    _bairroController,
+    _cidadeController,
+    _ufController,
+  ];
+
+  // Evita buscar de novo quando nada mudou (o listener também dispara
+  // ao mover o cursor) ou quando quem mudou os campos foi o próprio mapa.
+  late AddressModel _ultimoEnderecoBuscado = _enderecoDoMapa;
+  bool _preenchendoPeloMapa = false;
+
+  @override
+  void initState() {
+    super.initState();
+    for (final controller in _camposDoMapa) {
+      controller.addListener(_aoMudarEndereco);
+    }
+    // Primeira busca com o endereço já salvo. Microtask: o provider
+    // não pode ser alterado durante o build.
+    Future.microtask(
+      () => ref
+          .read(addressMapControllerProvider.notifier)
+          .buscarEndereco(_ultimoEnderecoBuscado),
+    );
+  }
 
   @override
   void dispose() {
@@ -116,6 +153,12 @@ class _ProfileEditFormState extends ConsumerState<ProfileEditForm> {
     return null;
   }
 
+  String? _validarCep(String? valor) {
+    if (valor == null || valor.isEmpty) return null;
+    if (!Cep.valido(valor.trim())) return 'Use o formato 00000-000';
+    return null;
+  }
+
   String? _validarUf(String? valor) {
     if (valor == null || valor.isEmpty) return null;
     if (valor.trim().length != 2) return 'Use a sigla (ex.: PI)';
@@ -145,6 +188,51 @@ class _ProfileEditFormState extends ConsumerState<ProfileEditForm> {
     return null;
   }
 
+  // ---------- Mapa ----------
+
+  AddressModel get _enderecoDigitado => AddressModel(
+    zipCode: _cepController.text.trim(),
+    street: _ruaController.text.trim(),
+    number: _numeroController.text.trim(),
+    complement: _complementoController.text.trim(),
+    neighborhood: _bairroController.text.trim(),
+    city: _cidadeController.text.trim(),
+    state: _ufController.text.trim().toUpperCase(),
+  );
+
+  /// Só o que localiza o endereço: sem número e complemento.
+  AddressModel get _enderecoDoMapa => AddressModel(
+    zipCode: _cepController.text.trim(),
+    street: _ruaController.text.trim(),
+    neighborhood: _bairroController.text.trim(),
+    city: _cidadeController.text.trim(),
+    state: _ufController.text.trim().toUpperCase(),
+  );
+
+  void _aoMudarEndereco() {
+    if (_preenchendoPeloMapa) return;
+
+    final endereco = _enderecoDoMapa;
+    if (endereco == _ultimoEnderecoBuscado) return;
+    _ultimoEnderecoBuscado = endereco;
+
+    ref.read(addressMapControllerProvider.notifier).agendarBusca(endereco);
+  }
+
+  /// Toque no mapa: preenche rua, CEP, bairro, cidade e UF com o endereço
+  /// do ponto escolhido. Número e complemento são do usuário e não mudam.
+  void _aoSelecionarNoMapa(AddressModel endereco) {
+    _preenchendoPeloMapa = true;
+    _cepController.text = Cep.mascarar(endereco.zipCode);
+    _ruaController.text = endereco.street;
+    _bairroController.text = endereco.neighborhood;
+    _cidadeController.text = endereco.city;
+    _ufController.text = endereco.state;
+    _preenchendoPeloMapa = false;
+
+    _ultimoEnderecoBuscado = _enderecoDoMapa;
+  }
+
   // ---------- Ações ----------
 
   void _salvar() {
@@ -155,15 +243,7 @@ class _ProfileEditFormState extends ConsumerState<ProfileEditForm> {
       email: _emailController.text.trim(),
       phone: _telefoneController.text.trim(),
       birthDate: _nascimentoController.text.trim(),
-      address: AddressModel(
-        zipCode: _cepController.text.trim(),
-        street: _ruaController.text.trim(),
-        number: _numeroController.text.trim(),
-        complement: _complementoController.text.trim(),
-        neighborhood: _bairroController.text.trim(),
-        city: _cidadeController.text.trim(),
-        state: _ufController.text.trim().toUpperCase(),
-      ),
+      address: _enderecoDigitado,
     );
 
     ref
@@ -244,6 +324,8 @@ class _ProfileEditFormState extends ConsumerState<ProfileEditForm> {
                 controller: _cepController,
                 habilitado: !salvando,
                 teclado: TextInputType.number,
+                formatadores: [CepInputFormatter()],
+                validator: _validarCep,
               ),
               ProfileField(
                 rotulo: 'RUA',
@@ -305,6 +387,11 @@ class _ProfileEditFormState extends ConsumerState<ProfileEditForm> {
                     ),
                   ),
                 ],
+              ),
+              AddressMap(
+                habilitado: !salvando,
+                aoSelecionarEndereco: _aoSelecionarNoMapa,
+                aoUsarMapa: widget.aoUsarMapa,
               ),
             ],
           ),

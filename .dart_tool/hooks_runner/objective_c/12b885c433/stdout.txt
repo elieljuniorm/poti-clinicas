@@ -1,0 +1,52 @@
+Running `(cd /Users/elielmaia/.pub-cache/hosted/pub.dev/objective_c-9.6.0/; TMPDIR=/var/folders/9b/1hj1y7z544bf77hh0bff_tl80000gn/T/ PATH=/Applications/Xcode.app/Contents/SharedFrameworks/SwiftBuild.framework/Versions/A/PlugIns/SWBBuildService.bundle/Contents/PlugIns/SWBUniversalPlatformPlugin.bundle/Contents/Frameworks/SWBUniversalPlatform.framework/Resources:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/local/bin:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/libexec:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/usr/bin:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/usr/local/bin:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/local/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/local/bin:/Applications/ServBay/script/alias:/Applications/ServBay/bin:/Applications/ServBay/sbin:/Applications/ServBay/script:/Applications/ServBay/package/node/current/bin:/Applications/ServBay/package/openjdk/current/bin:/Users/elielmaia/Library/Application Support/Herd/bin/:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/Library/Apple/usr/bin:/Users/elielmaia/flutter/bin:/Users/elielmaia/.claude/plugins/marketplaces/gitkraken/plugins/gitkraken-hooks/bin HOME=/Users/elielmaia /Users/elielmaia/flutter/bin/cache/dart-sdk/bin/dart --packages=/Users/elielmaia/Documents/poti-clinicas/.dart_tool/package_config.json /Users/elielmaia/Documents/poti-clinicas/.dart_tool/hooks_runner/objective_c/12b885c433/hook.dill --config=/Users/elielmaia/Documents/poti-clinicas/.dart_tool/hooks_runner/objective_c/12b885c433/input.json )`.
+INFO: 2026-09-25 16:46:03.392605: Using compiler /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang from BuildInput.cCompiler.cc.
+
+INFO: 2026-09-25 16:46:03.395560: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk -target x86_64-apple-ios-simulator -mios-version-min=15 -c /Users/elielmaia/.pub-cache/hosted/pub.dev/objective_c-9.6.0/src/include/dart_api_dl.c -fpic -gline-tables-only -I src -o /Users/elielmaia/Documents/poti-clinicas/.dart_tool/hooks_runner/shared/objective_c/build/12b885c433/obj/src/include/dart_api_dl.c.o
+
+INFO: 2026-09-25 16:46:03.396267: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk -target x86_64-apple-ios-simulator -mios-version-min=15 -c /Users/elielmaia/.pub-cache/hosted/pub.dev/objective_c-9.6.0/src/objective_c.c -fpic -gline-tables-only -I src -o /Users/elielmaia/Documents/poti-clinicas/.dart_tool/hooks_runner/shared/objective_c/build/12b885c433/obj/src/objective_c.c.o
+
+INFO: 2026-09-25 16:46:03.396377: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk -target x86_64-apple-ios-simulator -mios-version-min=15 -x objective-c -fobjc-arc -c /Users/elielmaia/.pub-cache/hosted/pub.dev/objective_c-9.6.0/src/input_stream_adapter.m -fpic -gline-tables-only -I src -o /Users/elielmaia/Documents/poti-clinicas/.dart_tool/hooks_runner/shared/objective_c/build/12b885c433/obj/src/input_stream_adapter.m.o
+
+INFO: 2026-09-25 16:46:03.396454: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk -target x86_64-apple-ios-simulator -mios-version-min=15 -x objective-c -fobjc-arc -c /Users/elielmaia/.pub-cache/hosted/pub.dev/objective_c-9.6.0/src/objective_c.m -fpic -gline-tables-only -I src -o /Users/elielmaia/Documents/poti-clinicas/.dart_tool/hooks_runner/shared/objective_c/build/12b885c433/obj/src/objective_c.m.o
+
+INFO: 2026-09-25 16:46:03.396663: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk -target x86_64-apple-ios-simulator -mios-version-min=15 -x objective-c -fobjc-arc -c /Users/elielmaia/.pub-cache/hosted/pub.dev/objective_c-9.6.0/src/ns_number.m -fpic -gline-tables-only -I src -o /Users/elielmaia/Documents/poti-clinicas/.dart_tool/hooks_runner/shared/objective_c/build/12b885c433/obj/src/ns_number.m.o
+
+INFO: 2026-09-25 16:46:03.396906: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk -target x86_64-apple-ios-simulator -mios-version-min=15 -x objective-c -fobjc-arc -c /Users/elielmaia/.pub-cache/hosted/pub.dev/objective_c-9.6.0/src/objective_c_bindings_generated.m -fpic -gline-tables-only -I src -o /Users/elielmaia/Documents/poti-clinicas/.dart_tool/hooks_runner/shared/objective_c/build/12b885c433/obj/src/objective_c_bindings_generated.m.o
+
+INFO: 2026-09-25 16:46:03.437598: 
+INFO: 2026-09-25 16:46:03.437656: 
+INFO: 2026-09-25 16:46:03.437673: Generated /Users/elielmaia/Documents/poti-clinicas/.dart_tool/hooks_runner/shared/objective_c/build/12b885c433/obj/src/objective_c.c.o
+INFO: 2026-09-25 16:46:03.437795: 
+INFO: 2026-09-25 16:46:03.437804: 
+INFO: 2026-09-25 16:46:03.437812: Generated /Users/elielmaia/Documents/poti-clinicas/.dart_tool/hooks_runner/shared/objective_c/build/12b885c433/obj/src/include/dart_api_dl.c.o
+
+INFO: 2026-09-25 16:46:03.449200: 
+INFO: 2026-09-25 16:46:03.449252: 
+INFO: 2026-09-25 16:46:03.449271: Generated /Users/elielmaia/Documents/poti-clinicas/.dart_tool/hooks_runner/shared/objective_c/build/12b885c433/obj/src/observer.m.o
+
+INFO: 2026-09-25 16:46:03.452521: 
+INFO: 2026-09-25 16:46:03.452550: 
+INFO: 2026-09-25 16:46:03.452558: Generated /Users/elielmaia/Documents/poti-clinicas/.dart_tool/hooks_runner/shared/objective_c/build/12b885c433/obj/src/protocol.m.o
+
+INFO: 2026-09-25 16:46:03.518612: 
+INFO: 2026-09-25 16:46:03.518643: 
+INFO: 2026-09-25 16:46:03.518651: Generated /Users/elielmaia/Documents/poti-clinicas/.dart_tool/hooks_runner/shared/objective_c/build/12b885c433/obj/src/ns_number.m.o
+INFO: 2026-09-25 16:46:03.518702: 
+INFO: 2026-09-25 16:46:03.518713: 
+INFO: 2026-09-25 16:46:03.518726: Generated /Users/elielmaia/Documents/poti-clinicas/.dart_tool/hooks_runner/shared/objective_c/build/12b885c433/obj/src/input_stream_adapter.m.o
+
+INFO: 2026-09-25 16:46:03.526678: 
+INFO: 2026-09-25 16:46:03.526709: 
+INFO: 2026-09-25 16:46:03.526716: Generated /Users/elielmaia/Documents/poti-clinicas/.dart_tool/hooks_runner/shared/objective_c/build/12b885c433/obj/src/objective_c.m.o
+
+INFO: 2026-09-25 16:46:03.539951: 
+INFO: 2026-09-25 16:46:03.539982: 
+INFO: 2026-09-25 16:46:03.539990: Generated /Users/elielmaia/Documents/poti-clinicas/.dart_tool/hooks_runner/shared/objective_c/build/12b885c433/obj/src/objective_c_bindings_generated.m.o
+
+INFO: 2026-09-25 16:46:03.540224: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -shared -Wl,-encryptable -undefined dynamic_lookup -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk -target x86_64-apple-ios-simulator -mios-version-min=15 /Users/elielmaia/Documents/poti-clinicas/.dart_tool/hooks_runner/shared/objective_c/build/12b885c433/obj/src/include/dart_api_dl.c.o /Users/elielmaia/Documents/poti-clinicas/.dart_tool/hooks_runner/shared/objective_c/build/12b885c433/obj/src/objective_c.c.o /Users/elielmaia/Documents/poti-clinicas/.dart_tool/hooks_runner/shared/objective_c/build/12b885c433/obj/src/input_stream_adapter.m.o /Users/elielmaia/Documents/poti-clinicas/.dart_tool/hooks_runner/shared/objective_c/build/12b885c433/obj/src/objective_c.m.o /Users/elielmaia/Documents/poti-clinicas/.dart_tool/hooks_runner/shared/objective_c/build/12b885c433/obj/src/observer.m.o /Users/elielmaia/Documents/poti-clinicas/.dart_tool/hooks_runner/shared/objective_c/build/12b885c433/obj/src/ns_number.m.o /Users/elielmaia/Documents/poti-clinicas/.dart_tool/hooks_runner/shared/objective_c/build/12b885c433/obj/src/protocol.m.o /Users/elielmaia/Documents/poti-clinicas/.dart_tool/hooks_runner/shared/objective_c/build/12b885c433/obj/src/objective_c_bindings_generated.m.o -o /Users/elielmaia/Documents/poti-clinicas/.dart_tool/hooks_runner/shared/objective_c/build/12b885c433/objective_c.dylib
+
+INFO: 2026-09-25 16:46:03.560926: 
+INFO: 2026-09-25 16:46:03.561020: ld: warning: -undefined dynamic_lookup is deprecated on iOS-simulator
+
+INFO: 2026-09-25 16:46:03.561035: Generated /Users/elielmaia/Documents/poti-clinicas/.dart_tool/hooks_runner/shared/objective_c/build/12b885c433/objective_c.dylib
+

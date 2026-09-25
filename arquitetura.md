@@ -27,7 +27,11 @@ lib/
     ├── routing/
     │   └── app_router.dart        # Todas as rotas do app (GoRouter)
     ├── core/                      # Código compartilhado, sem regra de negócio
+    │   ├── utils/
+    │   │   └── cep.dart               # CEP no formato único 00000-000 (Dart puro: UI e DTOs)
     │   └── ui/
+    │       ├── formatters/
+    │       │   └── cep_input_formatter.dart  # Máscara de digitação do CEP
     │       ├── theme/
     │       │   ├── app_colors.dart        # Paleta central (tokens de cor)
     │       │   ├── app_text_styles.dart   # Estilos de texto reutilizáveis

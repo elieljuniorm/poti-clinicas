@@ -51,6 +51,23 @@ void main() {
     expect(ProfileDto.fromDomain(perfil).toJson(), json);
   });
 
+  test('CEP sai e chega sempre no formato 00000-000', () {
+    final semTraco = {
+      ...json,
+      'address': <String, dynamic>{
+        ...(json['address'] as Map<String, dynamic>),
+        'zip_code': '64000000',
+      },
+    };
+    final perfil = ProfileDto.fromJson(semTraco).toDomain();
+
+    expect(perfil.address.zipCode, '64000-000');
+    expect(
+      (ProfileDto.fromDomain(perfil).toJson()['address'] as Map)['zip_code'],
+      '64000-000',
+    );
+  });
+
   test('AddressModel.resumo ignora partes vazias', () {
     const endereco = AddressModel(
       street: 'Rua A',

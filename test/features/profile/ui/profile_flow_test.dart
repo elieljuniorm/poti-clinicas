@@ -1,11 +1,17 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:poti_5f/src/features/auth/application/auth_controller.dart';
 import 'package:poti_5f/src/features/auth/domain/models/user.dart';
+import 'package:poti_5f/src/features/profile/application/address_map_controller.dart';
+import 'package:poti_5f/src/features/profile/ui/widgets/address_map.dart';
 import 'package:poti_5f/src/features/profile/ui/pages/profile_edit_screen.dart';
 import 'package:poti_5f/src/features/profile/ui/pages/profile_screen.dart';
+
+import '../application/fake_geocoding_repository.dart';
 
 /// Visualização → edição → salvar, usando o data source real (mock em memória).
 void main() {
@@ -13,7 +19,11 @@ void main() {
     tester.view.physicalSize = const Size(4000, 12000);
     addTearDown(tester.view.reset);
 
-    final container = ProviderContainer.test();
+    // O mapa busca endereços em memória, sem acessar a rede.
+    final geocoding = FakeGeocodingRepository();
+    final container = ProviderContainer.test(
+      overrides: [geocodingRepositoryProvider.overrideWithValue(geocoding)],
+    );
     container
         .read(authControllerProvider.notifier)
         .definirUsuario(
@@ -57,7 +67,7 @@ void main() {
     await tester.pump(const Duration(seconds: 1));
     await tester.pumpAndSettle();
 
-    expect(find.text('Meus dados'), findsOneWidget);
+    expect(find.text('Perfil'), findsOneWidget);
     expect(find.text('DADOS PESSOAIS'), findsOneWidget);
     expect(find.text('123.456.789-00'), findsOneWidget);
     // Endereço e senha só aparecem na edição.
@@ -68,13 +78,17 @@ void main() {
     expect(nomeView.enabled, isFalse);
 
     // ---------- Edição ----------
-    await tester.tap(find.text('EDITAR DADOS'));
+    await tester.tap(find.text('EDITAR CADASTRO'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Editar dados'), findsOneWidget);
+    expect(find.text('Editar Perfil'), findsOneWidget);
     expect(find.text('ENDEREÇO'), findsOneWidget);
     expect(find.text('ALTERAR SENHA'), findsOneWidget);
     expect(find.text('Rua das Flores'), findsOneWidget);
+
+    // Mapa: ao abrir, já busca o endereço salvo.
+    expect(find.byType(AddressMap), findsOneWidget);
+    expect(geocoding.buscas.single.street, 'Rua das Flores');
 
     Finder campo(String rotulo) => find.descendant(
       of: find
@@ -82,6 +96,29 @@ void main() {
           .first,
       matching: find.byType(TextFormField),
     );
+
+    // Digitar no endereço busca de novo, depois da pausa.
+    await tester.enterText(campo('BAIRRO'), 'Jóquei');
+    await tester.pump(AddressMapController.atrasoBusca);
+    expect(geocoding.buscas.last.neighborhood, 'Jóquei');
+
+    // Número não muda o local: não dispara busca.
+    await tester.enterText(campo('NÚMERO'), '250');
+    await tester.pump(AddressMapController.atrasoBusca);
+    expect(geocoding.buscas, hasLength(2));
+
+    // Tocar no mapa preenche o endereço com o ponto escolhido.
+    // O flutter_map espera o tempo do duplo toque (zoom) antes do onTap.
+    await tester.tap(find.byType(FlutterMap));
+    await tester.pump(kDoubleTapTimeout + const Duration(milliseconds: 50));
+    await tester.pump();
+    expect(find.text('Avenida Frei Serafim'), findsOneWidget);
+    // O número digitado continua, mesmo o ponto tendo outro número.
+    expect(find.text('250'), findsOneWidget);
+    expect(find.text('2000'), findsNothing);
+    expect(geocoding.buscas, hasLength(2)); // preencher não dispara busca
+    await tester.enterText(campo('RUA'), 'Rua das Flores');
+    await tester.pump(AddressMapController.atrasoBusca);
 
     // Validação: nome obrigatório e senhas diferentes.
     await tester.enterText(campo('NOME'), '');
@@ -119,7 +156,7 @@ void main() {
     expect(container.read(authControllerProvider)!.name, 'Eliel M. Maia');
 
     // Reabrindo a edição, o endereço salvo aparece.
-    await tester.tap(find.text('EDITAR DADOS'));
+    await tester.tap(find.text('EDITAR CADASTRO'));
     await tester.pumpAndSettle();
     expect(find.text('Parnaíba'), findsOneWidget);
     // E o formulário de senha volta vazio.

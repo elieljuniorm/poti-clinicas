@@ -26,4 +26,26 @@ class AddressModel {
       linha2.join(' - '),
     ].where((p) => p.isNotEmpty).join(' • ');
   }
+
+  @override
+  bool operator ==(Object other) =>
+      other is AddressModel &&
+      other.zipCode == zipCode &&
+      other.street == street &&
+      other.number == number &&
+      other.complement == complement &&
+      other.neighborhood == neighborhood &&
+      other.city == city &&
+      other.state == state;
+
+  @override
+  int get hashCode => Object.hash(
+    zipCode,
+    street,
+    number,
+    complement,
+    neighborhood,
+    city,
+    state,
+  );
 }

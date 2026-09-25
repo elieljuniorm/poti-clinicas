@@ -11,11 +11,19 @@ import '../states/profile_state.dart';
 import '../widgets/profile_edit_form.dart';
 
 /// Tela "Editar dados" (variação de edição da [ProfileScreen]).
-class ProfileEditScreen extends ConsumerWidget {
+class ProfileEditScreen extends ConsumerStatefulWidget {
   const ProfileEditScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ProfileEditScreen> createState() => _ProfileEditScreenState();
+}
+
+class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
+  // Com o dedo no mapa, a página para de rolar e o arraste move o mapa.
+  bool _usandoMapa = false;
+
+  @override
+  Widget build(BuildContext context) {
     ref.listen<ProfileEditState>(profileEditControllerProvider, (
       previous,
       next,
@@ -49,6 +57,10 @@ class ProfileEditScreen extends ConsumerWidget {
     );
   }
 
+  void _aoUsarMapa(bool usando) {
+    if (usando != _usandoMapa) setState(() => _usandoMapa = usando);
+  }
+
   Widget _buildBody(BuildContext context, ProfileState profileState) {
     return ClipRRect(
       borderRadius: const BorderRadius.only(
@@ -59,10 +71,12 @@ class ProfileEditScreen extends ConsumerWidget {
         color: AppColors.surfaceMuted,
         width: double.infinity,
         child: SingleChildScrollView(
+          physics: _usandoMapa ? const NeverScrollableScrollPhysics() : null,
           padding: const EdgeInsets.fromLTRB(16, 24, 16, 50),
           child: ProfileEditForm(
             perfil: profileState.profile!,
             aoCancelar: () => context.goNamed('profile'),
+            aoUsarMapa: _aoUsarMapa,
           ),
         ),
       ),
