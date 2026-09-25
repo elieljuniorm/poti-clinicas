@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 import '../../../../core/ui/theme/app_colors.dart';
 import '../../../../core/ui/theme/app_decorations.dart';
@@ -119,7 +120,7 @@ class EvolutionsWidget extends StatelessWidget {
                       style: TextStyle(color: Colors.blue, fontSize: 13),
                     ),
                     Icon(
-                      isOpen ? Icons.open_in_new : Icons.info_outline,
+                      isOpen ? Symbols.open_in_new : Symbols.info,
                       color: isOpen ? Colors.blue : AppColors.statusPending,
                       size: 18,
                     ),

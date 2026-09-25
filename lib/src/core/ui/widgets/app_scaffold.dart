@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 import '../theme/app_text_styles.dart';
 import 'app_drawer.dart';
@@ -72,7 +73,7 @@ class _Cabecalho extends StatelessWidget {
               if (mostrarMenu)
                 Builder(
                   builder: (context) => IconButton(
-                    icon: const Icon(Icons.menu, size: 28),
+                    icon: const Icon(Symbols.menu, size: 28),
                     padding: EdgeInsets.zero,
                     alignment: Alignment.centerLeft,
                     onPressed: () => Scaffold.of(context).openDrawer(),

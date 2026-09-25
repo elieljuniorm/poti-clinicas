@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 import '../../../../core/ui/theme/app_colors.dart';
 import '../../../../core/ui/theme/app_decorations.dart';
@@ -12,11 +13,11 @@ class DailyAppointmentsWidget extends StatelessWidget {
   IconData _getStatusIcon(AppointmentStatus status) {
     switch (status) {
       case AppointmentStatus.confirmed:
-        return Icons.check_circle_outline;
+        return Symbols.check_circle;
       case AppointmentStatus.pending:
-        return Icons.brightness_1_outlined;
+        return Symbols.circle;
       case AppointmentStatus.canceled:
-        return Icons.cancel_outlined;
+        return Symbols.cancel;
     }
   }
 

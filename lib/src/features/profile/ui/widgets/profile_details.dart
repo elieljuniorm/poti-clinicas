@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 import '../../../../core/ui/widgets/app_primary_button.dart';
 import '../../domain/models/profile_model.dart';
@@ -29,31 +30,31 @@ class ProfileDetails extends StatelessWidget {
           children: [
             ProfileField(
               rotulo: 'NOME',
-              icon: Icons.person_outline,
+              icon: Symbols.person,
               valorInicial: perfil.name,
               habilitado: false,
             ),
             ProfileField(
               rotulo: 'E-MAIL',
-              icon: Icons.email_outlined,
+              icon: Symbols.mail,
               valorInicial: perfil.email,
               habilitado: false,
             ),
             ProfileField(
               rotulo: 'TELEFONE',
-              icon: Icons.phone_outlined,
+              icon: Symbols.call,
               valorInicial: perfil.phone,
               habilitado: false,
             ),
             ProfileField(
               rotulo: 'DATA DE NASCIMENTO',
-              icon: Icons.cake_outlined,
+              icon: Symbols.cake,
               valorInicial: perfil.birthDate,
               habilitado: false,
             ),
             ProfileField(
               rotulo: 'CPF',
-              icon: Icons.badge_outlined,
+              icon: Symbols.badge,
               valorInicial: perfil.cpf,
               habilitado: false,
             ),

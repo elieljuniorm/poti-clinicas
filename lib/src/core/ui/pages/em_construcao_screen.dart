@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 import '../theme/app_colors.dart';
 import '../theme/app_text_styles.dart';
@@ -35,11 +36,7 @@ class EmConstrucaoScreen extends StatelessWidget {
           child: const Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                Icons.construction_outlined,
-                size: 48,
-                color: AppColors.primary,
-              ),
+              Icon(Symbols.construction, size: 48, color: AppColors.primary),
               SizedBox(height: 12),
               Text('EM CONSTRUÇÃO', style: AppTextStyles.sectionTitle),
               SizedBox(height: 4),

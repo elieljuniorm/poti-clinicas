@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
@@ -117,8 +118,9 @@ class _AddressMapState extends ConsumerState<AddressMap> {
                             // A ponta do ícone fica em cima do ponto.
                             alignment: Alignment.topCenter,
                             child: const Icon(
-                              Icons.location_on,
+                              Symbols.location_on,
                               size: 44,
+                              fill: 1,
                               color: AppColors.primary,
                             ),
                           ),

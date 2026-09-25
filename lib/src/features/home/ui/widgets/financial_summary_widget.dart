@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 import '../../../../core/ui/theme/app_colors.dart';
 import '../../../../core/ui/theme/app_decorations.dart';
@@ -12,15 +13,15 @@ class FinancialSummaryWidget extends StatelessWidget {
   IconData _getPaymentIcon(String paymentMethod) {
     switch (paymentMethod) {
       case 'Dinheiro':
-        return Icons.attach_money;
+        return Symbols.attach_money;
       case 'PIX':
         return Icons.pix_sharp;
       case 'Cartão de Crédito':
-        return Icons.credit_card;
+        return Symbols.credit_card;
       case 'Cartão de Débito':
-        return Icons.credit_card_outlined;
+        return Symbols.account_balance_wallet;
       default:
-        return Icons.payments_outlined;
+        return Symbols.payments;
     }
   }
 
@@ -47,7 +48,7 @@ class FinancialSummaryWidget extends StatelessWidget {
                   Row(
                     children: [
                       const Icon(
-                        Icons.calendar_today_outlined,
+                        Symbols.calendar_today,
                         size: 16,
                         color: AppColors.borderAccent,
                       ),

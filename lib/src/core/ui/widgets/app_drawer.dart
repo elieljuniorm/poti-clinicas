@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -14,26 +15,22 @@ class AppDrawer extends ConsumerWidget {
   const AppDrawer({super.key, this.rotaAtual});
 
   static const List<_DrawerEntry> _entradas = [
-    _DrawerEntry(label: 'Início', icon: Icons.home_outlined, rota: '/home'),
-    _DrawerEntry(
-      label: 'Usuário',
-      icon: Icons.person_outline,
-      rota: '/usuario',
-    ),
+    _DrawerEntry(label: 'Início', icon: Symbols.home, rota: '/home'),
+    _DrawerEntry(label: 'Usuário', icon: Symbols.person, rota: '/usuario'),
     _DrawerEntry(
       label: 'Agenda',
-      icon: Icons.calendar_today_outlined,
+      icon: Symbols.calendar_today,
       rota: '/agenda',
     ),
     _DrawerEntry(
       label: 'Prontuário',
-      icon: Icons.assignment_ind_outlined,
+      icon: Symbols.assignment_ind,
       rota: '/prontuario',
     ),
-    _DrawerEntry(label: 'Histórico', icon: Icons.history, rota: '/historico'),
+    _DrawerEntry(label: 'Histórico', icon: Symbols.history, rota: '/historico'),
     _DrawerEntry(
       label: 'Financeiro',
-      icon: Icons.bar_chart,
+      icon: Symbols.bar_chart,
       rota: '/financeiro',
     ),
   ];
@@ -155,10 +152,7 @@ class _CabecalhoUsuario extends StatelessWidget {
               Container(
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  border: Border.all(
-                    color: AppColors.primary,
-                    width: 2,
-                  ),
+                  border: Border.all(color: AppColors.primary, width: 2),
                 ),
                 child: CircleAvatar(
                   radius: 50,
@@ -166,7 +160,12 @@ class _CabecalhoUsuario extends StatelessWidget {
                   backgroundImage: temFoto ? NetworkImage(fotoUrl!) : null,
                   child: temFoto
                       ? null
-                      : const Icon(Icons.person, size: 40, color: Colors.white),
+                      : const Icon(
+                          Symbols.person,
+                          size: 40,
+                          fill: 1,
+                          color: Colors.white,
+                        ),
                 ),
               ),
               const SizedBox(height: 12),
@@ -182,7 +181,7 @@ class _CabecalhoUsuario extends StatelessWidget {
                     ),
                     const SizedBox(width: 2),
                     const Icon(
-                      Icons.chevron_right,
+                      Symbols.chevron_right,
                       size: 20,
                       color: AppColors.menuItemActive,
                     ),
@@ -217,7 +216,7 @@ class _BotaoSair extends StatelessWidget {
               child: const Padding(
                 padding: EdgeInsets.all(8),
                 child: Icon(
-                  Icons.logout,
+                  Symbols.logout,
                   color: AppColors.drawerForeground,
                   size: 24,
                 ),

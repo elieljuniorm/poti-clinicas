@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:flutter/services.dart';
 
 import '../../../../core/ui/theme/app_colors.dart';
@@ -86,9 +87,7 @@ class _ProfileFieldState extends State<ProfileField> {
               suffixIcon: widget.senha
                   ? IconButton(
                       icon: Icon(
-                        _ocultar
-                            ? Icons.visibility_outlined
-                            : Icons.visibility_off_outlined,
+                        _ocultar ? Symbols.visibility : Symbols.visibility_off,
                         color: AppColors.borderAccent,
                       ),
                       onPressed: () => setState(() => _ocultar = !_ocultar),

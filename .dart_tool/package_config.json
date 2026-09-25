@@ -242,6 +242,12 @@
       "languageVersion": "3.5"
     },
     {
+      "name": "material_symbols_icons",
+      "rootUri": "file:///Users/elielmaia/.pub-cache/hosted/pub.dev/material_symbols_icons-4.2960.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
       "name": "material_ui",
       "rootUri": "file:///Users/elielmaia/.pub-cache/hosted/pub.dev/material_ui-1.2.0",
       "packageUri": "lib/",

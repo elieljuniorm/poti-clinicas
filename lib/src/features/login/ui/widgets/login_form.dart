@@ -1,6 +1,7 @@
 // lib/src/features/login/ui/widgets/login_form.dart
 
 import 'package:flutter/material.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/ui/theme/app_colors.dart';
@@ -81,7 +82,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
             keyboardType: TextInputType.emailAddress,
             decoration: _decoracaoCampo(
               hint: 'Digite seu e-mail',
-              prefixIcon: Icons.email_outlined,
+              prefixIcon: Symbols.mail,
             ),
           ),
           const SizedBox(height: 20),
@@ -101,7 +102,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
             obscureText: _obscurePassword,
             decoration: _decoracaoCampo(
               hint: 'Digite sua senha',
-              prefixIcon: Icons.key,
+              prefixIcon: Symbols.key,
               contentPadding: const EdgeInsets.symmetric(vertical: 16),
               suffixIcon: Padding(
                 padding: const EdgeInsets.only(right: 15),
@@ -109,8 +110,8 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                   padding: EdgeInsets.zero,
                   icon: Icon(
                     _obscurePassword
-                        ? Icons.visibility_outlined
-                        : Icons.visibility_off_outlined,
+                        ? Symbols.visibility
+                        : Symbols.visibility_off,
                     color: AppColors.borderAccent,
                   ),
                   onPressed: () {

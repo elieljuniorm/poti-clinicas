@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/ui/theme/app_colors.dart';
@@ -76,19 +77,19 @@ class HomeScreen extends ConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     _buildLegendItem(
-                      Icons.check_circle_outline,
+                      Symbols.check_circle,
                       'Confirmado',
                       AppColors.statusConfirmed,
                     ),
                     const SizedBox(width: 16),
                     _buildLegendItem(
-                      Icons.brightness_1_outlined,
+                      Symbols.circle,
                       'Pendente',
                       AppColors.statusPending,
                     ),
                     const SizedBox(width: 16),
                     _buildLegendItem(
-                      Icons.cancel_outlined,
+                      Symbols.cancel,
                       'Cancelado',
                       AppColors.statusCanceled,
                     ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 import '../../../../core/ui/theme/app_colors.dart';
 import '../../../../core/ui/theme/app_text_styles.dart';
@@ -21,7 +22,7 @@ class ProfileHeader extends StatelessWidget {
             shape: BoxShape.circle,
             border: Border.all(
               color: AppColors.primary, // cor da borda
-              width: 2,          // espessura da borda
+              width: 2, // espessura da borda
             ),
           ),
           child: CircleAvatar(
@@ -30,7 +31,12 @@ class ProfileHeader extends StatelessWidget {
             backgroundImage: temFoto ? NetworkImage(fotoUrl!) : null,
             child: temFoto
                 ? null
-                : const Icon(Icons.person, size: 40, color: Colors.white),
+                : const Icon(
+                    Symbols.person,
+                    size: 40,
+                    fill: 1,
+                    color: Colors.white,
+                  ),
           ),
         ),
         const SizedBox(height: 12),

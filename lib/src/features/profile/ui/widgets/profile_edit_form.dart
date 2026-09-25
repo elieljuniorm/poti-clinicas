@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/ui/formatters/cep_input_formatter.dart';
@@ -276,14 +277,14 @@ class _ProfileEditFormState extends ConsumerState<ProfileEditForm> {
             children: [
               ProfileField(
                 rotulo: 'NOME',
-                icon: Icons.person_outline,
+                icon: Symbols.person,
                 controller: _nomeController,
                 habilitado: !salvando,
                 validator: _obrigatorio,
               ),
               ProfileField(
                 rotulo: 'E-MAIL',
-                icon: Icons.email_outlined,
+                icon: Symbols.mail,
                 controller: _emailController,
                 habilitado: !salvando,
                 teclado: TextInputType.emailAddress,
@@ -291,14 +292,14 @@ class _ProfileEditFormState extends ConsumerState<ProfileEditForm> {
               ),
               ProfileField(
                 rotulo: 'TELEFONE',
-                icon: Icons.phone_outlined,
+                icon: Symbols.call,
                 controller: _telefoneController,
                 habilitado: !salvando,
                 teclado: TextInputType.phone,
               ),
               ProfileField(
                 rotulo: 'DATA DE NASCIMENTO',
-                icon: Icons.cake_outlined,
+                icon: Symbols.cake,
                 controller: _nascimentoController,
                 habilitado: !salvando,
                 teclado: TextInputType.datetime,
@@ -306,7 +307,7 @@ class _ProfileEditFormState extends ConsumerState<ProfileEditForm> {
               ),
               ProfileField(
                 rotulo: 'CPF',
-                icon: Icons.badge_outlined,
+                icon: Symbols.badge,
                 valorInicial: widget.perfil.cpf,
                 habilitado: false,
                 textoAjuda: 'O CPF não pode ser alterado',
@@ -320,7 +321,7 @@ class _ProfileEditFormState extends ConsumerState<ProfileEditForm> {
             children: [
               ProfileField(
                 rotulo: 'CEP',
-                icon: Icons.local_post_office_outlined,
+                icon: Symbols.local_post_office,
                 controller: _cepController,
                 habilitado: !salvando,
                 teclado: TextInputType.number,
@@ -329,7 +330,7 @@ class _ProfileEditFormState extends ConsumerState<ProfileEditForm> {
               ),
               ProfileField(
                 rotulo: 'RUA',
-                icon: Icons.signpost_outlined,
+                icon: Symbols.signpost,
                 controller: _ruaController,
                 habilitado: !salvando,
               ),
@@ -340,7 +341,7 @@ class _ProfileEditFormState extends ConsumerState<ProfileEditForm> {
                     flex: 2,
                     child: ProfileField(
                       rotulo: 'NÚMERO',
-                      icon: Icons.tag,
+                      icon: Symbols.tag,
                       controller: _numeroController,
                       habilitado: !salvando,
                     ),
@@ -350,7 +351,7 @@ class _ProfileEditFormState extends ConsumerState<ProfileEditForm> {
                     flex: 3,
                     child: ProfileField(
                       rotulo: 'COMPLEMENTO',
-                      icon: Icons.apartment_outlined,
+                      icon: Symbols.apartment,
                       controller: _complementoController,
                       habilitado: !salvando,
                     ),
@@ -359,7 +360,7 @@ class _ProfileEditFormState extends ConsumerState<ProfileEditForm> {
               ),
               ProfileField(
                 rotulo: 'BAIRRO',
-                icon: Icons.map_outlined,
+                icon: Symbols.map,
                 controller: _bairroController,
                 habilitado: !salvando,
               ),
@@ -370,7 +371,7 @@ class _ProfileEditFormState extends ConsumerState<ProfileEditForm> {
                     flex: 3,
                     child: ProfileField(
                       rotulo: 'CIDADE',
-                      icon: Icons.location_city_outlined,
+                      icon: Symbols.location_city,
                       controller: _cidadeController,
                       habilitado: !salvando,
                     ),
@@ -380,7 +381,7 @@ class _ProfileEditFormState extends ConsumerState<ProfileEditForm> {
                     flex: 2,
                     child: ProfileField(
                       rotulo: 'UF',
-                      icon: Icons.flag_outlined,
+                      icon: Symbols.flag,
                       controller: _ufController,
                       habilitado: !salvando,
                       validator: _validarUf,
@@ -403,7 +404,7 @@ class _ProfileEditFormState extends ConsumerState<ProfileEditForm> {
             children: [
               ProfileField(
                 rotulo: 'SENHA ATUAL',
-                icon: Icons.lock_outline,
+                icon: Symbols.lock,
                 controller: _senhaAtualController,
                 habilitado: !salvando,
                 senha: true,
@@ -411,7 +412,7 @@ class _ProfileEditFormState extends ConsumerState<ProfileEditForm> {
               ),
               ProfileField(
                 rotulo: 'NOVA SENHA',
-                icon: Icons.key,
+                icon: Symbols.key,
                 controller: _novaSenhaController,
                 habilitado: !salvando,
                 senha: true,
@@ -419,7 +420,7 @@ class _ProfileEditFormState extends ConsumerState<ProfileEditForm> {
               ),
               ProfileField(
                 rotulo: 'CONFIRMAR NOVA SENHA',
-                icon: Icons.key,
+                icon: Symbols.key,
                 controller: _confirmarSenhaController,
                 habilitado: !salvando,
                 senha: true,

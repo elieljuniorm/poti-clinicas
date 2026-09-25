@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:poti_5f/main.dart';
@@ -58,7 +59,7 @@ void main() {
     expect(find.text('R\$ 350,00'), findsOneWidget);
 
     // ---------- Menu lateral mostra o usuário logado ----------
-    await tester.tap(find.byIcon(Icons.menu));
+    await tester.tap(find.byIcon(Symbols.menu));
     await tester.pumpAndSettle();
     expect(find.text('Olá, Eliel Maia'), findsOneWidget);
 
@@ -69,7 +70,7 @@ void main() {
     expect(find.text('EM CONSTRUÇÃO'), findsOneWidget);
 
     // ---------- Cabeçalho do menu abre "Meus dados" ----------
-    await tester.tap(find.byIcon(Icons.menu));
+    await tester.tap(find.byIcon(Symbols.menu));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Ver meus dados'));
     await tester.pump(const Duration(seconds: 1));
@@ -78,9 +79,9 @@ void main() {
     expect(find.text('EDITAR CADASTRO'), findsOneWidget);
 
     // ---------- Logout volta para o login ----------
-    await tester.tap(find.byIcon(Icons.menu));
+    await tester.tap(find.byIcon(Symbols.menu));
     await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(Icons.logout));
+    await tester.tap(find.byIcon(Symbols.logout));
     await tester.pumpAndSettle();
     expect(find.byType(LoginScreen), findsOneWidget);
   });

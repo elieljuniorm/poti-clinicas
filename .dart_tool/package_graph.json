@@ -13,7 +13,8 @@
         "flutter_riverpod",
         "go_router",
         "http",
-        "latlong2"
+        "latlong2",
+        "material_symbols_icons"
       ],
       "devDependencies": [
         "fake_async",
@@ -52,6 +53,13 @@
         "stream_channel",
         "test_api",
         "vector_math"
+      ]
+    },
+    {
+      "name": "material_symbols_icons",
+      "version": "4.2960.0",
+      "dependencies": [
+        "flutter"
       ]
     },
     {
