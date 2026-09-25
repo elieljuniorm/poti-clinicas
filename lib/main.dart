@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'Poti App',
+      title: 'Poti Clínicas',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'Nunito',

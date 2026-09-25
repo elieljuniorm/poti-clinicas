@@ -37,12 +37,14 @@ lib/
     │       └── widgets/
     │           ├── app_scaffold.dart      # Esqueleto padrão das telas logadas
     │           ├── app_drawer.dart        # Menu lateral (lê o usuário logado)
+    │           ├── app_primary_button.dart # Botão principal (pílula), com variação contornada
     │           └── drawer_menu_item.dart  # Item "pílula" do menu
     └── features/                  # Uma pasta por funcionalidade
         ├── auth/                  # Sessão global (usuário logado)
         ├── splash/                # Tela de abertura
         ├── login/                 # Login (feature de referência, com todas as camadas)
-        └── home/                  # Tela inicial (dashboard), com todas as camadas
+        ├── home/                  # Tela inicial (dashboard), com todas as camadas
+        └── profile/               # Meus dados: visualização + variação de edição
 ```
 
 Fontes ficam em `assets/fonts/` e são declaradas no `pubspec.yaml` (família `Nunito`, pesos 400 a 800). O tema global aplica essa família, então **não repita `fontFamily` nos widgets**.
@@ -146,6 +148,13 @@ final xControllerProvider =
 | `sealed class` com subclasses (`Initial`, `Loading`, `Success`, `Error`) | Telas de **ação/fluxo**: submeter algo, depois navegar ou mostrar erro. | `login_state.dart` |
 | Classe única com `isLoading`, `errorMessage`, listas e `copyWith` | Telas de **consulta/dashboard** com vários blocos de dados ao mesmo tempo. | `home_state.dart` |
 
+**Uma feature pode ter mais de um controller.** A `profile` tem um de consulta (`ProfileController`, estado com `copyWith`) compartilhado pelas duas telas, e um de ação (`ProfileEditController`, estado `sealed`) só para salvar. Os providers de data source e repository ficam no arquivo do controller principal, e o secundário importa esse arquivo.
+
+**`autoDispose` e `ref.mounted`:**
+- Use `NotifierProvider.autoDispose` quando o estado deve zerar ao sair da tela (ex.: `profileEditControllerProvider` volta a `Initial` a cada abertura da edição).
+- Depois de todo `await` em um controller `autoDispose` (ou que dependa de outro provider), confira `if (!ref.mounted) return;` antes de mexer em `state`.
+- Para reconstruir um controller só quando um campo específico de outro provider muda, use `select`: `ref.watch(authControllerProvider.select((u) => u?.id))`.
+
 **Como a UI consome o estado:**
 
 - `ref.watch(provider)` dentro do `build` para redesenhar;
@@ -160,6 +169,7 @@ final xControllerProvider =
 - Toda rota tem `path` e `name`. As telas navegam por nome (`context.goNamed('home')`). O drawer navega por path (`context.go(entrada.rota)`).
 - `go` substitui a pilha (usado entre fluxos: splash → login → home e no logout).
 - Uma transição customizada usa `pageBuilder` + `CustomTransitionPage` (exemplo: `/login` sobe de baixo para cima).
+- **Paths e names em inglês**, iguais ao nome da feature (`/home`, `/profile`). Variações de uma tela viram **sub-rotas** com o nome `<feature>-<variação>`, como `/profile/edit` e `profile-edit`. Com `goNamed('profile-edit')`, o go_router empilha `/profile` embaixo, então o "voltar" do sistema retorna ao perfil.
 
 ### 1.9 UI compartilhada (`core/ui`)
 
@@ -169,8 +179,9 @@ final xControllerProvider =
 | `AppDrawer` | Menu lateral com foto, saudação, itens e botão Sair. Os itens ficam na lista `_entradas`. `rotaAtual` marca o item ativo e evita navegar para a própria tela. |
 | `DrawerMenuItem` | Item em formato de pílula (ativo/inativo). |
 | `AppColors` | Paleta: `primary` `0xFF0F4C5C`, `accent` `0xFF4BA3B8`, `background` `rgb(210,221,225)`, `surface`, `surfaceMuted` `0xFFF2F2F7`, `borderAccent`, `buttonPrimary`, `cardBorder`, `cardShadow`, `tableRowEven/Odd`, `statusConfirmed/Pending/Canceled`, `error`, `textPrimary`, `textSecondary`, `textHint` etc. **Nenhuma cor em hexadecimal fora deste arquivo.** |
-| `AppTextStyles` | `pageTitle`, `sectionTitle`, `sectionSubtitle`, `formLabel`, `formHint`, `buttonLabel` e os estilos do drawer. Novos estilos reutilizáveis entram aqui. |
+| `AppTextStyles` | `pageTitle`, `sectionTitle`, `sectionSubtitle`, `formLabel`, `formHint`, `fieldLabel`, `fieldValue`, `buttonLabel` e os estilos do drawer. Novos estilos reutilizáveis entram aqui. |
 | `AppDecorations` | `card`: o card branco padrão (raio 12, borda e sombra). |
+| `AppPrimaryButton` | Botão pílula de largura total (`label`, `onPressed`, `icon`, `carregando`, `contornado`). Use nas telas novas; o `LoginForm` ainda tem um botão próprio. |
 | `EmConstrucaoScreen` | Tela provisória (`titulo`, `rotaAtual`) usada no router para os itens do menu que ainda não têm feature. |
 
 **Padrão visual das telas logadas** (tirado da Home):
@@ -782,8 +793,22 @@ Dicas para testes de widget:
 | `test/` | O teste padrão do "contador" foi substituído por uma suíte de 19 testes: fluxo completo do app, controllers (auth, login, home) e DTOs. `flutter test` passa. |
 | `LoginForm` | Os `TextEditingController` agora são liberados em `dispose()`. |
 
-### 3.3 Pontos em aberto
+### 3.3 Feature `profile` (25/09/2026)
+
+A tela "Meus dados" tinha sido criada como `features/perfil/ui/pages/perfil_screen.dart` (`PerfilScreen`, rota `/perfil`), sem camadas, lendo direto do `authControllerProvider`. Ela foi refeita no padrão:
+
+- **Nomes em inglês:** `features/profile/`, `ProfileScreen`, rotas `/profile` (`profile`) e `/profile/edit` (`profile-edit`). O cabeçalho do Drawer ("Ver meus dados") foi ajustado para a rota nova.
+- **Camadas completas:** `ProfileModel` + `AddressModel`, contrato `ProfileRepository` (`buscarPerfil`, `atualizarPerfil`, `alterarSenha`), `ProfileDto`/`AddressDto` (com `fromDomain` e `toJson` para salvar), `ProfileDataSource` (mock em memória) e `ProfileRepositoryImpl`.
+- **Duas variações da mesma tela**, montadas com os mesmos widgets (`ProfileHeader`, `ProfileSectionCard`, `ProfileField`):
+  - `ProfileScreen` → `ProfileDetails`: dados pessoais bloqueados e o botão **EDITAR DADOS**;
+  - `ProfileEditScreen` → `ProfileEditForm`: os mesmos campos liberados (menos o CPF), mais as seções **ENDEREÇO** e **ALTERAR SENHA**, validação e os botões SALVAR/CANCELAR.
+- **Ao salvar**, a senha é trocada primeiro (só se a nova senha estiver preenchida). Com a senha atual errada, nada é salvo. Depois o perfil é salvo, e o perfil em memória e a sessão (nome e e-mail do Drawer) são atualizados.
+- **Testes:** DTOs, os dois controllers com repositório fake, o fluxo das telas (ver → editar → validar → erro de senha → salvar) e o passo "Ver meus dados" no `app_flow_test.dart`. São 32 testes no total.
+
+### 3.4 Pontos em aberto
 
 | Onde | Observação |
 |---|---|
+| Rotas do menu | `/usuario`, `/agenda`, `/prontuario`, `/historico` e `/financeiro` ainda estão em português. Renomeie para inglês ao criar cada feature (e atualize `_entradas` no Drawer). |
+| Mock de senha | A troca de senha no `ProfileDataSource` não afeta o `LoginDataSource`, que continua aceitando `123456`. Some quando houver API real. |
 | `HomeController.carregar` | Com as buscas em paralelo (`.wait`), um erro chega como `ParallelWaitError`, e a mensagem mostrada fica mais técnica. Quando houver API real, trate o erro de cada busca. |

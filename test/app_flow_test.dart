@@ -5,6 +5,7 @@ import 'package:poti_5f/main.dart';
 import 'package:poti_5f/src/core/ui/pages/em_construcao_screen.dart';
 import 'package:poti_5f/src/features/home/ui/pages/home_screen.dart';
 import 'package:poti_5f/src/features/login/ui/pages/login_screen.dart';
+import 'package:poti_5f/src/features/profile/ui/pages/profile_screen.dart';
 import 'package:poti_5f/src/features/splash/ui/pages/splash_screen.dart';
 
 /// Jornada completa usando o código real (data sources com mocks e delays).
@@ -12,7 +13,7 @@ import 'package:poti_5f/src/features/splash/ui/pages/splash_screen.dart';
 /// Fica em um único teste porque o `appRouter` é global: a navegação de um
 /// teste afetaria o próximo no mesmo arquivo.
 void main() {
-  testWidgets('splash → login → home → menu → logout', (tester) async {
+  testWidgets('splash → login → home → menu → perfil → logout', (tester) async {
     // Tela larga: a fonte de teste (Ahem) é mais larga que a Nunito
     // e causaria overflow falso em telas estreitas.
     tester.view.physicalSize = const Size(4000, 8000);
@@ -66,6 +67,15 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(EmConstrucaoScreen), findsOneWidget);
     expect(find.text('EM CONSTRUÇÃO'), findsOneWidget);
+
+    // ---------- Cabeçalho do menu abre "Meus dados" ----------
+    await tester.tap(find.byIcon(Icons.menu));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Ver meus dados'));
+    await tester.pump(const Duration(seconds: 1));
+    await tester.pumpAndSettle();
+    expect(find.byType(ProfileScreen), findsOneWidget);
+    expect(find.text('EDITAR DADOS'), findsOneWidget);
 
     // ---------- Logout volta para o login ----------
     await tester.tap(find.byIcon(Icons.menu));

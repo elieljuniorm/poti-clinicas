@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import '../core/ui/pages/em_construcao_screen.dart';
 import '../features/home/ui/pages/home_screen.dart';
 import '../features/login/ui/pages/login_screen.dart';
+import '../features/profile/ui/pages/profile_edit_screen.dart';
+import '../features/profile/ui/pages/profile_screen.dart';
 import '../features/splash/ui/pages/splash_screen.dart';
 
 final GoRouter appRouter = GoRouter(
@@ -34,6 +36,19 @@ final GoRouter appRouter = GoRouter(
       path: '/home',
       name: 'home', // ← usado por context.goNamed('home')
       builder: (context, state) => const HomeScreen(),
+    ),
+    GoRoute(
+      path: '/profile',
+      name: 'profile', // ← aberta pelo cabeçalho do Drawer (foto + saudação)
+      builder: (context, state) => const ProfileScreen(),
+      routes: [
+        // Sub-rota: /profile/edit. O "voltar" do sistema retorna ao perfil.
+        GoRoute(
+          path: 'edit',
+          name: 'profile-edit', // ← usado por context.goNamed('profile-edit')
+          builder: (context, state) => const ProfileEditScreen(),
+        ),
+      ],
     ),
 
     // ---------- Rotas do menu ainda sem feature própria ----------

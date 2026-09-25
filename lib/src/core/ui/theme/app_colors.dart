@@ -51,8 +51,8 @@ class AppColors {
   static const Color error = Colors.red;
 
   // ---------- Texto ----------
-  static const Color textPrimary = Color(0xFF1A1A1A);
-  static const Color textSecondary = Color(0xFF6B6B6B);
-  static const Color textHint = Color(0xFF9E9E9E);
+  static const Color textPrimary = Color.fromRGBO(2, 34, 43, 1);
+  static const Color textSecondary = Color.fromRGBO(2, 34, 43, 1);
+  static const Color textHint = Color.fromRGBO(141, 141, 141, 1);
   static const Color textOnDark = Colors.white;
 }

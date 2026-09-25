@@ -49,12 +49,32 @@ class AppTextStyles {
     fontWeight: FontWeight.bold,
   );
 
+  /// Rótulo pequeno acima de campos de cadastro (ex.: "E-MAIL").
+  static const TextStyle fieldLabel = TextStyle(
+    color: AppColors.textSecondary,
+    fontSize: 18,
+    fontWeight: FontWeight.bold,
+  );
+
+  /// Valor digitado/exibido nos campos de cadastro.
+  static const TextStyle fieldValue = TextStyle(
+    color: AppColors.textPrimary,
+    fontSize: 16,
+  );
+
   // ---------- Drawer ----------
   /// Saudação no topo do Drawer ("Olá, {{user}}").
   static const TextStyle drawerGreeting = TextStyle(
     color: AppColors.drawerForeground,
     fontSize: 20,
     fontWeight: FontWeight.w600,
+  );
+
+  /// Link "Ver meus dados" abaixo da saudação do Drawer.
+  static const TextStyle drawerProfileLink = TextStyle(
+    color: AppColors.menuItemActive,
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
   );
 
   /// Texto dos itens do menu do Drawer.
