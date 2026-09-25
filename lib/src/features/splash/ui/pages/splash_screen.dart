@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/ui/theme/app_colors.dart';
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -68,7 +70,7 @@ class _SplashScreenState extends State<SplashScreen>
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(210, 221, 225, 1),
+      backgroundColor: AppColors.background,
       body: FadeTransition(
         opacity: _fadeAnimation,
         child: ScaleTransition(
@@ -83,7 +85,7 @@ class _SplashScreenState extends State<SplashScreen>
               Center(
                 child: Image.asset(
                   _centerImage,
-                  width: screenWidth * 70,
+                  width: screenWidth * 0.7,
                   fit: BoxFit.cover,
                 ),
               ),

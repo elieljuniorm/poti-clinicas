@@ -8,7 +8,7 @@ class EvolutionModel {
   final String appointmentType;
   final EvolutionStatus status;
 
-  EvolutionModel({
+  const EvolutionModel({
     required this.date,
     required this.time,
     required this.professional,

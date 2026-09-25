@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../core/ui/pages/em_construcao_screen.dart';
 import '../features/home/ui/pages/home_screen.dart';
 import '../features/login/ui/pages/login_screen.dart';
 import '../features/splash/ui/pages/splash_screen.dart';
@@ -15,7 +16,7 @@ final GoRouter appRouter = GoRouter(
     ),
     GoRoute(
       path: '/login',
-      name: 'login',                     // ← usado por context.goNamed('login')
+      name: 'login', // ← usado por context.goNamed('login')
       pageBuilder: (context, state) => CustomTransitionPage(
         key: state.pageKey,
         child: const LoginScreen(),
@@ -31,8 +32,47 @@ final GoRouter appRouter = GoRouter(
     ),
     GoRoute(
       path: '/home',
-      name: 'home',                      // ← usado por context.goNamed('home')
+      name: 'home', // ← usado por context.goNamed('home')
       builder: (context, state) => const HomeScreen(),
+    ),
+
+    // ---------- Rotas do menu ainda sem feature própria ----------
+    // Troque o builder pela tela real quando a feature for criada.
+    GoRoute(
+      path: '/usuario',
+      name: 'usuario',
+      builder: (context, state) =>
+          const EmConstrucaoScreen(titulo: 'Usuário', rotaAtual: '/usuario'),
+    ),
+    GoRoute(
+      path: '/agenda',
+      name: 'agenda',
+      builder: (context, state) =>
+          const EmConstrucaoScreen(titulo: 'Agenda', rotaAtual: '/agenda'),
+    ),
+    GoRoute(
+      path: '/prontuario',
+      name: 'prontuario',
+      builder: (context, state) => const EmConstrucaoScreen(
+        titulo: 'Prontuário',
+        rotaAtual: '/prontuario',
+      ),
+    ),
+    GoRoute(
+      path: '/historico',
+      name: 'historico',
+      builder: (context, state) => const EmConstrucaoScreen(
+        titulo: 'Histórico',
+        rotaAtual: '/historico',
+      ),
+    ),
+    GoRoute(
+      path: '/financeiro',
+      name: 'financeiro',
+      builder: (context, state) => const EmConstrucaoScreen(
+        titulo: 'Financeiro',
+        rotaAtual: '/financeiro',
+      ),
     ),
   ],
 );

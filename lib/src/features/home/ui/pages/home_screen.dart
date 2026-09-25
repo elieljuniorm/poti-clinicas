@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/ui/theme/app_colors.dart';
+import '../../../../core/ui/theme/app_text_styles.dart';
 import '../../../../core/ui/widgets/app_scaffold.dart';
-import '../../../auth/application/auth_controller.dart';
-import '../widgets/controllers/home_controller.dart';
+import '../../application/home_controller.dart';
+import '../states/home_state.dart';
 import '../widgets/daily_appointments_widget.dart';
 import '../widgets/evolutions_widget.dart';
 import '../widgets/financial_summary_widget.dart';
@@ -13,18 +15,17 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final usuario = ref.watch(authControllerProvider);
     final homeState = ref.watch(homeControllerProvider);
 
     return AppScaffold(
       titulo: 'Bem-vindo(a)',
       rotaAtual: '/home',
-      backgroundColor: const Color.fromRGBO(210, 221, 225, 1),
+      backgroundColor: AppColors.background,
       body: homeState.isLoading
           ? const Center(child: CircularProgressIndicator())
           : homeState.errorMessage != null
           ? Center(child: Text(homeState.errorMessage!))
-          : _buildBody(homeState, usuario?.name),
+          : _buildBody(homeState),
     );
   }
 
@@ -46,16 +47,14 @@ class HomeScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildBody(dynamic homeState, String? nomeUsuario) {
-    const backgroundColor = Color(0xFFF2F2F7);
-
+  Widget _buildBody(HomeState homeState) {
     return ClipRRect(
       borderRadius: const BorderRadius.only(
         topLeft: Radius.circular(30),
         topRight: Radius.circular(30),
       ),
       child: Container(
-        color: backgroundColor,
+        color: AppColors.surfaceMuted,
         width: double.infinity,
         // O conteúdo começa IMEDIATAMENTE no topo do container cinza.
         child: SingleChildScrollView(
@@ -63,28 +62,11 @@ class HomeScreen extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Seção 1: Atendimentos do Dia
-              const Padding(
-                padding: EdgeInsets.fromLTRB(16, 20, 16, 8),
-                child: Center(
-                  child: Text(
-                    'ATENDIMENTOS DO DIA',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                      color: Color(0xFF0F4C5C),
-                    ),
-                  ),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Center(
-                  child: Text(
-                    'CONFIRA ABAIXO TODOS OS ATENDIMENTOS AGENDADOS\nPARA HOJE, COM HORÁRIO E STATUS ATUALIZADOS',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 12, color: Colors.grey),
-                  ),
-                ),
+              const _TituloSecao(
+                titulo: 'ATENDIMENTOS DO DIA',
+                subtitulo: 'CONFIRA ABAIXO TODOS OS ATENDIMENTOS AGENDADOS\nPARA HOJE, COM HORÁRIO E STATUS ATUALIZADOS',
+                padding: EdgeInsets.fromLTRB(16, 20, 16, 0),
+                espaco: 8,
               ),
               const SizedBox(height: 12),
 
@@ -96,19 +78,19 @@ class HomeScreen extends ConsumerWidget {
                     _buildLegendItem(
                       Icons.check_circle_outline,
                       'Confirmado',
-                      Colors.green,
+                      AppColors.statusConfirmed,
                     ),
                     const SizedBox(width: 16),
                     _buildLegendItem(
                       Icons.brightness_1_outlined,
                       'Pendente',
-                      Colors.orange,
+                      AppColors.statusPending,
                     ),
                     const SizedBox(width: 16),
                     _buildLegendItem(
                       Icons.cancel_outlined,
                       'Cancelado',
-                      Colors.redAccent,
+                      AppColors.statusCanceled,
                     ),
                   ],
                 ),
@@ -121,24 +103,9 @@ class HomeScreen extends ConsumerWidget {
               const SizedBox(height: 24),
 
               // Seção 2: Evoluções
-              const Center(
-                child: Text(
-                  'EVOLUÇÕES',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Color(0xFF0F4C5C),
-                  ),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                child: Center(
-                  child: Text(
-                    'CONFIRA ABAIXO AS EVOLUÇÕES DO DIA',
-                    style: TextStyle(fontSize: 12, color: Colors.grey),
-                  ),
-                ),
+              const _TituloSecao(
+                titulo: 'EVOLUÇÕES',
+                subtitulo: 'CONFIRA ABAIXO AS EVOLUÇÕES DO DIA',
               ),
               const SizedBox(height: 12),
 
@@ -146,24 +113,9 @@ class HomeScreen extends ConsumerWidget {
               const SizedBox(height: 24),
 
               // Seção 3: Resumo Financeiro
-              const Center(
-                child: Text(
-                  'ATENDIMENTOS',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Color(0xFF0F4C5C),
-                  ),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                child: Center(
-                  child: Text(
-                    'RESUMO MENSAL DE ATENDIMENTOS REALIZADOS',
-                    style: TextStyle(fontSize: 12, color: Colors.grey),
-                  ),
-                ),
+              const _TituloSecao(
+                titulo: 'ATENDIMENTOS',
+                subtitulo: 'RESUMO MENSAL DE ATENDIMENTOS REALIZADOS',
               ),
               const SizedBox(height: 12),
 
@@ -172,6 +124,50 @@ class HomeScreen extends ConsumerWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+// ============================================================
+// Widgets internos
+// ============================================================
+
+/// Título centralizado de seção + subtítulo cinza.
+class _TituloSecao extends StatelessWidget {
+  final String titulo;
+  final String subtitulo;
+  final EdgeInsetsGeometry padding;
+
+  /// Espaço entre título e subtítulo.
+  final double espaco;
+
+  const _TituloSecao({
+    required this.titulo,
+    required this.subtitulo,
+    this.padding = const EdgeInsets.fromLTRB(16, 0, 16, 4),
+    this.espaco = 4,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: padding,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            titulo,
+            textAlign: TextAlign.center,
+            style: AppTextStyles.sectionTitle,
+          ),
+          SizedBox(height: espaco),
+          Text(
+            subtitulo,
+            textAlign: TextAlign.center,
+            style: AppTextStyles.sectionSubtitle,
+          ),
+        ],
       ),
     );
   }

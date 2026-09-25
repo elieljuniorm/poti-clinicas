@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/ui/theme/app_colors.dart';
+import '../../../../core/ui/theme/app_text_styles.dart';
 import '../../application/login_controller.dart';
 import '../states/login_state.dart';
 
@@ -19,31 +21,45 @@ class _LoginFormState extends ConsumerState<LoginForm> {
   final _passwordController = TextEditingController(text: '');
   bool _obscurePassword = true;
 
-  // Cores baseadas na imagem
-  final Color _primaryColor = const Color.fromRGBO(
-    0,
-    121,
-    107,
-    1,
-  ); // Verde escuro do botão
-  final Color _borderColor = const Color.fromRGBO(
-    25,
-    126,
-    144,
-    1,
-  ); // Verde/Teal das bordas
-  final Color _textColor = const Color.fromRGBO(
-    0,
-    0,
-    0,
-    1,
-  ); // Cinza escuro do texto
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  /// Decoração padrão dos campos: pílula com borda verde-azulada.
+  InputDecoration _decoracaoCampo({
+    required String hint,
+    required IconData prefixIcon,
+    Widget? suffixIcon,
+    EdgeInsetsGeometry? contentPadding,
+  }) {
+    final borda = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(30),
+      borderSide: const BorderSide(color: AppColors.borderAccent, width: 2),
+    );
+
+    return InputDecoration(
+      hintText: hint,
+      hintStyle: AppTextStyles.formHint,
+      prefixIcon: Padding(
+        padding: const EdgeInsets.only(left: 15, right: 8),
+        child: Icon(prefixIcon, color: AppColors.borderAccent),
+      ),
+      suffixIcon: suffixIcon,
+      contentPadding: contentPadding,
+      border: borda,
+      enabledBorder: borda,
+      focusedBorder: borda,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(loginControllerProvider);
     final isLoading = state is LoginLoading;
-    final errorState = state is LoginError ? state : null; // 👈 NOVO
+    final errorState = state is LoginError ? state : null;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
@@ -56,45 +72,16 @@ class _LoginFormState extends ConsumerState<LoginForm> {
             padding: const EdgeInsets.only(
               left: 10,
             ), // empurra só o texto para a direita
-            child: Text(
-              'EMAIL',
-              style: TextStyle(
-                fontFamily: 'Nunito',
-                color: _textColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
-            ),
+            child: Text('EMAIL', style: AppTextStyles.formLabel),
           ),
           // Campo de Email
           TextField(
             controller: _emailController,
             enabled: !isLoading,
             keyboardType: TextInputType.emailAddress,
-            decoration: InputDecoration(
-              hintText: 'Digite seu e-mail',
-              hintStyle: TextStyle(
-                fontFamily: 'Nunito',
-                color: const Color(0xFF9E9E9E),
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-              ),
-              prefixIcon: Padding(
-                padding: const EdgeInsets.only(left: 15, right: 8),
-                child: Icon(Icons.email_outlined, color: _borderColor),
-              ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30),
-                borderSide: BorderSide(color: _borderColor, width: 2),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30),
-                borderSide: BorderSide(color: _borderColor, width: 2),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30),
-                borderSide: BorderSide(color: _borderColor, width: 2),
-              ),
+            decoration: _decoracaoCampo(
+              hint: 'Digite seu e-mail',
+              prefixIcon: Icons.email_outlined,
             ),
           ),
           const SizedBox(height: 20),
@@ -104,15 +91,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
             padding: const EdgeInsets.only(
               left: 10,
             ), // empurra só o texto para a direita
-            child: Text(
-              'SENHA',
-              style: TextStyle(
-                fontFamily: 'Nunito',
-                color: _textColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
-            ),
+            child: Text('SENHA', style: AppTextStyles.formLabel),
           ),
           const SizedBox(height: 8),
           // Campo de Senha
@@ -120,18 +99,10 @@ class _LoginFormState extends ConsumerState<LoginForm> {
             controller: _passwordController,
             enabled: !isLoading,
             obscureText: _obscurePassword,
-            decoration: InputDecoration(
-              hintText: 'Digite sua senha',
-              hintStyle: TextStyle(
-                color: const Color(0xFF9E9E9E),
-                fontFamily: 'Nunito',
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-              ),
-              prefixIcon: Padding(
-                padding: const EdgeInsets.only(left: 15, right: 8),
-                child: Icon(Icons.key, color: _borderColor),
-              ),
+            decoration: _decoracaoCampo(
+              hint: 'Digite sua senha',
+              prefixIcon: Icons.key,
+              contentPadding: const EdgeInsets.symmetric(vertical: 16),
               suffixIcon: Padding(
                 padding: const EdgeInsets.only(right: 15),
                 child: IconButton(
@@ -140,7 +111,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                     _obscurePassword
                         ? Icons.visibility_outlined
                         : Icons.visibility_off_outlined,
-                    color: _borderColor,
+                    color: AppColors.borderAccent,
                   ),
                   onPressed: () {
                     setState(() {
@@ -148,19 +119,6 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                     });
                   },
                 ),
-              ),
-              contentPadding: const EdgeInsets.symmetric(vertical: 16),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30),
-                borderSide: BorderSide(color: _borderColor, width: 2),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30),
-                borderSide: BorderSide(color: _borderColor, width: 2),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30),
-                borderSide: BorderSide(color: _borderColor, width: 2),
               ),
             ),
           ),
@@ -177,7 +135,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                 height: 45,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: _primaryColor,
+                    backgroundColor: AppColors.buttonPrimary,
                     padding: EdgeInsets.zero,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
@@ -192,15 +150,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                           password: _passwordController.text,
                         );
                   },
-                  child: const Text(
-                    'ENTRAR',
-                    style: TextStyle(
-                      fontFamily: 'Nunito',
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  child: const Text('ENTRAR', style: AppTextStyles.buttonLabel),
                 ),
               ),
             ),
@@ -216,7 +166,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
               child: Text(
                 errorState?.message ?? '',
                 textAlign: TextAlign.center,
-                style: const TextStyle(color: Colors.red, fontSize: 13),
+                style: const TextStyle(color: AppColors.error, fontSize: 13),
               ),
             ),
           ),

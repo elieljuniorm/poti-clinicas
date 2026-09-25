@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/ui/theme/app_colors.dart';
 import '../../application/login_controller.dart';
 import '../states/login_state.dart';
 import '../widgets/login_form.dart';
@@ -24,12 +25,7 @@ class LoginScreen extends ConsumerWidget {
     });
 
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(
-        210,
-        221,
-        225,
-        1,
-      ), // Fundo azul claro atrás da imagem
+      backgroundColor: AppColors.background, // Fundo azul claro atrás da imagem
       body: SafeArea(
         bottom: false, // Permite que o card branco vá até o final da tela
         child: Column(
@@ -53,7 +49,7 @@ class LoginScreen extends ConsumerWidget {
               child: Container(
                 width: double.infinity,
                 decoration: const BoxDecoration(
-                  color: Colors.white,
+                  color: AppColors.surface,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(40),
                     topRight: Radius.circular(40),

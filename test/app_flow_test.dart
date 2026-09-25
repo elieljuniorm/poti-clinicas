@@ -1,0 +1,77 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:poti_5f/main.dart';
+import 'package:poti_5f/src/core/ui/pages/em_construcao_screen.dart';
+import 'package:poti_5f/src/features/home/ui/pages/home_screen.dart';
+import 'package:poti_5f/src/features/login/ui/pages/login_screen.dart';
+import 'package:poti_5f/src/features/splash/ui/pages/splash_screen.dart';
+
+/// Jornada completa usando o código real (data sources com mocks e delays).
+///
+/// Fica em um único teste porque o `appRouter` é global: a navegação de um
+/// teste afetaria o próximo no mesmo arquivo.
+void main() {
+  testWidgets('splash → login → home → menu → logout', (tester) async {
+    // Tela larga: a fonte de teste (Ahem) é mais larga que a Nunito
+    // e causaria overflow falso em telas estreitas.
+    tester.view.physicalSize = const Size(4000, 8000);
+    addTearDown(tester.view.reset);
+
+    await tester.pumpWidget(const ProviderScope(child: MyApp()));
+
+    // ---------- Splash ----------
+    expect(find.byType(SplashScreen), findsOneWidget);
+    await tester.pump(const Duration(milliseconds: 3500));
+    await tester.pumpAndSettle();
+
+    // ---------- Login com credenciais inválidas ----------
+    expect(find.byType(LoginScreen), findsOneWidget);
+    await tester.enterText(find.byType(TextField).at(0), 'teste@teste.com');
+    await tester.enterText(find.byType(TextField).at(1), 'errada');
+    await tester.tap(find.text('ENTRAR'));
+    await tester.pump();
+
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    await tester.pump(const Duration(seconds: 2));
+    await tester.pump();
+
+    expect(find.byType(LoginScreen), findsOneWidget);
+    // Mensagem aparece no formulário e no SnackBar.
+    expect(find.text('Email ou senha inválidos'), findsNWidgets(2));
+
+    // ---------- Login com credenciais válidas ----------
+    await tester.enterText(find.byType(TextField).at(1), '123456');
+    await tester.tap(find.text('ENTRAR'));
+    await tester.pump(const Duration(seconds: 2));
+    await tester.pumpAndSettle();
+
+    // ---------- Home (carrega em 1s) ----------
+    expect(find.byType(HomeScreen), findsOneWidget);
+    await tester.pump(const Duration(seconds: 1));
+    await tester.pumpAndSettle();
+
+    expect(find.text('ATENDIMENTOS DO DIA'), findsOneWidget);
+    expect(find.text('Jorge Silva'), findsOneWidget);
+    expect(find.text('Eduardo Marinho'), findsOneWidget);
+    expect(find.text('R\$ 350,00'), findsOneWidget);
+
+    // ---------- Menu lateral mostra o usuário logado ----------
+    await tester.tap(find.byIcon(Icons.menu));
+    await tester.pumpAndSettle();
+    expect(find.text('Olá, Eliel Maia'), findsOneWidget);
+
+    // ---------- Item do menu sem feature abre a tela provisória ----------
+    await tester.tap(find.text('Agenda'));
+    await tester.pumpAndSettle();
+    expect(find.byType(EmConstrucaoScreen), findsOneWidget);
+    expect(find.text('EM CONSTRUÇÃO'), findsOneWidget);
+
+    // ---------- Logout volta para o login ----------
+    await tester.tap(find.byIcon(Icons.menu));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(Icons.logout));
+    await tester.pumpAndSettle();
+    expect(find.byType(LoginScreen), findsOneWidget);
+  });
+}

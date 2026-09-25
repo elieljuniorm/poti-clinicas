@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/ui/theme/app_colors.dart';
+import '../../../../core/ui/theme/app_decorations.dart';
 import '../../domain/models/evolution_model.dart';
 
 class EvolutionsWidget extends StatelessWidget {
@@ -20,21 +22,7 @@ class EvolutionsWidget extends StatelessWidget {
 
         return Container(
           margin: const EdgeInsets.only(bottom: 12),
-          decoration: BoxDecoration(
-            color: Colors.white, // Fundo branco
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: Colors.black.withValues(alpha: 0.2),
-              width: 1,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.04),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
+          decoration: AppDecorations.card,
           child: Column(
             children: [
               Padding(
@@ -49,7 +37,6 @@ class EvolutionsWidget extends StatelessWidget {
                           item.date,
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontFamily: 'Nunito',
                             fontSize: 20,
                             color: Colors.black87,
                           ),
@@ -59,7 +46,6 @@ class EvolutionsWidget extends StatelessWidget {
                           style: TextStyle(
                             color: Colors.grey[600],
                             fontSize: 14,
-                            fontFamily: 'Nunito',
                           ),
                         ),
                       ],
@@ -134,7 +120,7 @@ class EvolutionsWidget extends StatelessWidget {
                     ),
                     Icon(
                       isOpen ? Icons.open_in_new : Icons.info_outline,
-                      color: isOpen ? Colors.blue : Colors.orange,
+                      color: isOpen ? Colors.blue : AppColors.statusPending,
                       size: 18,
                     ),
                   ],

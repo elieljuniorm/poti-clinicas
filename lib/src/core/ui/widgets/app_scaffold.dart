@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_colors.dart';
+import '../theme/app_text_styles.dart';
 import 'app_drawer.dart';
 
 class AppScaffold extends StatelessWidget {
@@ -84,15 +84,7 @@ class _Cabecalho extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(left: 15),
-            child: Text(
-              titulo,
-              style: const TextStyle(
-                fontSize: 26,
-                fontFamily: 'Nunito',
-                fontWeight: FontWeight.w400,
-                color: AppColors.textPrimary,
-              ),
-            ),
+            child: Text(titulo, style: AppTextStyles.pageTitle),
           ),
         ],
       ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/ui/theme/app_colors.dart';
+import '../../../../core/ui/theme/app_decorations.dart';
 import '../../domain/models/daily_appointment_model.dart';
 
 class DailyAppointmentsWidget extends StatelessWidget {
@@ -21,11 +23,11 @@ class DailyAppointmentsWidget extends StatelessWidget {
   Color _getStatusColor(AppointmentStatus status) {
     switch (status) {
       case AppointmentStatus.confirmed:
-        return Colors.green;
+        return AppColors.statusConfirmed;
       case AppointmentStatus.pending:
-        return Colors.orange;
+        return AppColors.statusPending;
       case AppointmentStatus.canceled:
-        return Colors.redAccent;
+        return AppColors.statusCanceled;
     }
   }
 
@@ -33,21 +35,7 @@ class DailyAppointmentsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: Colors.black.withValues(alpha: 0.2),
-          width: 1,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
+      decoration: AppDecorations.card,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
         child: Column(
@@ -55,7 +43,7 @@ class DailyAppointmentsWidget extends StatelessWidget {
             // Cabeçalho da Tabela
             Container(
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-              decoration: const BoxDecoration(color: Color(0xFF0F4C5C)),
+              decoration: const BoxDecoration(color: AppColors.primary),
               child: const Row(
                 children: [
                   Expanded(
@@ -104,9 +92,7 @@ class DailyAppointmentsWidget extends StatelessWidget {
               final isEven = index % 2 == 0;
 
               return Container(
-                color: isEven
-                    ? const Color.fromRGBO(247, 246, 254, 1)
-                    : const Color.fromRGBO(238, 238, 238, 1),
+                color: isEven ? AppColors.tableRowEven : AppColors.tableRowOdd,
                 padding: const EdgeInsets.symmetric(
                   vertical: 12,
                   horizontal: 16,

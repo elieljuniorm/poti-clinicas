@@ -6,7 +6,7 @@ class DailyAppointmentModel {
   final String appointmentType;
   final AppointmentStatus status;
 
-  DailyAppointmentModel({
+  const DailyAppointmentModel({
     required this.patient,
     required this.time,
     required this.appointmentType,

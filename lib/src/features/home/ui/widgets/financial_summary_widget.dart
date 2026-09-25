@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/ui/theme/app_colors.dart';
+import '../../../../core/ui/theme/app_decorations.dart';
 import '../../domain/models/financial_summary_model.dart';
 
 class FinancialSummaryWidget extends StatelessWidget {
@@ -36,21 +38,7 @@ class FinancialSummaryWidget extends StatelessWidget {
         return Container(
           margin: const EdgeInsets.only(bottom: 12),
           padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: Colors.black.withValues(alpha: 0.2),
-              width: 1,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.04),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
+          decoration: AppDecorations.card,
           child: Column(
             children: [
               Row(
@@ -61,7 +49,7 @@ class FinancialSummaryWidget extends StatelessWidget {
                       const Icon(
                         Icons.calendar_today_outlined,
                         size: 16,
-                        color: Color.fromRGBO(25, 126, 144, 1),
+                        color: AppColors.borderAccent,
                       ),
                       const SizedBox(width: 8),
                       Text(
@@ -100,12 +88,12 @@ class FinancialSummaryWidget extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: const Color.fromRGBO(242, 242, 247, 1),
+                      color: AppColors.surfaceMuted,
                       shape: BoxShape.circle,
                     ),
                     child: Icon(
                       _getPaymentIcon(item.paymentMethod),
-                      color: const Color.fromRGBO(25, 126, 144, 1),
+                      color: AppColors.borderAccent,
                       size: 20,
                     ),
                   ),
@@ -136,9 +124,8 @@ class FinancialSummaryWidget extends StatelessWidget {
                     'R\$ ${item.amount.toStringAsFixed(2).replaceAll('.', ',')}',
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'Nunito',
                       fontSize: 17,
-                      color: Color(0xFF0F4C5C),
+                      color: AppColors.primary,
                     ),
                   ),
                 ],

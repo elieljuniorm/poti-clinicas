@@ -9,7 +9,7 @@ class FinancialSummaryModel {
   final double amount;
   final PaymentStatus status;
 
-  FinancialSummaryModel({
+  const FinancialSummaryModel({
     required this.date,
     required this.time,
     required this.patient,

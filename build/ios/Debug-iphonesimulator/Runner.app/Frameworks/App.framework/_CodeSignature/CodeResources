@@ -10,11 +10,11 @@
 		</data>
 		<key>flutter_assets/AssetManifest.bin</key>
 		<data>
-		9rYaiXsFTiyBdGkGGWS0g4YlPus=
+		GdyAbDhp51wG39TM77EsamJGgf8=
 		</data>
 		<key>flutter_assets/FontManifest.json</key>
 		<data>
-		vKJkVIcw+LGHFnKJGwrQwCREv68=
+		02MK7TRzXN+a6UYtHjHLNIbervc=
 		</data>
 		<key>flutter_assets/NOTICES.Z</key>
 		<data>
@@ -23,6 +23,26 @@
 		<key>flutter_assets/NativeAssetsManifest.json</key>
 		<data>
 		re4p7E8rPLLsN+wzaPN/+AVpXTY=
+		</data>
+		<key>flutter_assets/assets/fonts/Nunito-400.ttf</key>
+		<data>
+		QEHTLcqnmQgWXSTj+6a+HEcU8eE=
+		</data>
+		<key>flutter_assets/assets/fonts/Nunito-500.ttf</key>
+		<data>
+		olJQoxnkNqiVfi0SLRmXryixCB8=
+		</data>
+		<key>flutter_assets/assets/fonts/Nunito-600.ttf</key>
+		<data>
+		Kfbszk1CpWLLYP5CTXu0CYZ7zkc=
+		</data>
+		<key>flutter_assets/assets/fonts/Nunito-700.ttf</key>
+		<data>
+		d4eitmBPlJ3uHuaO78V8a50KkH8=
+		</data>
+		<key>flutter_assets/assets/fonts/Nunito-800.ttf</key>
+		<data>
+		mRhOg8809djXxErTceGSDYjVUKM=
 		</data>
 		<key>flutter_assets/assets/footer_lepotitech.png</key>
 		<data>
@@ -54,7 +74,7 @@
 		</data>
 		<key>flutter_assets/kernel_blob.bin</key>
 		<data>
-		GdGHIBer6gAH8mCmy4WscnNMvqM=
+		pM1C5MO/JB4JR9YyiuDgK1Pncus=
 		</data>
 		<key>flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf</key>
 		<data>
@@ -83,14 +103,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			4cZbMkWaFqYGgI9N0KhvnM/EhMF2REzka2qEDoW13UY=
+			38R7F8HOFWHS2x8y7vrVZStr2vj4cAsVnTlWGFCxT/A=
 			</data>
 		</dict>
 		<key>flutter_assets/FontManifest.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			zX4DZFvESy3Ue3y2JvUcTsv1Whl6t3JBYotHrBZfviE=
+			uvo6SYsicEryx1a69E1RBSpIdk52O7drRl6zyj4tTgY=
 			</data>
 		</dict>
 		<key>flutter_assets/NOTICES.Z</key>
@@ -105,6 +125,41 @@
 			<key>hash2</key>
 			<data>
 			lUijHkoEgTXB2U+Rkyi/tirix7s8q5ZVfHlB2ql3dss=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/fonts/Nunito-400.ttf</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			DwUL6RphBXbvnQarto98IdIt8tIOzm7biBhjCvm1l5M=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/fonts/Nunito-500.ttf</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			xmJyxlEbSm/gsA/UR0wcUtVc16lyeiEHsT/jzr+hURs=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/fonts/Nunito-600.ttf</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			bDWqZJTDZHELjPPzlF8ol5ZmeFuVGEAWTvt3R8eZncs=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/fonts/Nunito-700.ttf</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			XWrGX69zhWgQeX1OaEOlfHRE7mCJt2Q5nD6/qF1h5Eg=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/fonts/Nunito-800.ttf</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			GAT2hvSo/mQ7mXyl/uEJwunifca1O4cfHdw1pY6ZAF4=
 			</data>
 		</dict>
 		<key>flutter_assets/assets/footer_lepotitech.png</key>
@@ -160,7 +215,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			nGAwqrBWFq1x1O7Srq32FLRiMXDiW2tAafMmGubmEe0=
+			T0wh8j7rZNTLfrac+9kgYW2dCFcIfES8J0qhcYzXOjQ=
 			</data>
 		</dict>
 		<key>flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf</key>

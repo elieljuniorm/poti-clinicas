@@ -5,12 +5,12 @@ import '../../domain/models/financial_summary_model.dart';
 class HomeState {
   final bool isLoading;
   final String? errorMessage;
-  
+
   final List<DailyAppointmentModel> dailyAppointments;
   final List<EvolutionModel> evolutions;
   final List<FinancialSummaryModel> financialSummaries;
 
-  HomeState({
+  const HomeState({
     this.isLoading = false,
     this.errorMessage,
     this.dailyAppointments = const [],

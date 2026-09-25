@@ -21,11 +21,38 @@ class AppColors {
   // ---------- App geral ----------
   static const Color primary = Color(0xFF0F4C5C);
   static const Color accent = Color(0xFF4BA3B8);
-  static const Color background = Color.fromRGBO(210, 221, 225, 1,);
+  static const Color background = Color.fromRGBO(210, 221, 225, 1);
   static const Color surface = Colors.white;
+
+  /// Fundo cinza-claro do corpo das telas logadas.
+  static const Color surfaceMuted = Color(0xFFF2F2F7);
+
+  // ---------- Formulários / botões ----------
+  /// Bordas e ícones em verde-azulado (inputs, ícones de card).
+  static const Color borderAccent = Color.fromRGBO(25, 126, 144, 1);
+
+  /// Botão de ação principal (ex.: "ENTRAR").
+  static const Color buttonPrimary = Color.fromRGBO(0, 121, 107, 1);
+
+  // ---------- Cards / tabelas ----------
+  /// Borda dos cards (preto 20%).
+  static const Color cardBorder = Color(0x33000000);
+
+  /// Sombra dos cards (preto 4%).
+  static const Color cardShadow = Color(0x0A000000);
+
+  static const Color tableRowEven = Color.fromRGBO(247, 246, 254, 1);
+  static const Color tableRowOdd = Color.fromRGBO(238, 238, 238, 1);
+
+  // ---------- Status ----------
+  static const Color statusConfirmed = Colors.green;
+  static const Color statusPending = Colors.orange;
+  static const Color statusCanceled = Colors.redAccent;
+  static const Color error = Colors.red;
 
   // ---------- Texto ----------
   static const Color textPrimary = Color(0xFF1A1A1A);
   static const Color textSecondary = Color(0xFF6B6B6B);
+  static const Color textHint = Color(0xFF9E9E9E);
   static const Color textOnDark = Colors.white;
 }
