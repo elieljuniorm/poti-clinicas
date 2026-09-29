@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/ui/theme/app_colors.dart';
+import '../../../../core/ui/widgets/app_bottom_spacer.dart';
 import '../../../../core/ui/widgets/app_scaffold.dart';
 import '../../application/profile_controller.dart';
 import '../../application/profile_edit_controller.dart';
@@ -72,11 +73,17 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
         width: double.infinity,
         child: SingleChildScrollView(
           physics: _usandoMapa ? const NeverScrollableScrollPhysics() : null,
-          padding: const EdgeInsets.fromLTRB(16, 24, 16, 50),
-          child: ProfileEditForm(
-            perfil: profileState.profile!,
-            aoCancelar: () => context.goNamed('profile'),
-            aoUsarMapa: _aoUsarMapa,
+          padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
+          child: Column(
+            children: [
+              ProfileEditForm(
+                perfil: profileState.profile!,
+                aoCancelar: () => context.goNamed('profile'),
+                aoUsarMapa: _aoUsarMapa,
+              ),
+              // Espaço para o menu inferior flutuante
+              const AppBottomSpacer(),
+            ],
           ),
         ),
       ),

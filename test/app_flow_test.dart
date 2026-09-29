@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:poti_5f/main.dart';
 import 'package:poti_5f/src/core/ui/pages/em_construcao_screen.dart';
+import 'package:poti_5f/src/core/ui/widgets/app_bottom_nav.dart';
 import 'package:poti_5f/src/features/home/ui/pages/home_screen.dart';
 import 'package:poti_5f/src/features/login/ui/pages/login_screen.dart';
 import 'package:poti_5f/src/features/profile/ui/pages/profile_screen.dart';
@@ -29,6 +30,7 @@ void main() {
 
     // ---------- Login com credenciais inválidas ----------
     expect(find.byType(LoginScreen), findsOneWidget);
+    expect(find.byType(AppBottomNav), findsNothing);
     await tester.enterText(find.byType(TextField).at(0), 'teste@teste.com');
     await tester.enterText(find.byType(TextField).at(1), 'errada');
     await tester.tap(find.text('ENTRAR'));
@@ -57,6 +59,18 @@ void main() {
     expect(find.text('Jorge Silva'), findsOneWidget);
     expect(find.text('Eduardo Marinho'), findsOneWidget);
     expect(find.text('R\$ 350,00'), findsOneWidget);
+
+    // ---------- Menu inferior flutuante ----------
+    // Login e splash não têm o menu; a Home tem, com "Início" ativo.
+    expect(find.byType(AppBottomNav), findsOneWidget);
+    await tester.tap(find.byTooltip('Prontuário'));
+    await tester.pumpAndSettle();
+    expect(find.byType(EmConstrucaoScreen), findsOneWidget);
+    expect(find.text('Prontuário'), findsOneWidget);
+
+    await tester.tap(find.byTooltip('Início'));
+    await tester.pumpAndSettle();
+    expect(find.byType(HomeScreen), findsOneWidget);
 
     // ---------- Menu lateral mostra o usuário logado ----------
     await tester.tap(find.byIcon(Symbols.menu));

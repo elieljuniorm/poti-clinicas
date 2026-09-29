@@ -18,6 +18,16 @@ class AppColors {
   /// Texto e ícones sobre o Drawer.
   static const Color drawerForeground = Colors.white;
 
+  // ---------- Menu inferior flutuante ----------
+  /// Fundo do [AppBottomNav] (#197E90).
+  static const Color bottomNavBackground = Color(0xFF197E90);
+
+  /// Ícones do [AppBottomNav] (#FFFFFF). No item ativo, usado com 50% de opacidade.
+  static const Color bottomNavForeground = Color(0xFFFFFFFF);
+
+  /// Sombra de elementos flutuantes, como o [AppBottomNav] (preto 20%).
+  static const Color floatingShadow = Color(0x33000000);
+
   // ---------- App geral ----------
   static const Color primary = Color(0xFF0F4C5C);
   static const Color accent = Color(0xFF4BA3B8);
@@ -33,6 +43,15 @@ class AppColors {
 
   /// Botão de ação principal (ex.: "ENTRAR").
   static const Color buttonPrimary = Color.fromRGBO(0, 121, 107, 1);
+
+  /// Fundo do botão "SALVAR" ([AppSaveButton]) (#007952).
+  static const Color buttonSave = Color(0xFF007952);
+
+  /// Fundo do botão "CANCELAR" ([AppCancelButton]) (#E65100).
+  static const Color buttonCancel = Color(0xFFE65100);
+
+  /// Texto dos botões salvar/cancelar (#FFFFFF).
+  static const Color buttonActionForeground = Color(0xFFFFFFFF);
 
   // ---------- Cards / tabelas ----------
   /// Borda dos cards (preto 20%).

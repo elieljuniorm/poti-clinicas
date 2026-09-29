@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/ui/theme/app_colors.dart';
+import '../../../../core/ui/widgets/app_bottom_spacer.dart';
 import '../../../../core/ui/widgets/app_scaffold.dart';
 import '../../application/profile_controller.dart';
 import '../states/profile_state.dart';
@@ -38,10 +39,16 @@ class ProfileScreen extends ConsumerWidget {
         color: AppColors.surfaceMuted,
         width: double.infinity,
         child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(16, 24, 16, 50),
-          child: ProfileDetails(
-            perfil: profileState.profile!,
-            aoEditar: () => context.goNamed('profile-edit'),
+          padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
+          child: Column(
+            children: [
+              ProfileDetails(
+                perfil: profileState.profile!,
+                aoEditar: () => context.goNamed('profile-edit'),
+              ),
+              // Espaço para o menu inferior flutuante
+              const AppBottomSpacer(),
+            ],
           ),
         ),
       ),

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'src/core/ui/theme/app_icon_style.dart';
 import 'src/routing/app_router.dart';
 
 void main() {
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
           seedColor: const Color.fromARGB(255, 54, 153, 203),
         ),
         useMaterial3: true,
+        iconTheme: AppIconStyle.theme,
       ),
       routerConfig: appRouter,
     );

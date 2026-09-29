@@ -3,6 +3,7 @@ import 'package:material_symbols_icons/symbols.dart';
 
 import '../theme/app_colors.dart';
 import '../theme/app_text_styles.dart';
+import '../widgets/app_bottom_spacer.dart';
 import '../widgets/app_scaffold.dart';
 
 /// Tela provisória para rotas do menu que ainda não têm feature própria.
@@ -34,16 +35,28 @@ class EmConstrucaoScreen extends StatelessWidget {
           color: AppColors.surfaceMuted,
           width: double.infinity,
           child: const Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Symbols.construction, size: 48, color: AppColors.primary),
-              SizedBox(height: 12),
-              Text('EM CONSTRUÇÃO', style: AppTextStyles.sectionTitle),
-              SizedBox(height: 4),
-              Text(
-                'ESTA TELA ESTARÁ DISPONÍVEL EM BREVE',
-                style: AppTextStyles.sectionSubtitle,
+              // Centraliza na área visível, acima do menu inferior flutuante.
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Symbols.construction,
+                      size: 48,
+                      color: AppColors.primary,
+                    ),
+                    SizedBox(height: 12),
+                    Text('EM CONSTRUÇÃO', style: AppTextStyles.sectionTitle),
+                    SizedBox(height: 4),
+                    Text(
+                      'ESTA TELA ESTARÁ DISPONÍVEL EM BREVE',
+                      style: AppTextStyles.sectionSubtitle,
+                    ),
+                  ],
+                ),
               ),
+              AppBottomSpacer(folga: 0),
             ],
           ),
         ),

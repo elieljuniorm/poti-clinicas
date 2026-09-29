@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 import '../theme/app_text_styles.dart';
+import 'app_bottom_nav.dart';
 import 'app_drawer.dart';
 
 class AppScaffold extends StatelessWidget {
   final String titulo;
   final Widget body;
   final bool mostrarMenu;
+
+  /// Exibe o menu inferior flutuante ([AppBottomNav]). Padrão: `true`.
+  final bool mostrarMenuInferior;
   final List<Widget>? actions;
   final Widget? floatingActionButton;
   final Color? backgroundColor;
@@ -18,6 +22,7 @@ class AppScaffold extends StatelessWidget {
     required this.titulo,
     required this.body,
     this.mostrarMenu = true,
+    this.mostrarMenuInferior = true,
     this.actions,
     this.floatingActionButton,
     this.backgroundColor,
@@ -26,8 +31,18 @@ class AppScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Com o teclado aberto o menu inferior some, liberando espaço
+    // para os formulários (ex.: edição de perfil).
+    final tecladoAberto = MediaQuery.viewInsetsOf(context).bottom > 0;
+
     return Scaffold(
       backgroundColor: backgroundColor,
+      // O body passa por trás do menu flutuante; o Scaffold soma a altura
+      // do menu em MediaQuery.padding.bottom (ver [AppBottomSpacer]).
+      extendBody: true,
+      bottomNavigationBar: mostrarMenuInferior && !tecladoAberto
+          ? AppBottomNav(rotaAtual: rotaAtual)
+          : null,
       drawer: mostrarMenu ? AppDrawer(rotaAtual: rotaAtual) : null,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

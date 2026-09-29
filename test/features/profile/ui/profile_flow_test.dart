@@ -84,11 +84,11 @@ void main() {
     expect(find.text('Editar Perfil'), findsOneWidget);
     expect(find.text('ENDEREÇO'), findsOneWidget);
     expect(find.text('ALTERAR SENHA'), findsOneWidget);
-    expect(find.text('Rua das Flores'), findsOneWidget);
+    expect(find.text('Rodovia BR-316'), findsOneWidget);
 
     // Mapa: ao abrir, já busca o endereço salvo.
     expect(find.byType(AddressMap), findsOneWidget);
-    expect(geocoding.buscas.single.street, 'Rua das Flores');
+    expect(geocoding.buscas.single.street, 'Rodovia BR-316');
 
     Finder campo(String rotulo) => find.descendant(
       of: find

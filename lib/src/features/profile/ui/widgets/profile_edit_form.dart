@@ -3,7 +3,7 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/ui/formatters/cep_input_formatter.dart';
-import '../../../../core/ui/widgets/app_primary_button.dart';
+import '../../../../core/ui/widgets/app_action_buttons.dart';
 import '../../../../core/utils/cep.dart';
 import '../../application/address_map_controller.dart';
 import '../../application/profile_edit_controller.dart';
@@ -430,24 +430,10 @@ class _ProfileEditFormState extends ConsumerState<ProfileEditForm> {
           ),
 
           const SizedBox(height: 8),
-          Row(
-            children: [
-              Expanded(
-                child: AppPrimaryButton(
-                  label: 'SALVAR',
-                  carregando: salvando,
-                  onPressed: _salvar,
-                ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: AppPrimaryButton(
-                  label: 'CANCELAR',
-                  contornado: true,
-                  onPressed: salvando ? null : widget.aoCancelar,
-                ),
-              ),
-            ],
+          AppSaveCancelButtons(
+            salvando: salvando,
+            aoSalvar: _salvar,
+            aoCancelar: widget.aoCancelar,
           ),
         ],
       ),

@@ -19,15 +19,15 @@ class AppDrawer extends ConsumerWidget {
     _DrawerEntry(label: 'Usuário', icon: Symbols.person, rota: '/usuario'),
     _DrawerEntry(
       label: 'Agenda',
-      icon: Symbols.calendar_today,
+      icon: Symbols.calendar_clock,
       rota: '/agenda',
     ),
     _DrawerEntry(
       label: 'Prontuário',
-      icon: Symbols.assignment_ind,
+      icon: Symbols.conditions,
       rota: '/prontuario',
     ),
-    _DrawerEntry(label: 'Histórico', icon: Symbols.history, rota: '/historico'),
+    _DrawerEntry(label: 'Histórico', icon: Symbols.manage_history, rota: '/historico'),
     _DrawerEntry(
       label: 'Financeiro',
       icon: Symbols.bar_chart,

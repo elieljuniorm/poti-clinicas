@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/ui/theme/app_colors.dart';
 import '../../../../core/ui/theme/app_text_styles.dart';
+import '../../../../core/ui/widgets/app_bottom_spacer.dart';
 import '../../../../core/ui/widgets/app_scaffold.dart';
 import '../../application/home_controller.dart';
 import '../states/home_state.dart';
@@ -121,7 +122,8 @@ class HomeScreen extends ConsumerWidget {
               const SizedBox(height: 12),
 
               FinancialSummaryWidget(summaries: homeState.financialSummaries),
-              const SizedBox(height: 50),
+              // Espaço para o menu inferior flutuante
+              const AppBottomSpacer(),
             ],
           ),
         ),

@@ -39,7 +39,9 @@ lib/
     │       ├── pages/
     │       │   └── em_construcao_screen.dart  # Tela provisória para rotas do menu sem feature
     │       └── widgets/
-    │           ├── app_scaffold.dart      # Esqueleto padrão das telas logadas
+    │           ├── app_scaffold.dart      # Esqueleto padrão das telas logadas (já inclui o menu inferior)
+    │           ├── app_bottom_nav.dart    # Menu inferior flutuante (4 atalhos)
+    │           ├── app_bottom_spacer.dart # Espaço no fim do conteúdo para não ficar atrás do menu inferior
     │           ├── app_drawer.dart        # Menu lateral (lê o usuário logado)
     │           ├── app_primary_button.dart # Botão principal (pílula), com variação contornada
     │           └── drawer_menu_item.dart  # Item "pílula" do menu
@@ -179,10 +181,12 @@ final xControllerProvider =
 
 | Arquivo | O que oferece |
 |---|---|
-| `AppScaffold` | Esqueleto das telas logadas: botão de menu, `actions` à direita, título grande (26px, Nunito) e `body` expandido até a borda inferior. Parâmetros: `titulo`, `body`, `rotaAtual`, `mostrarMenu`, `actions`, `floatingActionButton`, `backgroundColor`. |
+| `AppScaffold` | Esqueleto das telas logadas: botão de menu, `actions` à direita, título grande (26px, Nunito), `body` expandido até a borda inferior (passando por trás do menu flutuante) e o **menu inferior** (`AppBottomNav`), que some com o teclado aberto. Parâmetros: `titulo`, `body`, `rotaAtual`, `mostrarMenu`, `mostrarMenuInferior` (padrão `true`), `actions`, `floatingActionButton`, `backgroundColor`. |
+| `AppBottomNav` | Menu inferior flutuante: pílula afastada 16px das laterais e 12px da base, fundo `AppColors.bottomNavBackground` (#197E90), ícones `AppColors.bottomNavForeground` (#FFFFFF) do Material Symbols. Itens: Início (`home`, `/home`), Agenda (`calendar_clock`, `/agenda`), Prontuário (`conditions`, `/prontuario`) e Histórico (`manage_history`, `/historico`). O item da rota atual (ou de uma sub-rota dela) fica com **50% de opacidade** e não navega. **Não use direto**: o `AppScaffold` já o exibe. |
+| `AppBottomSpacer` | Espaço para o fim do conteúdo não ficar escondido atrás do menu inferior. Vai como **último filho** do conteúdo rolável (`folga` padrão 24). |
 | `AppDrawer` | Menu lateral com foto, saudação, itens e botão Sair. Os itens ficam na lista `_entradas`. `rotaAtual` marca o item ativo e evita navegar para a própria tela. |
 | `DrawerMenuItem` | Item em formato de pílula (ativo/inativo). |
-| `AppColors` | Paleta: `primary` `0xFF0F4C5C`, `accent` `0xFF4BA3B8`, `background` `rgb(210,221,225)`, `surface`, `surfaceMuted` `0xFFF2F2F7`, `borderAccent`, `buttonPrimary`, `cardBorder`, `cardShadow`, `tableRowEven/Odd`, `statusConfirmed/Pending/Canceled`, `error`, `textPrimary`, `textSecondary`, `textHint` etc. **Nenhuma cor em hexadecimal fora deste arquivo.** |
+| `AppColors` | Paleta: `bottomNavBackground` (#197E90), `bottomNavForeground` (#FFFFFF), `floatingShadow`, `primary` `0xFF0F4C5C`, `accent` `0xFF4BA3B8`, `background` `rgb(210,221,225)`, `surface`, `surfaceMuted` `0xFFF2F2F7`, `borderAccent`, `buttonPrimary`, `cardBorder`, `cardShadow`, `tableRowEven/Odd`, `statusConfirmed/Pending/Canceled`, `error`, `textPrimary`, `textSecondary`, `textHint` etc. **Nenhuma cor em hexadecimal fora deste arquivo.** |
 | `AppTextStyles` | `pageTitle`, `sectionTitle`, `sectionSubtitle`, `formLabel`, `formHint`, `fieldLabel`, `fieldValue`, `buttonLabel` e os estilos do drawer. Novos estilos reutilizáveis entram aqui. |
 | `AppDecorations` | `card`: o card branco padrão (raio 12, borda e sombra). |
 | `AppPrimaryButton` | Botão pílula de largura total (`label`, `onPressed`, `icon`, `carregando`, `contornado`). Use nas telas novas; o `LoginForm` ainda tem um botão próprio. |
@@ -194,7 +198,8 @@ final xControllerProvider =
 - corpo: container `AppColors.surfaceMuted` com cantos superiores de 30 (`ClipRRect`) e `SingleChildScrollView`;
 - títulos de seção: centralizados, `AppTextStyles.sectionTitle`, com subtítulo `AppTextStyles.sectionSubtitle` em CAIXA ALTA (na Home, o widget interno `_TituloSecao`);
 - cards: `decoration: AppDecorations.card`, margem horizontal 16 e 12 entre cards;
-- listas dentro do scroll: `ListView.builder` com `shrinkWrap: true` + `NeverScrollableScrollPhysics`.
+- listas dentro do scroll: `ListView.builder` com `shrinkWrap: true` + `NeverScrollableScrollPhysics`;
+- fim do conteúdo rolável: `const AppBottomSpacer()`, para o último card não ficar atrás do menu inferior.
 
 ### 1.10 Convenções de nomes
 
@@ -596,6 +601,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/ui/theme/app_colors.dart';
 import '../../../../core/ui/theme/app_text_styles.dart';
+import '../../../../core/ui/widgets/app_bottom_spacer.dart';
 import '../../../../core/ui/widgets/app_scaffold.dart';
 import '../../application/agenda_controller.dart';
 import '../states/agenda_state.dart';
@@ -610,7 +616,7 @@ class AgendaScreen extends ConsumerWidget {
 
     return AppScaffold(
       titulo: 'Agenda',
-      rotaAtual: '/agenda', // mesmo path cadastrado no router e no drawer
+      rotaAtual: '/agenda', // mesmo path do router, do drawer e do menu inferior
       backgroundColor: AppColors.background,
       body: agendaState.isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -653,7 +659,7 @@ class AgendaScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 12),
               AgendaListWidget(items: agendaState.items),
-              const SizedBox(height: 50),
+              const AppBottomSpacer(), // espaço para o menu inferior flutuante
             ],
           ),
         ),
@@ -677,6 +683,59 @@ ref.listen<NovoPacienteState>(novoPacienteControllerProvider, (previous, next) {
   }
 });
 ```
+
+### Passo 9.1 — Menu inferior flutuante
+
+O menu inferior (`AppBottomNav`) **já vem no `AppScaffold`**, então toda página que usa `AppScaffold` o recebe sem código extra. Para ele funcionar certo na página nova, faça três coisas:
+
+**1. Passe o `rotaAtual`** com o mesmo path registrado no router. É com ele que o menu destaca o item ativo (ícone com 50% de opacidade):
+
+```dart
+return AppScaffold(
+  titulo: 'Agenda',
+  rotaAtual: '/agenda', // Agenda fica ativo aqui e em /agenda/novo, /agenda/123...
+  body: ...,
+);
+```
+
+Em páginas que não estão no menu (ex.: `/profile`), nenhum item fica ativo, e todos navegam normalmente.
+
+**2. Termine o conteúdo rolável com `AppBottomSpacer`.** O `body` passa por trás do menu flutuante (`extendBody`). Sem o spacer, o último item fica escondido embaixo da barra:
+
+```dart
+SingleChildScrollView(
+  padding: const EdgeInsets.fromLTRB(16, 24, 16, 0), // sem padding embaixo
+  child: Column(
+    children: [
+      // ... conteúdo da página ...
+      const AppBottomSpacer(), // sempre o último filho
+    ],
+  ),
+)
+```
+
+Para conteúdo **centralizado** (sem scroll), centralize na área acima do menu:
+
+```dart
+const Column(
+  children: [
+    Expanded(child: Center(child: MeuConteudo())),
+    AppBottomSpacer(folga: 0),
+  ],
+)
+```
+
+> ⚠️ Não calcule o espaço com `MediaQuery.paddingOf(context)` usando o `context` do `build` da página. Esse `context` fica **acima** do `Scaffold` e não enxerga a altura do menu: o conteúdo ficaria escondido atrás da barra. O `AppBottomSpacer` lê o espaço da própria posição na árvore, então sempre acerta.
+
+**3. Esconda o menu só quando fizer sentido.** Para fluxos em que ele atrapalha (ex.: uma tela cheia de câmera ou de assinatura), use `mostrarMenuInferior: false`. O `AppBottomSpacer` encolhe sozinho. Não é preciso tratar o teclado: o menu já some com ele aberto. Telas públicas (splash, login) não usam `AppScaffold`, então não têm o menu.
+
+**Adicionar ou trocar um item do menu:** edite a lista `_entradas` em `lib/src/core/ui/widgets/app_bottom_nav.dart`. Mantenha no máximo 4 ou 5 itens, use ícones de `Symbols` (pacote `material_symbols_icons`) e uma `rota` igual ao `path` do router:
+
+```dart
+_BottomNavEntry(label: 'Agenda', icon: Symbols.calendar_clock, rota: '/agenda'),
+```
+
+O `label` vira o tooltip e o texto de acessibilidade do botão, e é por ele que os testes o encontram (`find.byTooltip('Agenda')`).
 
 ### Passo 10 — Registrar a rota
 
@@ -709,7 +768,8 @@ Os testes ficam em `test/`, espelhando `lib/src/`:
 
 ```
 test/
-├── app_flow_test.dart                          # Jornada completa: splash → login → home → menu → logout
+├── app_flow_test.dart                          # Jornada completa: splash → login → home → menus → perfil → logout
+├── core/ui/widgets/app_bottom_nav_test.dart    # Menu inferior: item ativo, navegação, spacer
 └── features/
     ├── auth/application/auth_controller_test.dart
     ├── login/application/login_controller_test.dart
@@ -764,9 +824,10 @@ Dicas para testes de widget:
 - [ ] DTO com `fromJson` e `toDomain()`; mocks só no data source.
 - [ ] Controller `extends Notifier<...>` (sem `legacy.dart`) em `application/`, com os providers no fim do arquivo.
 - [ ] Estado em `ui/states/`: `sealed` para ação, `copyWith` para consulta.
-- [ ] Página `ConsumerWidget` em `ui/pages/`, usando `AppScaffold` e `rotaAtual`.
+- [ ] Página `ConsumerWidget` em `ui/pages/`, usando `AppScaffold` e `rotaAtual` (igual ao path do router).
+- [ ] Conteúdo rolável terminando com `const AppBottomSpacer()` (menu inferior flutuante).
 - [ ] Widgets `StatelessWidget` recebendo dados por parâmetro; cores, textos e cards vindos de `AppColors`, `AppTextStyles` e `AppDecorations`, sem `fontFamily` nem hexadecimal soltos.
 - [ ] Efeitos colaterais em `ref.listen`, nunca no `build`.
-- [ ] Rota registrada com `path` e `name`; item do drawer com o mesmo path.
+- [ ] Rota registrada com `path` e `name`; itens do drawer e do menu inferior (se houver) com o mesmo path.
 - [ ] Testes do controller e do DTO criados.
 - [ ] `flutter analyze` sem avisos e `flutter test` passando.

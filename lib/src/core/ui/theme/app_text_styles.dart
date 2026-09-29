@@ -28,11 +28,11 @@ class AppTextStyles {
   );
 
   // ---------- Formulários ----------
-  /// Rótulo acima dos campos (ex.: "EMAIL").
+  /// Rótulo acima dos campos de login (ex.: "EMAIL").
   static const TextStyle formLabel = TextStyle(
     color: Colors.black,
     fontWeight: FontWeight.bold,
-    fontSize: 20,
+    fontSize: 16,
   );
 
   /// Placeholder dos campos.
@@ -52,7 +52,7 @@ class AppTextStyles {
   /// Rótulo pequeno acima de campos de cadastro (ex.: "E-MAIL").
   static const TextStyle fieldLabel = TextStyle(
     color: AppColors.textSecondary,
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: FontWeight.bold,
   );
 
