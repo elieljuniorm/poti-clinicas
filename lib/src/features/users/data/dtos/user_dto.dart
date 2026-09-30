@@ -1,3 +1,4 @@
+import '../../domain/models/patient_category.dart';
 import '../../domain/models/user_model.dart';
 import '../../domain/models/user_role.dart';
 
@@ -10,6 +11,7 @@ class UserDto {
   final String phone;
   final String role;
   final String? description;
+  final String? patientCategory;
   final String status;
   final String? photoUrl;
 
@@ -20,6 +22,7 @@ class UserDto {
     required this.phone,
     required this.role,
     this.description,
+    this.patientCategory,
     required this.status,
     this.photoUrl,
   });
@@ -33,6 +36,7 @@ class UserDto {
       phone: json['phone'],
       role: json['role'],
       description: json['description'],
+      patientCategory: json['patient_category'],
       status: json['status'],
       photoUrl: json['photo_url'],
     );
@@ -53,6 +57,12 @@ class UserDto {
         _ => UserRole.patient,
       },
       description: description,
+      patientCategory: switch (patientCategory) {
+        'pediatric' => PatientCategory.pediatric,
+        'adult' => PatientCategory.adult,
+        'elderly' => PatientCategory.elderly,
+        _ => null,
+      },
       active: status == 'active',
       photoUrl: photoUrl,
     );

@@ -65,10 +65,13 @@ class AppColors {
 
   // ---------- Card de ação / seletor em segmentos ----------
   /// Fundo do [AppActionCard] (verde-azulado bem claro).
-  static const Color actionCardBackground = Color(0xFFE8F4F6);
+  static const Color actionCardBackground = Color.fromRGBO(233, 242, 245, 1);
 
   /// Fundo do [AppSegmentedControl].
   static const Color segmentedBackground = Color(0xFFE3E3E8);
+
+  /// Fundo do [AppActionCard]
+  static const Color textActionButton = Color.fromRGBO(25, 126, 144, 1);
 
   // ---------- Usuários (etiquetas de perfil) ----------
   static const Color roleProfessional = Color(0xFF1565C0);

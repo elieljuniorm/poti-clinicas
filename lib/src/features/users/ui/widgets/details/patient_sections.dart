@@ -108,17 +108,22 @@ class _ArquivoContrato extends StatelessWidget {
             ],
           ),
         ),
-        // TODO: ligar ao download quando a API do contrato existir.
         TextButton.icon(
           onPressed: null,
-          icon: const Icon(Symbols.download, size: 18),
-          label: const Text('Baixar'),
+          icon: Icon(
+            Symbols.download,
+            size: 18,
+            color: AppColors.textActionButton,
+          ),
+          label: Text(
+            'Baixar',
+            style: TextStyle(color: AppColors.textActionButton),
+          ),
           style: TextButton.styleFrom(
             backgroundColor: AppColors.actionCardBackground,
             disabledBackgroundColor: AppColors.actionCardBackground.withValues(
               alpha: 0.6,
             ),
-            foregroundColor: AppColors.borderAccent,
             textStyle: const TextStyle(fontWeight: FontWeight.bold),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),

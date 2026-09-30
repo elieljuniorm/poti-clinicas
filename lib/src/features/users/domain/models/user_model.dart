@@ -1,3 +1,4 @@
+import 'patient_category.dart';
 import 'user_role.dart';
 
 class UserModel {
@@ -7,9 +8,12 @@ class UserModel {
   final String phone;
   final UserRole role;
 
-  /// Especialidade do profissional ou tratamento do paciente
-  /// (ex.: "Fisioterapeuta", "Tratamento da Dor").
+  /// Especialidade do profissional ou setor da equipe interna
+  /// (ex.: "Fisioterapeuta", "Financeiro"). Não é usada para pacientes.
   final String? description;
+
+  /// Categoria do paciente (Pediatria, Adulto, Idoso).
+  final PatientCategory? patientCategory;
   final bool active;
   final String? photoUrl;
 
@@ -20,7 +24,13 @@ class UserModel {
     required this.phone,
     required this.role,
     this.description,
+    this.patientCategory,
     this.active = true,
     this.photoUrl,
   });
+
+  /// Texto exibido ao lado do perfil no card: a categoria para pacientes,
+  /// a descrição para os demais perfis.
+  String? get detail =>
+      role == UserRole.patient ? patientCategory?.label : description;
 }

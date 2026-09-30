@@ -59,11 +59,11 @@ class UserCard extends StatelessWidget {
                       cor: corPerfil,
                       fundo: fundoPerfil,
                     ),
-                    if (user.description != null) ...[
+                    if (user.detail != null) ...[
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
-                          '• ${user.description}',
+                          '• ${user.detail}',
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(

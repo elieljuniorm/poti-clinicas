@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:poti_5f/src/features/users/data/dtos/user_dto.dart';
+import 'package:poti_5f/src/features/users/domain/models/patient_category.dart';
 import 'package:poti_5f/src/features/users/domain/models/user_model.dart';
 import 'package:poti_5f/src/features/users/domain/models/user_role.dart';
 
@@ -42,5 +43,33 @@ void main() {
       expect(converter(status: 'active').active, isTrue);
       expect(converter(status: 'inactive').active, isFalse);
     });
+
+    UserModel paciente(String? categoria) {
+      return UserDto.fromJson({
+        'id': '2',
+        'name': 'Juliana',
+        'email': 'juliana@gmail.com',
+        'phone': '(91) 9 9211-4566',
+        'role': 'patient',
+        'patient_category': categoria,
+        'status': 'active',
+      }).toDomain();
+    }
+
+    test('mapeia a categoria do paciente', () {
+      expect(paciente('pediatric').patientCategory, PatientCategory.pediatric);
+      expect(paciente('adult').patientCategory, PatientCategory.adult);
+      expect(paciente('elderly').patientCategory, PatientCategory.elderly);
+      expect(paciente('desconhecida').patientCategory, isNull);
+      expect(paciente(null).patientCategory, isNull);
+    });
+
+    test(
+      'detalhe do card: categoria para paciente, descrição para os demais',
+      () {
+        expect(paciente('elderly').detail, 'Idoso');
+        expect(converter().detail, 'Fisioterapeuta');
+      },
+    );
   });
 }
