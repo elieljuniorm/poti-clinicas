@@ -27,7 +27,11 @@ class AppDrawer extends ConsumerWidget {
       icon: Symbols.conditions,
       rota: '/prontuario',
     ),
-    _DrawerEntry(label: 'Histórico', icon: Symbols.manage_history, rota: '/historico'),
+    _DrawerEntry(
+      label: 'Histórico',
+      icon: Symbols.manage_history,
+      rota: '/historico',
+    ),
     _DrawerEntry(
       label: 'Financeiro',
       icon: Symbols.bar_chart,

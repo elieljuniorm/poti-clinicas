@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:material_symbols_icons/symbols.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/ui/theme/app_colors.dart';
 import '../../../../core/ui/theme/app_text_styles.dart';
 import '../../../../core/ui/widgets/app_bottom_spacer.dart';
 import '../../../../core/ui/widgets/app_scaffold.dart';
+import '../../../../core/ui/widgets/app_status_legend.dart';
 import '../../application/home_controller.dart';
 import '../states/home_state.dart';
 import '../widgets/daily_appointments_widget.dart';
@@ -28,24 +28,6 @@ class HomeScreen extends ConsumerWidget {
           : homeState.errorMessage != null
           ? Center(child: Text(homeState.errorMessage!))
           : _buildBody(homeState),
-    );
-  }
-
-  // Status atendimentos: Confirmado, Pendente, Cancelado
-  Widget _buildLegendItem(IconData icon, String text, Color color) {
-    return Row(
-      children: [
-        Icon(icon, color: color, size: 18),
-        const SizedBox(width: 4),
-        Text(
-          text,
-          style: const TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w500,
-            color: Colors.black87,
-          ),
-        ),
-      ],
     );
   }
 
@@ -72,31 +54,7 @@ class HomeScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 12),
 
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _buildLegendItem(
-                      Symbols.check_circle,
-                      'Confirmado',
-                      AppColors.statusConfirmed,
-                    ),
-                    const SizedBox(width: 16),
-                    _buildLegendItem(
-                      Symbols.circle,
-                      'Pendente',
-                      AppColors.statusPending,
-                    ),
-                    const SizedBox(width: 16),
-                    _buildLegendItem(
-                      Symbols.cancel,
-                      'Cancelado',
-                      AppColors.statusCanceled,
-                    ),
-                  ],
-                ),
-              ),
+              const AppStatusLegend(),
               const SizedBox(height: 16),
 
               DailyAppointmentsWidget(

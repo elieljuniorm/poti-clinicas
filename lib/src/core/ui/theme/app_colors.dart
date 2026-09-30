@@ -63,6 +63,31 @@ class AppColors {
   static const Color tableRowEven = Color.fromRGBO(247, 246, 254, 1);
   static const Color tableRowOdd = Color.fromRGBO(238, 238, 238, 1);
 
+  // ---------- Card de ação / seletor em segmentos ----------
+  /// Fundo do [AppActionCard] (verde-azulado bem claro).
+  static const Color actionCardBackground = Color(0xFFE8F4F6);
+
+  /// Fundo do [AppSegmentedControl].
+  static const Color segmentedBackground = Color(0xFFE3E3E8);
+
+  // ---------- Usuários (etiquetas de perfil) ----------
+  static const Color roleProfessional = Color(0xFF1565C0);
+  static const Color roleProfessionalBackground = Color(0xFFE3F0FD);
+  static const Color rolePatient = Color(0xFFE65100);
+  static const Color rolePatientBackground = Color(0xFFFFF1E0);
+  static const Color roleAdmin = Color(0xFF6A1B9A);
+  static const Color roleAdminBackground = Color(0xFFF3E5F5);
+  static const Color roleReception = Color(0xFF00796B);
+  static const Color roleReceptionBackground = Color(0xFFE0F2F1);
+  static const Color roleCollaborator = Color(0xFF546E7A);
+  static const Color roleCollaboratorBackground = Color(0xFFECEFF1);
+
+  /// Etiqueta "Ativo" / "Inativo" do usuário.
+  static const Color userActive = Color(0xFF2E7D32);
+  static const Color userActiveBackground = Color(0xFFE8F5E9);
+  static const Color userInactive = Color(0xFF757575);
+  static const Color userInactiveBackground = Color(0xFFEEEEEE);
+
   // ---------- Status ----------
   static const Color statusConfirmed = Colors.green;
   static const Color statusPending = Colors.orange;

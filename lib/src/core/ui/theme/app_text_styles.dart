@@ -27,6 +27,19 @@ class AppTextStyles {
     color: Colors.grey,
   );
 
+  /// Frase explicativa no topo do conteúdo (ex.: Agenda).
+  static const TextStyle pageDescription = TextStyle(
+    fontSize: 14,
+    color: AppColors.textPrimary,
+  );
+
+  /// Título de seção dos modais de detalhes (ex.: "CONTRATO DE SERVIÇOS").
+  static const TextStyle detailsSectionTitle = TextStyle(
+    fontSize: 15,
+    fontWeight: FontWeight.w600,
+    color: AppColors.textPrimary,
+  );
+
   // ---------- Formulários ----------
   /// Rótulo acima dos campos de login (ex.: "EMAIL").
   static const TextStyle formLabel = TextStyle(

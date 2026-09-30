@@ -78,7 +78,7 @@ void main() {
     expect(find.text('Olá, Eliel Maia'), findsOneWidget);
 
     // ---------- Item do menu sem feature abre a tela provisória ----------
-    await tester.tap(find.text('Agenda'));
+    await tester.tap(find.text('Financeiro'));
     await tester.pumpAndSettle();
     expect(find.byType(EmConstrucaoScreen), findsOneWidget);
     expect(find.text('EM CONSTRUÇÃO'), findsOneWidget);
