@@ -1,15 +1,23 @@
 import 'package:poti_5f/src/features/users/domain/models/consumption_model.dart';
 import 'package:poti_5f/src/features/users/domain/models/user_details_model.dart';
 import 'package:poti_5f/src/features/users/domain/models/user_model.dart';
+import 'package:poti_5f/src/features/users/domain/models/user_registration_model.dart';
 import 'package:poti_5f/src/features/users/domain/models/user_role.dart';
 import 'package:poti_5f/src/features/users/domain/repositories/users_repository.dart';
 
 class FakeUsersRepository implements UsersRepository {
   bool deveFalhar;
   bool falharDetalhes;
+  String? erroCadastro;
   final List<String> detalhesBuscados = [];
+  final List<UserRegistrationModel> cadastros = [];
+  int buscasUsuarios = 0;
 
-  FakeUsersRepository({this.deveFalhar = false, this.falharDetalhes = false});
+  FakeUsersRepository({
+    this.deveFalhar = false,
+    this.falharDetalhes = false,
+    this.erroCadastro,
+  });
 
   static const usuarios = [
     UserModel(
@@ -37,6 +45,7 @@ class FakeUsersRepository implements UsersRepository {
 
   @override
   Future<List<UserModel>> buscarUsuarios() async {
+    buscasUsuarios++;
     if (deveFalhar) throw Exception('sem conexão');
     return usuarios;
   }
@@ -51,6 +60,20 @@ class FakeUsersRepository implements UsersRepository {
         performed: 12,
         sessionValue: 180,
       ),
+    );
+  }
+
+  @override
+  Future<UserModel> cadastrarUsuario(UserRegistrationModel cadastro) async {
+    final erro = erroCadastro;
+    if (erro != null) throw Exception(erro);
+    cadastros.add(cadastro);
+    return UserModel(
+      id: 'novo',
+      name: cadastro.name,
+      email: cadastro.email,
+      phone: cadastro.phone,
+      role: cadastro.role,
     );
   }
 }

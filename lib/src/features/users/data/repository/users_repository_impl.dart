@@ -1,7 +1,9 @@
 import '../../domain/models/user_details_model.dart';
 import '../../domain/models/user_model.dart';
+import '../../domain/models/user_registration_model.dart';
 import '../../domain/repositories/users_repository.dart';
 import '../data_sources/users_remote_data_source.dart';
+import '../dtos/user_registration_dto.dart';
 
 /// Responsabilidade: fazer a ponte entre dados (DTO) e negócio (models).
 /// Converte DTO → model. O domínio não conhece DTO.
@@ -19,6 +21,14 @@ class UsersRepositoryImpl implements UsersRepository {
   @override
   Future<UserDetailsModel> buscarDetalhes(String userId) async {
     final dto = await _dataSource.buscarDetalhes(userId);
+    return dto.toDomain();
+  }
+
+  @override
+  Future<UserModel> cadastrarUsuario(UserRegistrationModel cadastro) async {
+    final dto = await _dataSource.cadastrarUsuario(
+      UserRegistrationDto.fromDomain(cadastro),
+    );
     return dto.toDomain();
   }
 }

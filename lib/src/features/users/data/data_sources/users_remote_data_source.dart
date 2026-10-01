@@ -1,97 +1,141 @@
 import '../dtos/user_details_dto.dart';
 import '../dtos/user_dto.dart';
+import '../dtos/user_registration_dto.dart';
 
 /// Responsabilidade: fazer a chamada externa real (HTTP, GraphQL, etc.).
 /// É o único lugar que "sabe" que existe uma API.
 class UsersDataSource {
+  static const _usuarios = [
+    {
+      'id': '1',
+      'name': 'Dr. Arnaldo Ribeiro',
+      'email': 'arnaldo.ribeiro@5f.com',
+      'phone': '(91) 9 8455-1212',
+      'role': 'professional',
+      'description': 'Fisioterapeuta',
+      'status': 'active',
+      'photo_url': null,
+    },
+    {
+      'id': '2',
+      'name': 'Juliana Mendes Souza',
+      'email': 'juliana.mendes@gmail.com',
+      'phone': '(91) 9 9211-4566',
+      'role': 'patient',
+      'patient_category': 'adult',
+      'status': 'active',
+      'photo_url': null,
+    },
+    {
+      'id': '3',
+      'name': 'Dra. Beatriz Nogueira',
+      'email': 'beatriz.nogueira@5f.com',
+      'phone': '(91) 9 8122-9900',
+      'role': 'professional',
+      'description': 'Terapia Ocupacional',
+      'status': 'active',
+      'photo_url': null,
+    },
+    {
+      'id': '4',
+      'name': 'Carlos Eduardo Silva',
+      'email': 'carlos.silva@5f.com',
+      'phone': '(91) 9 8800-3344',
+      'role': 'admin',
+      'description': null,
+      'status': 'active',
+      'photo_url': null,
+    },
+    {
+      'id': '5',
+      'name': 'Fernanda Lima',
+      'email': 'fernanda.lima@5f.com',
+      'phone': '(91) 9 8765-4321',
+      'role': 'reception',
+      'description': null,
+      'status': 'active',
+      'photo_url': null,
+    },
+    {
+      'id': '6',
+      'name': 'Antônio Araújo',
+      'email': 'antonio.araujo@gmail.com',
+      'phone': '(91) 9 9100-2020',
+      'role': 'patient',
+      'patient_category': 'elderly',
+      'status': 'inactive',
+      'photo_url': null,
+    },
+    {
+      'id': '7',
+      'name': 'Rafael Costa',
+      'email': 'rafael.costa@5f.com',
+      'phone': '(91) 9 8333-7788',
+      'role': 'collaborator',
+      'description': 'Financeiro',
+      'status': 'active',
+      'photo_url': null,
+    },
+    {
+      'id': '8',
+      'name': 'Lucas Freitas',
+      'email': 'lucas.freitas@gmail.com',
+      'phone': '(91) 9 8044-5566',
+      'role': 'patient',
+      'patient_category': 'pediatric',
+      'status': 'active',
+      'photo_url': null,
+    },
+  ];
+
+  /// Usuários cadastrados nesta sessão (simula o banco da API).
+  final List<Map<String, dynamic>> _cadastrados = [];
+
   // Simula a chamada de API com delay de 1 segundo e resposta em JSON.
   Future<List<UserDto>> buscarUsuarios() async {
     await Future.delayed(const Duration(seconds: 1));
 
-    const json = [
-      {
-        'id': '1',
-        'name': 'Dr. Arnaldo Ribeiro',
-        'email': 'arnaldo.ribeiro@5f.com',
-        'phone': '(91) 9 8455-1212',
-        'role': 'professional',
-        'description': 'Fisioterapeuta',
-        'status': 'active',
-        'photo_url': null,
-      },
-      {
-        'id': '2',
-        'name': 'Juliana Mendes Souza',
-        'email': 'juliana.mendes@gmail.com',
-        'phone': '(91) 9 9211-4566',
-        'role': 'patient',
-        'patient_category': 'adult',
-        'status': 'active',
-        'photo_url': null,
-      },
-      {
-        'id': '3',
-        'name': 'Dra. Beatriz Nogueira',
-        'email': 'beatriz.nogueira@5f.com',
-        'phone': '(91) 9 8122-9900',
-        'role': 'professional',
-        'description': 'Terapia Ocupacional',
-        'status': 'active',
-        'photo_url': null,
-      },
-      {
-        'id': '4',
-        'name': 'Carlos Eduardo Silva',
-        'email': 'carlos.silva@5f.com',
-        'phone': '(91) 9 8800-3344',
-        'role': 'admin',
-        'description': null,
-        'status': 'active',
-        'photo_url': null,
-      },
-      {
-        'id': '5',
-        'name': 'Fernanda Lima',
-        'email': 'fernanda.lima@5f.com',
-        'phone': '(91) 9 8765-4321',
-        'role': 'reception',
-        'description': null,
-        'status': 'active',
-        'photo_url': null,
-      },
-      {
-        'id': '6',
-        'name': 'Antônio Araújo',
-        'email': 'antonio.araujo@gmail.com',
-        'phone': '(91) 9 9100-2020',
-        'role': 'patient',
-        'patient_category': 'elderly',
-        'status': 'inactive',
-        'photo_url': null,
-      },
-      {
-        'id': '7',
-        'name': 'Rafael Costa',
-        'email': 'rafael.costa@5f.com',
-        'phone': '(91) 9 8333-7788',
-        'role': 'collaborator',
-        'description': 'Financeiro',
-        'status': 'active',
-        'photo_url': null,
-      },
-      {
-        'id': '8',
-        'name': 'Lucas Freitas',
-        'email': 'lucas.freitas@gmail.com',
-        'phone': '(91) 9 8044-5566',
-        'role': 'patient',
-        'patient_category': 'pediatric',
-        'status': 'active',
-        'photo_url': null,
-      },
-    ];
+    return [..._usuarios, ..._cadastrados].map(UserDto.fromJson).toList();
+  }
 
-    return json.map(UserDto.fromJson).toList();
+  // Simula POST /users. Recusa e-mail já cadastrado, como a API faria.
+  Future<UserDto> cadastrarUsuario(UserRegistrationDto cadastro) async {
+    await Future.delayed(const Duration(seconds: 1));
+
+    final json = cadastro.toJson();
+    final email = (json['email'] as String).toLowerCase();
+    final existe = [
+      ..._usuarios,
+      ..._cadastrados,
+    ].any((u) => (u['email'] as String).toLowerCase() == email);
+    if (existe) throw Exception('Já existe um usuário com este e-mail');
+
+    final usuario = <String, dynamic>{
+      'id': 'novo-${_cadastrados.length + 1}',
+      'name': json['name'],
+      'email': json['email'],
+      'phone': _mascararTelefone(json['phone']),
+      'role': json['role'],
+      'description': json['description'],
+      'patient_category': json['patient_category'],
+      'status': 'active',
+      'photo_url': null,
+    };
+    _cadastrados.add(usuario);
+    return UserDto.fromJson(usuario);
+  }
+
+  /// A lista exibe o telefone formatado: "91999999999" → "(91) 9 9999-9999".
+  static String _mascararTelefone(String digitos) {
+    if (digitos.length == 11) {
+      return '(${digitos.substring(0, 2)}) ${digitos[2]} '
+          '${digitos.substring(3, 7)}-${digitos.substring(7)}';
+    }
+    if (digitos.length == 10) {
+      return '(${digitos.substring(0, 2)}) '
+          '${digitos.substring(2, 6)}-${digitos.substring(6)}';
+    }
+    return digitos;
   }
 
   // Simula GET /users/{id}/details. Cada perfil recebe só os blocos dele.

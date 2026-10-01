@@ -2,15 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/ui/formatters/cep_input_formatter.dart';
 import '../../../../core/ui/widgets/app_action_buttons.dart';
-import '../../../../core/utils/cep.dart';
-import '../../application/address_map_controller.dart';
+import '../../../../core/utils/form_validators.dart';
 import '../../application/profile_edit_controller.dart';
-import '../../domain/models/address_model.dart';
 import '../../domain/models/profile_model.dart';
 import '../states/profile_edit_state.dart';
-import 'address_map.dart';
+import 'address_form_section.dart';
 import 'profile_field.dart';
 import 'profile_header.dart';
 import 'profile_section_card.dart';
@@ -50,62 +47,13 @@ class _ProfileEditFormState extends ConsumerState<ProfileEditForm> {
     text: widget.perfil.birthDate,
   );
 
-  // Endereço
-  late final _cepController = TextEditingController(
-    text: Cep.mascarar(widget.perfil.address.zipCode),
-  );
-  late final _ruaController = TextEditingController(
-    text: widget.perfil.address.street,
-  );
-  late final _numeroController = TextEditingController(
-    text: widget.perfil.address.number,
-  );
-  late final _complementoController = TextEditingController(
-    text: widget.perfil.address.complement,
-  );
-  late final _bairroController = TextEditingController(
-    text: widget.perfil.address.neighborhood,
-  );
-  late final _cidadeController = TextEditingController(
-    text: widget.perfil.address.city,
-  );
-  late final _ufController = TextEditingController(
-    text: widget.perfil.address.state,
-  );
+  // Endereço (exibido e ligado ao mapa pela [AddressFormSection])
+  late final _endereco = AddressFormControllers(widget.perfil.address);
 
   // Senha (vazia = não trocar)
   final _senhaAtualController = TextEditingController();
   final _novaSenhaController = TextEditingController();
   final _confirmarSenhaController = TextEditingController();
-
-  // Campos que mudam o local no mapa. Número e complemento ficam de fora.
-  late final _camposDoMapa = [
-    _cepController,
-    _ruaController,
-    _bairroController,
-    _cidadeController,
-    _ufController,
-  ];
-
-  // Evita buscar de novo quando nada mudou (o listener também dispara
-  // ao mover o cursor) ou quando quem mudou os campos foi o próprio mapa.
-  late AddressModel _ultimoEnderecoBuscado = _enderecoDoMapa;
-  bool _preenchendoPeloMapa = false;
-
-  @override
-  void initState() {
-    super.initState();
-    for (final controller in _camposDoMapa) {
-      controller.addListener(_aoMudarEndereco);
-    }
-    // Primeira busca com o endereço já salvo. Microtask: o provider
-    // não pode ser alterado durante o build.
-    Future.microtask(
-      () => ref
-          .read(addressMapControllerProvider.notifier)
-          .buscarEndereco(_ultimoEnderecoBuscado),
-    );
-  }
 
   @override
   void dispose() {
@@ -114,57 +62,17 @@ class _ProfileEditFormState extends ConsumerState<ProfileEditForm> {
       _emailController,
       _telefoneController,
       _nascimentoController,
-      _cepController,
-      _ruaController,
-      _numeroController,
-      _complementoController,
-      _bairroController,
-      _cidadeController,
-      _ufController,
       _senhaAtualController,
       _novaSenhaController,
       _confirmarSenhaController,
     ]) {
       controller.dispose();
     }
+    _endereco.dispose();
     super.dispose();
   }
 
   // ---------- Validações ----------
-
-  String? _obrigatorio(String? valor) {
-    if (valor == null || valor.trim().isEmpty) return 'Campo obrigatório';
-    return null;
-  }
-
-  String? _validarEmail(String? valor) {
-    final erro = _obrigatorio(valor);
-    if (erro != null) return erro;
-    if (!RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(valor!.trim())) {
-      return 'E-mail inválido';
-    }
-    return null;
-  }
-
-  String? _validarData(String? valor) {
-    if (valor == null || valor.isEmpty) return null;
-    if (!RegExp(r'^\d{2}/\d{2}/\d{4}$').hasMatch(valor.trim())) {
-      return 'Use o formato DD/MM/AAAA';
-    }
-    return null;
-  }
-
-  String? _validarCep(String? valor) {
-    if (valor == null || valor.isEmpty) return null;
-    if (!Cep.valido(valor.trim())) return 'Use o formato 00000-000';
-    return null;
-  }
-
-  String? _validarUf(String? valor) {
-    if (valor == null || valor.isEmpty) return null;
-    if (valor.trim().length != 2) return 'Use a sigla (ex.: PI)';
-    return null;
-  }
 
   bool get _querTrocarSenha =>
       _novaSenhaController.text.isNotEmpty ||
@@ -189,51 +97,6 @@ class _ProfileEditFormState extends ConsumerState<ProfileEditForm> {
     return null;
   }
 
-  // ---------- Mapa ----------
-
-  AddressModel get _enderecoDigitado => AddressModel(
-    zipCode: _cepController.text.trim(),
-    street: _ruaController.text.trim(),
-    number: _numeroController.text.trim(),
-    complement: _complementoController.text.trim(),
-    neighborhood: _bairroController.text.trim(),
-    city: _cidadeController.text.trim(),
-    state: _ufController.text.trim().toUpperCase(),
-  );
-
-  /// Só o que localiza o endereço: sem número e complemento.
-  AddressModel get _enderecoDoMapa => AddressModel(
-    zipCode: _cepController.text.trim(),
-    street: _ruaController.text.trim(),
-    neighborhood: _bairroController.text.trim(),
-    city: _cidadeController.text.trim(),
-    state: _ufController.text.trim().toUpperCase(),
-  );
-
-  void _aoMudarEndereco() {
-    if (_preenchendoPeloMapa) return;
-
-    final endereco = _enderecoDoMapa;
-    if (endereco == _ultimoEnderecoBuscado) return;
-    _ultimoEnderecoBuscado = endereco;
-
-    ref.read(addressMapControllerProvider.notifier).agendarBusca(endereco);
-  }
-
-  /// Toque no mapa: preenche rua, CEP, bairro, cidade e UF com o endereço
-  /// do ponto escolhido. Número e complemento são do usuário e não mudam.
-  void _aoSelecionarNoMapa(AddressModel endereco) {
-    _preenchendoPeloMapa = true;
-    _cepController.text = Cep.mascarar(endereco.zipCode);
-    _ruaController.text = endereco.street;
-    _bairroController.text = endereco.neighborhood;
-    _cidadeController.text = endereco.city;
-    _ufController.text = endereco.state;
-    _preenchendoPeloMapa = false;
-
-    _ultimoEnderecoBuscado = _enderecoDoMapa;
-  }
-
   // ---------- Ações ----------
 
   void _salvar() {
@@ -244,7 +107,7 @@ class _ProfileEditFormState extends ConsumerState<ProfileEditForm> {
       email: _emailController.text.trim(),
       phone: _telefoneController.text.trim(),
       birthDate: _nascimentoController.text.trim(),
-      address: _enderecoDigitado,
+      address: _endereco.endereco,
     );
 
     ref
@@ -280,7 +143,7 @@ class _ProfileEditFormState extends ConsumerState<ProfileEditForm> {
                 icon: Symbols.person,
                 controller: _nomeController,
                 habilitado: !salvando,
-                validator: _obrigatorio,
+                validator: FormValidators.obrigatorio,
               ),
               ProfileField(
                 rotulo: 'E-MAIL',
@@ -288,7 +151,7 @@ class _ProfileEditFormState extends ConsumerState<ProfileEditForm> {
                 controller: _emailController,
                 habilitado: !salvando,
                 teclado: TextInputType.emailAddress,
-                validator: _validarEmail,
+                validator: FormValidators.email,
               ),
               ProfileField(
                 rotulo: 'TELEFONE',
@@ -303,7 +166,7 @@ class _ProfileEditFormState extends ConsumerState<ProfileEditForm> {
                 controller: _nascimentoController,
                 habilitado: !salvando,
                 teclado: TextInputType.datetime,
-                validator: _validarData,
+                validator: FormValidators.data,
               ),
               ProfileField(
                 rotulo: 'CPF',
@@ -315,86 +178,11 @@ class _ProfileEditFormState extends ConsumerState<ProfileEditForm> {
             ],
           ),
 
-          // ---------- Endereço ----------
-          ProfileSectionCard(
-            titulo: 'ENDEREÇO',
-            children: [
-              ProfileField(
-                rotulo: 'CEP',
-                icon: Symbols.local_post_office,
-                controller: _cepController,
-                habilitado: !salvando,
-                teclado: TextInputType.number,
-                formatadores: [CepInputFormatter()],
-                validator: _validarCep,
-              ),
-              ProfileField(
-                rotulo: 'RUA',
-                icon: Symbols.signpost,
-                controller: _ruaController,
-                habilitado: !salvando,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: ProfileField(
-                      rotulo: 'NÚMERO',
-                      icon: Symbols.tag,
-                      controller: _numeroController,
-                      habilitado: !salvando,
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    flex: 3,
-                    child: ProfileField(
-                      rotulo: 'COMPLEMENTO',
-                      icon: Symbols.apartment,
-                      controller: _complementoController,
-                      habilitado: !salvando,
-                    ),
-                  ),
-                ],
-              ),
-              ProfileField(
-                rotulo: 'BAIRRO',
-                icon: Symbols.map,
-                controller: _bairroController,
-                habilitado: !salvando,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    flex: 3,
-                    child: ProfileField(
-                      rotulo: 'CIDADE',
-                      icon: Symbols.location_city,
-                      controller: _cidadeController,
-                      habilitado: !salvando,
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    flex: 2,
-                    child: ProfileField(
-                      rotulo: 'UF',
-                      icon: Symbols.flag,
-                      controller: _ufController,
-                      habilitado: !salvando,
-                      validator: _validarUf,
-                    ),
-                  ),
-                ],
-              ),
-              AddressMap(
-                habilitado: !salvando,
-                aoSelecionarEndereco: _aoSelecionarNoMapa,
-                aoUsarMapa: widget.aoUsarMapa,
-              ),
-            ],
+          // ---------- Endereço (com mapa) ----------
+          AddressFormSection(
+            controllers: _endereco,
+            habilitado: !salvando,
+            aoUsarMapa: widget.aoUsarMapa,
           ),
 
           // ---------- Senha ----------

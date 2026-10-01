@@ -139,10 +139,12 @@ class DailyAppointmentsWidget extends StatelessWidget {
                     ),
                     Expanded(
                       flex: 1,
-                      child: Icon(
-                        _getStatusIcon(item.status),
-                        color: _getStatusColor(item.status),
-                        size: 20,
+                      child: Center(
+                        child: Icon(
+                          _getStatusIcon(item.status),
+                          color: _getStatusColor(item.status),
+                          size: 20,
+                        ),
                       ),
                     ),
                   ],

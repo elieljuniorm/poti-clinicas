@@ -40,6 +40,13 @@ class AppTextStyles {
     color: AppColors.textPrimary,
   );
 
+  /// Título central do [AppSectionDivider] (ex.: "ENDEREÇO").
+  static const TextStyle sectionDivider = TextStyle(
+    fontSize: 15,
+    fontWeight: FontWeight.bold,
+    color: AppColors.textPrimary,
+  );
+
   // ---------- Formulários ----------
   /// Rótulo acima dos campos de login (ex.: "EMAIL").
   static const TextStyle formLabel = TextStyle(

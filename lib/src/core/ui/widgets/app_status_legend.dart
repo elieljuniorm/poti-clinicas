@@ -12,28 +12,30 @@ class AppStatusLegend extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Padding(
       padding: EdgeInsets.symmetric(horizontal: 16),
-      // Wrap: em telas estreitas os itens quebram de linha em vez de estourar.
-      child: Wrap(
-        alignment: WrapAlignment.center,
-        spacing: 16,
-        runSpacing: 4,
-        children: [
-          _ItemLegenda(
-            icon: Symbols.check_circle,
-            texto: 'Confirmado',
-            cor: AppColors.statusConfirmed,
-          ),
-          _ItemLegenda(
-            icon: Symbols.circle,
-            texto: 'Pendente',
-            cor: AppColors.statusPending,
-          ),
-          _ItemLegenda(
-            icon: Symbols.cancel,
-            texto: 'Cancelado',
-            cor: AppColors.statusCanceled,
-          ),
-        ],
+      child: SizedBox(
+        width: double.infinity,
+        child: Wrap(
+          alignment: WrapAlignment.center,
+          spacing: 16,
+          runSpacing: 4,
+          children: [
+            _ItemLegenda(
+              icon: Symbols.check_circle,
+              texto: 'Confirmado',
+              cor: AppColors.statusConfirmed,
+            ),
+            _ItemLegenda(
+              icon: Symbols.circle,
+              texto: 'Pendente',
+              cor: AppColors.statusPending,
+            ),
+            _ItemLegenda(
+              icon: Symbols.cancel,
+              texto: 'Cancelado',
+              cor: AppColors.statusCanceled,
+            ),
+          ],
+        ),
       ),
     );
   }

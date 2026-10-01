@@ -8,6 +8,7 @@ import '../features/login/ui/pages/login_screen.dart';
 import '../features/profile/ui/pages/profile_edit_screen.dart';
 import '../features/profile/ui/pages/profile_screen.dart';
 import '../features/splash/ui/pages/splash_screen.dart';
+import '../features/users/ui/pages/user_registration_screen.dart';
 import '../features/users/ui/pages/users_screen.dart';
 
 final GoRouter appRouter = GoRouter(
@@ -57,14 +58,11 @@ final GoRouter appRouter = GoRouter(
       name: 'usuario',
       builder: (context, state) => const UsersScreen(),
       routes: [
-        // Sub-rota: /usuario/novo. Troque pela tela real de cadastro.
+        // Sub-rota: /usuario/novo. Aberta só pelo card "Cadastrar Usuário".
         GoRoute(
           path: 'novo',
           name: 'usuario-novo', // ← usado por context.goNamed('usuario-novo')
-          builder: (context, state) => const EmConstrucaoScreen(
-            titulo: 'Cadastrar Usuário',
-            rotaAtual: '/usuario/novo',
-          ),
+          builder: (context, state) => const UserRegistrationScreen(),
         ),
       ],
     ),

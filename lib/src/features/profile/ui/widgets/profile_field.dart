@@ -11,7 +11,9 @@ import '../../../../core/ui/theme/app_text_styles.dart';
 /// É assim que a tela de visualização reaproveita o mesmo layout da edição.
 class ProfileField extends StatefulWidget {
   final String rotulo;
-  final IconData icon;
+
+  /// Ícone à esquerda do texto. Opcional (ex.: data de nascimento sem ícone).
+  final IconData? icon;
   final TextEditingController? controller;
 
   /// Usado quando não há [controller] (modo só leitura).
@@ -20,6 +22,9 @@ class ProfileField extends StatefulWidget {
   final bool senha;
   final TextInputType? teclado;
   final String? textoAjuda;
+
+  /// Texto de exemplo exibido com o campo vazio (ex.: "Nome Completo").
+  final String? dica;
   final String? Function(String?)? validator;
 
   /// Máscaras de digitação (ex.: [CepInputFormatter]).
@@ -28,13 +33,14 @@ class ProfileField extends StatefulWidget {
   const ProfileField({
     super.key,
     required this.rotulo,
-    required this.icon,
+    this.icon,
     this.controller,
     this.valorInicial,
     this.habilitado = true,
     this.senha = false,
     this.teclado,
     this.textoAjuda,
+    this.dica,
     this.validator,
     this.formatadores,
   });
@@ -81,9 +87,16 @@ class _ProfileFieldState extends State<ProfileField> {
               fillColor: widget.habilitado
                   ? AppColors.surface
                   : AppColors.surfaceMuted,
-              hintText: widget.habilitado ? null : '—',
+              hintText: widget.habilitado ? widget.dica : '—',
+              hintStyle: AppTextStyles.formHint,
               helperText: widget.textoAjuda,
-              prefixIcon: Icon(widget.icon, color: AppColors.borderAccent),
+              prefixIcon: widget.icon == null
+                  ? null
+                  : Icon(widget.icon, color: AppColors.borderAccent),
+              // Sem ícone, o texto não encosta na borda arredondada.
+              contentPadding: widget.icon == null
+                  ? const EdgeInsets.symmetric(horizontal: 20, vertical: 14)
+                  : null,
               suffixIcon: widget.senha
                   ? IconButton(
                       icon: Icon(
