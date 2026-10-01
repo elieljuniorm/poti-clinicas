@@ -16,7 +16,7 @@ class AppSectionDivider extends StatelessWidget {
       padding: const EdgeInsets.only(top: 12, bottom: 16),
       child: Row(
         children: [
-          const Expanded(child: Divider(color: AppColors.cardBorder)),
+          const Expanded(child: Divider(color: AppColors.dividerTextLine)),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Text(
@@ -25,7 +25,7 @@ class AppSectionDivider extends StatelessWidget {
               style: AppTextStyles.sectionDivider,
             ),
           ),
-          const Expanded(child: Divider(color: AppColors.cardBorder)),
+          const Expanded(child: Divider(color: AppColors.dividerTextLine)),
         ],
       ),
     );

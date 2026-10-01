@@ -57,6 +57,9 @@ class AppColors {
   /// Borda dos cards (preto 20%).
   static const Color cardBorder = Color(0x33000000);
 
+  /// Borda dos cards (preto 20%).
+  static const Color dividerTextLine = Color.fromRGBO(2, 34, 43, 1);
+
   /// Sombra dos cards (preto 4%).
   static const Color cardShadow = Color(0x0A000000);
 
