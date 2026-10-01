@@ -4,9 +4,9 @@ import 'package:material_symbols_icons/symbols.dart';
 
 import '../../../../../core/ui/formatters/mask_input_formatter.dart';
 import '../../../../../core/ui/widgets/app_action_buttons.dart';
+import '../../../../../core/ui/widgets/app_select_field.dart';
 import '../../../../../core/utils/form_validators.dart';
 import '../../../../profile/ui/widgets/address_form_section.dart';
-import '../../../../profile/ui/widgets/profile_dropdown_field.dart';
 import '../../../../profile/ui/widgets/profile_field.dart';
 import '../../../application/user_registration_controller.dart';
 import '../../../application/users_controller.dart';
@@ -101,7 +101,7 @@ class _PatientRegistrationFormState
         ? 'Não foi possível carregar os profissionais'
         : 'Selecione';
 
-    return ProfileDropdownField<String>(
+    return AppSelectField<String>(
       rotulo: 'PROFISSIONAL',
       opcoes: profissionais.keys.toList(),
       rotuloOpcao: (id) => profissionais[id] ?? '',
@@ -134,7 +134,7 @@ class _PatientRegistrationFormState
           ),
           _buildProfissional(salvando),
           // Mesmo select do cadastro de profissional, fixo em "Paciente".
-          const ProfileDropdownField<UserRole>(
+          const AppSelectField<UserRole>(
             rotulo: 'PERFIL DE ACESSO',
             opcoes: [UserRole.patient],
             rotuloOpcao: _rotuloPerfil,
@@ -152,7 +152,7 @@ class _PatientRegistrationFormState
             dica: '000.000.000-00',
             validator: FormValidators.cpf,
           ),
-          ProfileDropdownField<PatientCategory>(
+          AppSelectField<PatientCategory>(
             rotulo: 'CATEGORIA',
             opcoes: PatientCategory.values,
             rotuloOpcao: _rotuloCategoria,

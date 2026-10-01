@@ -4,9 +4,9 @@ import 'package:material_symbols_icons/symbols.dart';
 
 import '../../../../../core/ui/formatters/mask_input_formatter.dart';
 import '../../../../../core/ui/widgets/app_action_buttons.dart';
+import '../../../../../core/ui/widgets/app_select_field.dart';
 import '../../../../../core/utils/form_validators.dart';
 import '../../../../profile/ui/widgets/address_form_section.dart';
-import '../../../../profile/ui/widgets/profile_dropdown_field.dart';
 import '../../../../profile/ui/widgets/profile_field.dart';
 import '../../../application/user_registration_controller.dart';
 import '../../../domain/models/user_registration_model.dart';
@@ -119,7 +119,7 @@ class _ProfessionalRegistrationFormState
             habilitado: !salvando,
             dicaEmail: 'email@.com',
           ),
-          ProfileDropdownField<UserRole>(
+          AppSelectField<UserRole>(
             rotulo: 'PERFIL DE ACESSO',
             opcoes: ProfessionalRegistrationForm.perfis,
             rotuloOpcao: ProfessionalRegistrationForm.rotuloPerfil,

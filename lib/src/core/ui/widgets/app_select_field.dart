@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
-import '../../../../core/ui/theme/app_colors.dart';
-import '../../../../core/ui/theme/app_text_styles.dart';
+import '../theme/app_colors.dart';
+import '../theme/app_text_styles.dart';
 
-/// Select com rótulo acima, no mesmo visual do [ProfileField].
+/// Select padrão do sistema: rótulo acima e borda em pílula, no mesmo
+/// visual dos campos de texto dos formulários.
 ///
 /// Abre a lista **dentro do próprio campo**: a borda cresce e envolve as
 /// opções, empurrando o resto do formulário para baixo (em vez do menu
@@ -13,8 +14,25 @@ import '../../../../core/ui/theme/app_text_styles.dart';
 ///
 /// Com [habilitado] = `false` o valor fica fixo (fundo cinza, borda suave),
 /// mas continua legível (ex.: perfil "Paciente" no cadastro de paciente).
-class ProfileDropdownField<T> extends StatefulWidget {
-  final String rotulo;
+///
+/// Funciona dentro de um [Form] (usa [validator]) ou sozinho. Exemplo:
+///
+/// ```dart
+/// AppSelectField<AccountType>(
+///   rotulo: 'TIPO DE CONTA',
+///   opcoes: AccountType.values,
+///   rotuloOpcao: (tipo) => tipo.label,
+///   valor: tipoConta,
+///   aoMudar: (tipo) => setState(() => tipoConta = tipo),
+///   validator: FormValidators.selecao,
+/// )
+/// ```
+class AppSelectField<T> extends StatefulWidget {
+  /// Título acima do campo. Sem ele, só o campo (ex.: filtros).
+  final String? rotulo;
+
+  /// Ícone à esquerda do valor, como no [ProfileField]. Opcional.
+  final IconData? icon;
   final List<T> opcoes;
   final String Function(T opcao) rotuloOpcao;
   final T? valor;
@@ -24,9 +42,14 @@ class ProfileDropdownField<T> extends StatefulWidget {
   final String? textoAjuda;
   final String? Function(T?)? validator;
 
-  const ProfileDropdownField({
+  /// Altura máxima da lista aberta. Com muitas opções (ex.: profissionais),
+  /// a lista rola por dentro em vez de crescer sem limite.
+  final double alturaMaximaLista;
+
+  const AppSelectField({
     super.key,
-    required this.rotulo,
+    this.rotulo,
+    this.icon,
     required this.opcoes,
     required this.rotuloOpcao,
     this.valor,
@@ -35,20 +58,15 @@ class ProfileDropdownField<T> extends StatefulWidget {
     this.dica = 'Selecione',
     this.textoAjuda,
     this.validator,
+    this.alturaMaximaLista = 240,
   });
 
-  /// Altura máxima da lista aberta. Com muitas opções (ex.: profissionais),
-  /// a lista rola por dentro em vez de crescer sem limite.
-  static const double alturaMaximaLista = 240;
-
   @override
-  State<ProfileDropdownField<T>> createState() =>
-      _ProfileDropdownFieldState<T>();
+  State<AppSelectField<T>> createState() => _AppSelectFieldState<T>();
 }
 
-class _ProfileDropdownFieldState<T> extends State<ProfileDropdownField<T>> {
+class _AppSelectFieldState<T> extends State<AppSelectField<T>> {
   static const _duracao = Duration(milliseconds: 200);
-  static const _corBordaDesabilitada = Color.fromRGBO(141, 141, 141, 1);
 
   bool _aberto = false;
 
@@ -56,7 +74,7 @@ class _ProfileDropdownFieldState<T> extends State<ProfileDropdownField<T>> {
       widget.habilitado && widget.aoMudar != null && widget.opcoes.isNotEmpty;
 
   @override
-  void didUpdateWidget(covariant ProfileDropdownField<T> oldWidget) {
+  void didUpdateWidget(covariant AppSelectField<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
     // Desabilitado no meio (ex.: salvando): a lista fecha.
     if (_aberto && !_podeAbrir) _aberto = false;
@@ -86,10 +104,11 @@ class _ProfileDropdownFieldState<T> extends State<ProfileDropdownField<T>> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 4, bottom: 6),
-            child: Text(widget.rotulo, style: AppTextStyles.fieldLabel),
-          ),
+          if (widget.rotulo != null)
+            Padding(
+              padding: const EdgeInsets.only(left: 4, bottom: 6),
+              child: Text(widget.rotulo!, style: AppTextStyles.fieldLabel),
+            ),
           FormField<T>(
             initialValue: widget.valor,
             validator: widget.validator,
@@ -109,7 +128,7 @@ class _ProfileDropdownFieldState<T> extends State<ProfileDropdownField<T>> {
         ? AppColors.error
         : habilitado
         ? AppColors.borderAccent
-        : _corBordaDesabilitada;
+        : AppColors.textHint;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -141,6 +160,7 @@ class _ProfileDropdownFieldState<T> extends State<ProfileDropdownField<T>> {
                     aberto: _aberto,
                     habilitado: habilitado,
                     rotulo: widget.rotulo,
+                    icon: widget.icon,
                     onTap: _podeAbrir ? _alternar : null,
                   ),
                   AnimatedSize(
@@ -152,6 +172,11 @@ class _ProfileDropdownFieldState<T> extends State<ProfileDropdownField<T>> {
                             opcoes: widget.opcoes,
                             rotuloOpcao: widget.rotuloOpcao,
                             selecionado: valor,
+                            alturaMaxima: widget.alturaMaximaLista,
+                            // Opções alinhadas com o texto do cabeçalho.
+                            recuo: widget.icon == null
+                                ? _Cabecalho.recuoSemIcone
+                                : _Cabecalho.recuoComIcone,
                             aoEscolher: (opcao) => _escolher(campo, opcao),
                           )
                         : const SizedBox(width: double.infinity),
@@ -180,7 +205,8 @@ class _Cabecalho extends StatelessWidget {
   final bool temValor;
   final bool aberto;
   final bool habilitado;
-  final String rotulo;
+  final String? rotulo;
+  final IconData? icon;
   final VoidCallback? onTap;
 
   const _Cabecalho({
@@ -189,8 +215,13 @@ class _Cabecalho extends StatelessWidget {
     required this.aberto,
     required this.habilitado,
     required this.rotulo,
+    required this.icon,
     required this.onTap,
   });
+
+  /// Onde o texto começa: igual aos campos de texto com e sem ícone.
+  static const double recuoSemIcone = 20;
+  static const double recuoComIcone = 48;
 
   @override
   Widget build(BuildContext context) {
@@ -204,9 +235,18 @@ class _Cabecalho extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 13, 16, 13),
+          padding: EdgeInsets.fromLTRB(
+            icon == null ? recuoSemIcone : 12,
+            13,
+            16,
+            13,
+          ),
           child: Row(
             children: [
+              if (icon != null) ...[
+                Icon(icon, color: AppColors.borderAccent),
+                const SizedBox(width: 12),
+              ],
               Expanded(
                 child: Text(
                   texto,
@@ -241,21 +281,23 @@ class _Opcoes<T> extends StatelessWidget {
   final List<T> opcoes;
   final String Function(T opcao) rotuloOpcao;
   final T? selecionado;
+  final double alturaMaxima;
+  final double recuo;
   final ValueChanged<T> aoEscolher;
 
   const _Opcoes({
     required this.opcoes,
     required this.rotuloOpcao,
     required this.selecionado,
+    required this.alturaMaxima,
+    required this.recuo,
     required this.aoEscolher,
   });
 
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-      constraints: const BoxConstraints(
-        maxHeight: ProfileDropdownField.alturaMaximaLista,
-      ),
+      constraints: BoxConstraints(maxHeight: alturaMaxima),
       child: ListView(
         shrinkWrap: true,
         padding: const EdgeInsets.only(bottom: 8),
@@ -264,6 +306,7 @@ class _Opcoes<T> extends StatelessWidget {
             _ItemOpcao(
               texto: rotuloOpcao(opcao),
               selecionado: opcao == selecionado,
+              recuo: recuo,
               onTap: () => aoEscolher(opcao),
             ),
         ],
@@ -275,11 +318,13 @@ class _Opcoes<T> extends StatelessWidget {
 class _ItemOpcao extends StatelessWidget {
   final String texto;
   final bool selecionado;
+  final double recuo;
   final VoidCallback onTap;
 
   const _ItemOpcao({
     required this.texto,
     required this.selecionado,
+    required this.recuo,
     required this.onTap,
   });
 
@@ -291,7 +336,7 @@ class _ItemOpcao extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 9),
+          padding: EdgeInsets.fromLTRB(recuo, 9, 20, 9),
           child: Text(
             texto,
             maxLines: 2,

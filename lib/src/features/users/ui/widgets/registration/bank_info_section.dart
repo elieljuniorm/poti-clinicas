@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 import '../../../../../core/ui/widgets/app_section_divider.dart';
+import '../../../../../core/ui/widgets/app_select_field.dart';
 import '../../../../../core/utils/form_validators.dart';
-import '../../../../profile/ui/widgets/profile_dropdown_field.dart';
 import '../../../../profile/ui/widgets/profile_field.dart';
 import '../../../domain/models/bank_info_model.dart';
 
@@ -144,7 +144,7 @@ class _BankInfoSectionState extends State<BankInfoSection> {
             ),
           ],
         ),
-        ProfileDropdownField<AccountType>(
+        AppSelectField<AccountType>(
           rotulo: 'TIPO DE CONTA',
           opcoes: AccountType.values,
           rotuloOpcao: (tipo) => tipo.label,
@@ -153,7 +153,7 @@ class _BankInfoSectionState extends State<BankInfoSection> {
           aoMudar: (tipo) => setState(() => _campos.tipoConta = tipo),
           validator: _seContaSelecao,
         ),
-        ProfileDropdownField<PixKeyType>(
+        AppSelectField<PixKeyType>(
           rotulo: 'TIPO DE CHAVE PIX',
           opcoes: PixKeyType.values,
           rotuloOpcao: (tipo) => tipo.label,

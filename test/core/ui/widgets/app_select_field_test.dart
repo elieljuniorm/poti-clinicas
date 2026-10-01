@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/features/profile/ui/widgets/profile_dropdown_field.dart';
+import 'package:poti_5f/src/core/ui/widgets/app_select_field.dart';
 
 void main() {
   const opcoes = ['Administrador', 'Colaborador', 'Recepcionista'];
@@ -19,7 +20,7 @@ void main() {
             key: formKey,
             child: Column(
               children: [
-                ProfileDropdownField<String>(
+                AppSelectField<String>(
                   rotulo: 'PERFIL DE ACESSO',
                   opcoes: opcoes,
                   rotuloOpcao: (o) => o,
@@ -111,5 +112,82 @@ void main() {
     expect(formKey.currentState!.validate(), isTrue);
     await tester.pump();
     expect(find.text('Selecione uma opção'), findsNothing);
+  });
+
+  Future<void> montarSozinho(WidgetTester tester, Widget campo) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(body: Column(children: [campo])),
+      ),
+    );
+  }
+
+  testWidgets('sem rótulo: só o campo, funcionando fora de um Form', (
+    tester,
+  ) async {
+    String? escolhido;
+    await montarSozinho(
+      tester,
+      AppSelectField<String>(
+        opcoes: opcoes,
+        rotuloOpcao: (o) => o,
+        dica: 'Filtrar por perfil',
+        aoMudar: (v) => escolhido = v,
+      ),
+    );
+
+    expect(find.text('PERFIL DE ACESSO'), findsNothing);
+    await tocarNoCampo(tester);
+    await tester.tap(find.text('Recepcionista'));
+    await tester.pumpAndSettle();
+
+    expect(escolhido, 'Recepcionista');
+  });
+
+  testWidgets('com ícone: opções alinhadas com o texto do cabeçalho', (
+    tester,
+  ) async {
+    await montarSozinho(
+      tester,
+      AppSelectField<String>(
+        rotulo: 'PERFIL',
+        icon: Symbols.badge,
+        opcoes: opcoes,
+        rotuloOpcao: (o) => o,
+        aoMudar: (_) {},
+      ),
+    );
+
+    expect(find.byIcon(Symbols.badge), findsOneWidget);
+    await tocarNoCampo(tester);
+
+    final cabecalho = tester.getTopLeft(find.text('Selecione')).dx;
+    final opcao = tester.getTopLeft(find.text('Administrador')).dx;
+    expect(opcao, cabecalho);
+  });
+
+  testWidgets('lista longa rola por dentro até a altura máxima', (
+    tester,
+  ) async {
+    final muitas = [for (var i = 1; i <= 30; i++) 'Opção $i'];
+    await montarSozinho(
+      tester,
+      AppSelectField<String>(
+        opcoes: muitas,
+        rotuloOpcao: (o) => o,
+        alturaMaximaLista: 120,
+        aoMudar: (_) {},
+      ),
+    );
+
+    await tocarNoCampo(tester);
+
+    expect(
+      tester.getSize(find.byType(ListView)).height,
+      lessThanOrEqualTo(120),
+    );
+    expect(find.text('Opção 30'), findsNothing);
+    await tester.scrollUntilVisible(find.text('Opção 30'), 100);
+    expect(find.text('Opção 30'), findsOneWidget);
   });
 }
