@@ -50,7 +50,7 @@ void main() {
     final controller = container.read(usersControllerProvider.notifier);
 
     controller.selecionarFiltro(UserFilter.professionals);
-    expect(nomesVisiveis(container), ['Dr. Arnaldo Ribeiro']);
+    expect(nomesVisiveis(container), ['Arnaldo Ribeiro']);
 
     controller.selecionarFiltro(UserFilter.patients);
     expect(nomesVisiveis(container), ['Antônio Araújo']);

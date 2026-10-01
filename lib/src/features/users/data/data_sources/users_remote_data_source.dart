@@ -2,13 +2,13 @@ import '../dtos/user_details_dto.dart';
 import '../dtos/user_dto.dart';
 import '../dtos/user_registration_dto.dart';
 
-/// Responsabilidade: fazer a chamada externa real (HTTP, GraphQL, etc.).
+/// Responsabilidade: fazer a chamada externa real (HTTP).
 /// É o único lugar que "sabe" que existe uma API.
 class UsersDataSource {
   static const _usuarios = [
     {
       'id': '1',
-      'name': 'Dr. Arnaldo Ribeiro',
+      'name': 'Arnaldo Ribeiro',
       'email': 'arnaldo.ribeiro@5f.com',
       'phone': '(91) 9 8455-1212',
       'role': 'professional',
@@ -28,7 +28,7 @@ class UsersDataSource {
     },
     {
       'id': '3',
-      'name': 'Dra. Beatriz Nogueira',
+      'name': 'Beatriz Nogueira',
       'email': 'beatriz.nogueira@5f.com',
       'phone': '(91) 9 8122-9900',
       'role': 'professional',

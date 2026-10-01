@@ -9,7 +9,7 @@ void main() {
     UserModel converter({String role = 'professional', String? status}) {
       return UserDto.fromJson({
         'id': '1',
-        'name': 'Dr. Arnaldo Ribeiro',
+        'name': 'Arnaldo Ribeiro',
         'email': 'arnaldo@5f.com',
         'phone': '(91) 9 8455-1212',
         'role': role,
@@ -23,7 +23,7 @@ void main() {
       final model = converter();
 
       expect(model.id, '1');
-      expect(model.name, 'Dr. Arnaldo Ribeiro');
+      expect(model.name, 'Arnaldo Ribeiro');
       expect(model.email, 'arnaldo@5f.com');
       expect(model.phone, '(91) 9 8455-1212');
       expect(model.description, 'Fisioterapeuta');

@@ -210,7 +210,7 @@ void main() {
     await tester.enterText(campo('TELEFONE'), '91999998888');
     await tester.enterText(campo('DATA DE NASCIMENTO'), '15031990');
     await tester.enterText(campo('CPF'), '52998224725');
-    await escolher(tester, 'PROFISSIONAL', 'Dr. Arnaldo Ribeiro');
+    await escolher(tester, 'PROFISSIONAL', 'Arnaldo Ribeiro');
     await escolher(tester, 'CATEGORIA', 'Adulto');
 
     // Endereço: digitar busca no mapa depois da pausa (igual ao perfil).

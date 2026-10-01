@@ -22,7 +22,7 @@ class FakeUsersRepository implements UsersRepository {
   static const usuarios = [
     UserModel(
       id: '1',
-      name: 'Dr. Arnaldo Ribeiro',
+      name: 'Arnaldo Ribeiro',
       email: 'arnaldo@5f.com',
       phone: '(91) 9 8455-1212',
       role: UserRole.professional,
