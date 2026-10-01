@@ -114,6 +114,22 @@ class AppColors {
   /// Ícone de abrir registro (azul do modelo).
   static const Color linkIcon = Color(0xFF1E88E5);
 
+  // ---------- Histórico ----------
+  /// Fundo do card "TOTAL A RECEBER" (#034965).
+  static const Color summaryCardBackground = Color(0xFF034965);
+  static const Color summaryCardForeground = Color(0xFFFFFFFF);
+
+  /// Rótulos e linha divisória dentro do card de totais (branco 70%).
+  static const Color summaryCardMuted = Color(0xB3FFFFFF);
+
+  // Etiquetas de status do atendimento.
+  static const Color appointmentConfirmed = Color(0xFF2E7D32);
+  static const Color appointmentConfirmedBackground = Color(0xFFE8F5E9);
+  static const Color appointmentPerformed = Color(0xFF0F4C5C);
+  static const Color appointmentPerformedBackground = Color(0xFFE3F0F3);
+  static const Color appointmentCanceled = Color(0xFFC62828);
+  static const Color appointmentCanceledBackground = Color(0xFFFDECEA);
+
   // ---------- Status ----------
   static const Color statusConfirmed = Colors.green;
   static const Color statusPending = Colors.orange;

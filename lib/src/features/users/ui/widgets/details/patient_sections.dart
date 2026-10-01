@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 import '../../../../../core/ui/theme/app_colors.dart';
+import '../../../../../core/utils/moeda.dart';
 import '../../../domain/models/consumption_model.dart';
 import '../../../domain/models/contract_model.dart';
 import '../../../domain/models/session_summary_model.dart';
@@ -254,12 +255,12 @@ class ConsumptionSection extends StatelessWidget {
             const SizedBox(height: 12),
             DetailsRow(
               rotulo: 'Valor por sessão',
-              valor: formatarReais(consumption.sessionValue),
+              valor: Moeda.formatar(consumption.sessionValue),
               corValor: AppColors.primary,
             ),
             DetailsRow(
               rotulo: 'Valor total do pacote',
-              valor: formatarReais(consumption.totalValue),
+              valor: Moeda.formatar(consumption.totalValue),
               corValor: AppColors.primary,
             ),
             if (consumption.paymentMethod != null)

@@ -241,7 +241,3 @@ class DetailsStatusTag extends StatelessWidget {
     );
   }
 }
-
-/// Formata valores em reais (ex.: 180.0 → "R$ 180,00").
-String formatarReais(double valor) =>
-    'R\$ ${valor.toStringAsFixed(2).replaceAll('.', ',')}';

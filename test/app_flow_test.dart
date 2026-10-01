@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:poti_5f/main.dart';
 import 'package:poti_5f/src/core/ui/pages/em_construcao_screen.dart';
 import 'package:poti_5f/src/core/ui/widgets/app_bottom_nav.dart';
+import 'package:poti_5f/src/features/history/ui/pages/history_screen.dart';
 import 'package:poti_5f/src/features/home/ui/pages/home_screen.dart';
 import 'package:poti_5f/src/features/login/ui/pages/login_screen.dart';
 import 'package:poti_5f/src/features/profile/ui/pages/profile_screen.dart';
@@ -64,9 +65,10 @@ void main() {
     // Login e splash não têm o menu; a Home tem, com "Início" ativo.
     expect(find.byType(AppBottomNav), findsOneWidget);
     await tester.tap(find.byTooltip('Histórico'));
+    await tester.pump(const Duration(seconds: 1));
     await tester.pumpAndSettle();
-    expect(find.byType(EmConstrucaoScreen), findsOneWidget);
-    expect(find.text('Histórico'), findsOneWidget);
+    expect(find.byType(HistoryScreen), findsOneWidget);
+    expect(find.text('Lucas Meireles'), findsWidgets);
 
     await tester.tap(find.byTooltip('Início'));
     await tester.pumpAndSettle();

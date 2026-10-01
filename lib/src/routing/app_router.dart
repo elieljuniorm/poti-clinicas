@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../core/ui/pages/em_construcao_screen.dart';
 import '../features/scheduling/ui/pages/scheduling_screen.dart';
+import '../features/history/ui/pages/history_screen.dart';
 import '../features/home/ui/pages/home_screen.dart';
 import '../features/login/ui/pages/login_screen.dart';
 import '../features/medical_records/ui/pages/medical_records_screen.dart';
@@ -107,17 +108,14 @@ final GoRouter appRouter = GoRouter(
         ),
       ],
     ),
-
-    // ---------- Rotas do menu ainda sem feature própria ----------
-    // Troque o builder pela tela real quando a feature for criada.
     GoRoute(
       path: '/historico',
       name: 'historico',
-      builder: (context, state) => const EmConstrucaoScreen(
-        titulo: 'Histórico',
-        rotaAtual: '/historico',
-      ),
+      builder: (context, state) => const HistoryScreen(),
     ),
+
+    // ---------- Rotas do menu ainda sem feature própria ----------
+    // Troque o builder pela tela real quando a feature for criada.
     GoRoute(
       path: '/financeiro',
       name: 'financeiro',
