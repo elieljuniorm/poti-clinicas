@@ -5,6 +5,7 @@ import '../core/ui/pages/em_construcao_screen.dart';
 import '../features/scheduling/ui/pages/scheduling_screen.dart';
 import '../features/home/ui/pages/home_screen.dart';
 import '../features/login/ui/pages/login_screen.dart';
+import '../features/medical_records/ui/pages/medical_records_screen.dart';
 import '../features/profile/ui/pages/profile_edit_screen.dart';
 import '../features/profile/ui/pages/profile_screen.dart';
 import '../features/splash/ui/pages/splash_screen.dart';
@@ -37,12 +38,12 @@ final GoRouter appRouter = GoRouter(
     ),
     GoRoute(
       path: '/home',
-      name: 'home', // ← usado por context.goNamed('home')
+      name: 'home', // usado por context.goNamed('home')
       builder: (context, state) => const HomeScreen(),
     ),
     GoRoute(
       path: '/profile',
-      name: 'profile', // ← aberta pelo cabeçalho do Drawer (foto + saudação)
+      name: 'profile', // aberta pelo cabeçalho do Drawer (foto + saudação)
       builder: (context, state) => const ProfileScreen(),
       routes: [
         // Sub-rota: /profile/edit. O "voltar" do sistema retorna ao perfil.
@@ -74,7 +75,7 @@ final GoRouter appRouter = GoRouter(
         // Sub-rota: /agenda/novo. Troque pela tela real de novo atendimento.
         GoRoute(
           path: 'novo',
-          name: 'agenda-novo', // ← usado por context.goNamed('agenda-novo')
+          name: 'agenda-novo', // usado por context.goNamed('agenda-novo')
           builder: (context, state) => const EmConstrucaoScreen(
             titulo: 'Novo Atendimento',
             rotaAtual: '/agenda/novo',
@@ -82,17 +83,33 @@ final GoRouter appRouter = GoRouter(
         ),
       ],
     ),
-
-    // ---------- Rotas do menu ainda sem feature própria ----------
-    // Troque o builder pela tela real quando a feature for criada.
     GoRoute(
       path: '/prontuario',
       name: 'prontuario',
-      builder: (context, state) => const EmConstrucaoScreen(
-        titulo: 'Prontuário',
-        rotaAtual: '/prontuario',
-      ),
+      builder: (context, state) => const MedicalRecordsScreen(),
+      routes: [
+        // Sub-rotas do registro do paciente. Troque pelas telas reais.
+        GoRoute(
+          path: ':patientId/novo',
+          name: 'prontuario-criar', // "Criar Registro"
+          builder: (context, state) => const EmConstrucaoScreen(
+            titulo: 'Cadastrar Prontuário',
+            rotaAtual: '/prontuario/novo',
+          ),
+        ),
+        GoRoute(
+          path: ':patientId',
+          name: 'prontuario-registro', // "Ver / Editar Registro"
+          builder: (context, state) => const EmConstrucaoScreen(
+            titulo: 'Visualizar Prontuário',
+            rotaAtual: '/prontuario/registro',
+          ),
+        ),
+      ],
     ),
+
+    // ---------- Rotas do menu ainda sem feature própria ----------
+    // Troque o builder pela tela real quando a feature for criada.
     GoRoute(
       path: '/historico',
       name: 'historico',

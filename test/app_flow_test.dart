@@ -63,10 +63,10 @@ void main() {
     // ---------- Menu inferior flutuante ----------
     // Login e splash não têm o menu; a Home tem, com "Início" ativo.
     expect(find.byType(AppBottomNav), findsOneWidget);
-    await tester.tap(find.byTooltip('Prontuário'));
+    await tester.tap(find.byTooltip('Histórico'));
     await tester.pumpAndSettle();
     expect(find.byType(EmConstrucaoScreen), findsOneWidget);
-    expect(find.text('Prontuário'), findsOneWidget);
+    expect(find.text('Histórico'), findsOneWidget);
 
     await tester.tap(find.byTooltip('Início'));
     await tester.pumpAndSettle();

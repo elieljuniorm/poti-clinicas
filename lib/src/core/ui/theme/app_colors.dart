@@ -94,6 +94,26 @@ class AppColors {
   static const Color userInactive = Color(0xFF757575);
   static const Color userInactiveBackground = Color(0xFFEEEEEE);
 
+  // ---------- Chips de filtro ----------
+  /// Fundo do chip escolhido no [AppFilterChips] (#034965).
+  static const Color chipSelected = Color(0xFF034965);
+  static const Color chipSelectedForeground = Color(0xFFFFFFFF);
+
+  // ---------- Prontuário (status do paciente) ----------
+  static const Color recordInTherapy = Color(0xFF2E7D32);
+  static const Color recordInTherapyBackground = Color(0xFFE8F5E9);
+  static const Color recordNew = Color(0xFF616161);
+  static const Color recordNewBackground = Color(0xFFE6E7EB);
+  static const Color recordPending = Color(0xFFF57C00);
+  static const Color recordPendingBackground = Color(0xFFFFF1E0);
+
+  /// "Alta Médica": fundo #034965, texto #FFFFFF.
+  static const Color recordDischarged = Color(0xFFFFFFFF);
+  static const Color recordDischargedBackground = Color(0xFF034965);
+
+  /// Ícone de abrir registro (azul do modelo).
+  static const Color linkIcon = Color(0xFF1E88E5);
+
   // ---------- Status ----------
   static const Color statusConfirmed = Colors.green;
   static const Color statusPending = Colors.orange;

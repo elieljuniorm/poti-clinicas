@@ -1,3 +1,4 @@
+import '../../../../core/utils/texto.dart';
 import '../../domain/models/user_filter.dart';
 import '../../domain/models/user_model.dart';
 
@@ -24,27 +25,11 @@ class UsersState {
 
   /// Usuários exibidos: aplica o filtro e a busca (sem diferenciar acentos).
   List<UserModel> get filteredUsers {
-    final termo = _normalizar(search.trim());
-
     return users.where((user) {
       if (!filter.aceita(user.role)) return false;
-      if (termo.isEmpty) return true;
-      return _normalizar(user.name).contains(termo) ||
-          _normalizar(user.email).contains(termo);
+      return Texto.contem(user.name, search) ||
+          Texto.contem(user.email, search);
     }).toList();
-  }
-
-  static String _normalizar(String texto) {
-    const comAcento = 'áàâãäéèêëíìîïóòôõöúùûüç';
-    const semAcento = 'aaaaaeeeeiiiiooooouuuuc';
-
-    final minusculo = texto.toLowerCase();
-    final buffer = StringBuffer();
-    for (final letra in minusculo.split('')) {
-      final i = comAcento.indexOf(letra);
-      buffer.write(i == -1 ? letra : semAcento[i]);
-    }
-    return buffer.toString();
   }
 
   UsersState copyWith({

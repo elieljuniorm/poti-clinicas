@@ -6,13 +6,13 @@ import '../../../../core/ui/theme/app_colors.dart';
 import '../../../../core/ui/widgets/app_action_card.dart';
 import '../../../../core/ui/widgets/app_bottom_spacer.dart';
 import '../../../../core/ui/widgets/app_scaffold.dart';
+import '../../../../core/ui/widgets/app_search_field.dart';
 import '../../../../core/ui/widgets/app_segmented_control.dart';
 import '../../application/users_controller.dart';
 import '../../domain/models/user_filter.dart';
 import '../states/users_state.dart';
 import '../widgets/user_card.dart';
 import '../widgets/user_details_modal.dart';
-import '../widgets/user_search_field.dart';
 
 /// Lista todos os usuários do sistema (profissionais, pacientes,
 /// administradores, recepção e colaboradores).
@@ -43,7 +43,11 @@ class UsersScreen extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                UserSearchField(aoBuscar: controller.buscar),
+                AppSearchField(
+                  dica: 'Buscar usuário',
+                  aoBuscar: controller.buscar,
+                  destaque: true,
+                ),
                 const SizedBox(height: 20),
 
                 AppActionCard(
