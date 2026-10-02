@@ -27,9 +27,11 @@ class DrawerMenuItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final backgroundColor = isActive
-        ? AppColors.menuItemActive
-        : AppColors.menuItem;
+    final foregroundColor = isActive
+        ? AppColors.menuItemTextActive
+        : AppColors.menuItemText;
+
+    final backgroundColor = AppColors.menuItem;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
@@ -43,12 +45,15 @@ class DrawerMenuItem extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 12),
             child: Row(
               children: [
-                Icon(icon, color: AppColors.drawerForeground, size: 28),
-                const SizedBox(width: 16),
+                Icon(icon, color: foregroundColor, size: 30),
+                const SizedBox(width: 12),
                 Expanded(
                   child: Text(
                     label,
-                    style: AppTextStyles.drawerItem,
+                    style: AppTextStyles.drawerItem.copyWith(
+                      color: foregroundColor,
+                      fontWeight: FontWeight.w700,
+                    ),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),

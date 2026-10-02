@@ -9,11 +9,17 @@ class AppColors {
   /// Fundo escuro do Drawer (verde-azulado escuro).
   static const Color drawerBackground = Color.fromRGBO(14, 90, 104, 1);
 
-  /// Cor padrão dos itens do menu (turquesa).
+  /// Cor padrão dos itens do menu (icone).
   static const Color menuItem = Color(0xFF4BA3B8);
 
   /// Cor do item do menu quando está ativo/selecionado.
   static const Color menuItemActive = Color(0xFF7FCFDE);
+
+  /// Cor padrão dos itens do menu (texto).
+  static const Color menuItemText = Color.fromRGBO(255, 255, 255, 1);
+
+  /// Cor padrão dos itens do menu (texto).
+  static const Color menuItemTextActive = Color.fromRGBO(255, 255, 255, 0.5);
 
   /// Texto e ícones sobre o Drawer.
   static const Color drawerForeground = Colors.white;
