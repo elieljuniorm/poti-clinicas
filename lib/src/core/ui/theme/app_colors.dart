@@ -130,6 +130,16 @@ class AppColors {
   static const Color appointmentCanceled = Color(0xFFC62828);
   static const Color appointmentCanceledBackground = Color(0xFFFDECEA);
 
+  // ---------- Gráficos ----------
+  /// Cor da série principal (linha, pontos e área) do [AppAreaChart].
+  static const Color chartPrimary = Color(0xFF5468D8);
+
+  /// Linhas de grade e eixo: discretas, um passo acima do fundo.
+  static const Color chartGrid = Color(0xFFDCDCE2);
+
+  /// Fundo da caixa de valor ao tocar no gráfico.
+  static const Color chartTooltip = Color(0xFF02222B);
+
   // ---------- Status ----------
   static const Color statusConfirmed = Colors.green;
   static const Color statusPending = Colors.orange;

@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:poti_5f/main.dart';
 import 'package:poti_5f/src/core/ui/pages/em_construcao_screen.dart';
 import 'package:poti_5f/src/core/ui/widgets/app_bottom_nav.dart';
+import 'package:poti_5f/src/features/finance/ui/pages/finance_screen.dart';
 import 'package:poti_5f/src/features/history/ui/pages/history_screen.dart';
 import 'package:poti_5f/src/features/home/ui/pages/home_screen.dart';
 import 'package:poti_5f/src/features/login/ui/pages/login_screen.dart';
@@ -79,8 +80,15 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Olá, Eliel Maia'), findsOneWidget);
 
-    // ---------- Item do menu sem feature abre a tela provisória ----------
+    // ---------- Item do menu abre o Financeiro ----------
     await tester.tap(find.text('Financeiro'));
+    await tester.pump(const Duration(seconds: 1));
+    await tester.pumpAndSettle();
+    expect(find.byType(FinanceScreen), findsOneWidget);
+    expect(find.text('FATURAMENTO DO MÊS'), findsOneWidget);
+
+    // ---------- Ação ainda sem tela abre a tela provisória ----------
+    await tester.tap(find.text('Novo Lançamento'));
     await tester.pumpAndSettle();
     expect(find.byType(EmConstrucaoScreen), findsOneWidget);
     expect(find.text('EM CONSTRUÇÃO'), findsOneWidget);

@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../core/ui/pages/em_construcao_screen.dart';
 import '../features/scheduling/ui/pages/scheduling_screen.dart';
+import '../features/finance/ui/pages/finance_screen.dart';
 import '../features/history/ui/pages/history_screen.dart';
 import '../features/home/ui/pages/home_screen.dart';
 import '../features/login/ui/pages/login_screen.dart';
@@ -113,16 +114,21 @@ final GoRouter appRouter = GoRouter(
       name: 'historico',
       builder: (context, state) => const HistoryScreen(),
     ),
-
-    // ---------- Rotas do menu ainda sem feature própria ----------
-    // Troque o builder pela tela real quando a feature for criada.
     GoRoute(
       path: '/financeiro',
       name: 'financeiro',
-      builder: (context, state) => const EmConstrucaoScreen(
-        titulo: 'Financeiro',
-        rotaAtual: '/financeiro',
-      ),
+      builder: (context, state) => const FinanceScreen(),
+      routes: [
+        // Sub-rota: /financeiro/novo. Troque pela tela real de lançamento.
+        GoRoute(
+          path: 'novo',
+          name: 'financeiro-novo', // ← card "Novo Lançamento"
+          builder: (context, state) => const EmConstrucaoScreen(
+            titulo: 'Novo Lançamento',
+            rotaAtual: '/financeiro/novo',
+          ),
+        ),
+      ],
     ),
   ],
 );

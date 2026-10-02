@@ -35,14 +35,14 @@ class AppTextStyles {
 
   /// Título de seção dos modais de detalhes (ex.: "CONTRATO DE SERVIÇOS").
   static const TextStyle detailsSectionTitle = TextStyle(
-    fontSize: 15,
-    fontWeight: FontWeight.w600,
+    fontSize: 16,
+    fontWeight: FontWeight.bold,
     color: AppColors.textPrimary,
   );
 
   /// Título central do [AppSectionDivider] (ex.: "ENDEREÇO").
   static const TextStyle sectionDivider = TextStyle(
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: FontWeight.bold,
     color: AppColors.textPrimary,
   );

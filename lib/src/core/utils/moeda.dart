@@ -6,14 +6,25 @@ abstract final class Moeda {
     final inteiro = (centavos ~/ 100).toString();
     final decimal = (centavos % 100).toString().padLeft(2, '0');
 
-    // Ponto a cada 3 dígitos, da direita para a esquerda.
-    final buffer = StringBuffer();
-    for (var i = 0; i < inteiro.length; i++) {
-      if (i > 0 && (inteiro.length - i) % 3 == 0) buffer.write('.');
-      buffer.write(inteiro[i]);
-    }
-
     final sinal = valor < 0 && centavos > 0 ? '-' : '';
-    return '${sinal}R\$ $buffer,$decimal';
+    return '${sinal}R\$ ${_agrupar(inteiro)},$decimal';
+  }
+
+  /// Número inteiro com ponto de milhar, sem símbolo: 1500 → "1.500".
+  /// Usado nos eixos de gráficos.
+  static String formatarInteiro(double valor) {
+    final inteiro = valor.abs().round().toString();
+    final sinal = valor < 0 && valor.round() != 0 ? '-' : '';
+    return '$sinal${_agrupar(inteiro)}';
+  }
+
+  /// Ponto a cada 3 dígitos, da direita para a esquerda.
+  static String _agrupar(String digitos) {
+    final buffer = StringBuffer();
+    for (var i = 0; i < digitos.length; i++) {
+      if (i > 0 && (digitos.length - i) % 3 == 0) buffer.write('.');
+      buffer.write(digitos[i]);
+    }
+    return buffer.toString();
   }
 }

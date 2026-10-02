@@ -125,7 +125,9 @@ class _ArquivoContrato extends StatelessWidget {
             disabledBackgroundColor: AppColors.actionCardBackground.withValues(
               alpha: 0.6,
             ),
-            textStyle: const TextStyle(fontWeight: FontWeight.bold),
+            // Parte do estilo do tema para manter a fonte do app.
+            textStyle: Theme.of(context).textTheme.labelLarge
+                ?.copyWith(fontWeight: FontWeight.bold),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),

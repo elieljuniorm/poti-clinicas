@@ -1,14 +1,25 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/ui/theme/app_colors.dart';
-import '../../../../core/utils/moeda.dart';
-import '../../domain/models/financial_overview_model.dart';
+import '../../utils/moeda.dart';
+import '../theme/app_colors.dart';
 
-/// Card escuro "TOTAL A RECEBER", com recebido e pendente abaixo.
-class FinancialOverviewCard extends StatelessWidget {
-  final FinancialOverviewModel overview;
+/// Card escuro de totais financeiros: valor principal em destaque e,
+/// abaixo da linha, recebido e pendente.
+///
+/// Ex.: "TOTAL A RECEBER" (Histórico), "FATURAMENTO DO MÊS" (Financeiro).
+class AppFinancialSummaryCard extends StatelessWidget {
+  final String titulo;
+  final double total;
+  final double recebido;
+  final double pendente;
 
-  const FinancialOverviewCard({super.key, required this.overview});
+  const AppFinancialSummaryCard({
+    super.key,
+    required this.titulo,
+    required this.total,
+    required this.recebido,
+    required this.pendente,
+  });
 
   static const _rotulo = TextStyle(
     fontSize: 12,
@@ -27,13 +38,13 @@ class FinancialOverviewCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('TOTAL A RECEBER', style: _rotulo.copyWith(fontSize: 14)),
+          Text(titulo, style: _rotulo.copyWith(fontSize: 14)),
           const SizedBox(height: 4),
           FittedBox(
             fit: BoxFit.scaleDown,
             alignment: Alignment.centerLeft,
             child: Text(
-              Moeda.formatar(overview.total),
+              Moeda.formatar(total),
               style: const TextStyle(
                 fontSize: 34,
                 fontWeight: FontWeight.w800,
@@ -47,11 +58,11 @@ class FinancialOverviewCard extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: _Valor(rotulo: 'RECEBIDO', valor: overview.received),
+                child: _Valor(rotulo: 'RECEBIDO', valor: recebido),
               ),
               const SizedBox(width: 12),
               Expanded(
-                child: _Valor(rotulo: 'PENDENTE', valor: overview.pending),
+                child: _Valor(rotulo: 'PENDENTE', valor: pendente),
               ),
             ],
           ),
@@ -60,6 +71,10 @@ class FinancialOverviewCard extends StatelessWidget {
     );
   }
 }
+
+// ============================================================
+// Widgets internos
+// ============================================================
 
 class _Valor extends StatelessWidget {
   final String rotulo;
@@ -74,7 +89,7 @@ class _Valor extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(rotulo, style: FinancialOverviewCard._rotulo),
+          Text(rotulo, style: AppFinancialSummaryCard._rotulo),
           const SizedBox(height: 4),
           FittedBox(
             fit: BoxFit.scaleDown,

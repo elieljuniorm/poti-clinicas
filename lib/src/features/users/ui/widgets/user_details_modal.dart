@@ -3,13 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 import '../../../../core/ui/theme/app_colors.dart';
+import '../../../../core/ui/widgets/app_avatar.dart';
 import '../../application/user_details_controller.dart';
 import '../../domain/models/user_details_model.dart';
 import '../../domain/models/user_model.dart';
 import 'details/access_info_section.dart';
 import 'details/patient_sections.dart';
 import 'details/professional_sections.dart';
-import 'user_avatar.dart';
 
 /// Abre o modal com os dados do [user].
 ///
@@ -140,7 +140,7 @@ class _CabecalhoUsuario extends StatelessWidget {
       ),
       child: Row(
         children: [
-          UserAvatar(photoUrl: user.photoUrl, raio: 32),
+          AppAvatar(fotoUrl: user.photoUrl, raio: 32),
           const SizedBox(width: 14),
           Expanded(
             child: Column(

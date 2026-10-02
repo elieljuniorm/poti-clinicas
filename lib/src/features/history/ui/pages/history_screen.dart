@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/ui/theme/app_colors.dart';
 import '../../../../core/ui/theme/app_text_styles.dart';
 import '../../../../core/ui/widgets/app_bottom_spacer.dart';
+import '../../../../core/ui/widgets/app_financial_summary_card.dart';
 import '../../../../core/ui/widgets/app_scaffold.dart';
 import '../../../../core/ui/widgets/app_segmented_control.dart';
 import '../../../home/ui/widgets/financial_entry_card.dart';
@@ -11,7 +12,6 @@ import '../../application/history_controller.dart';
 import '../../domain/models/history_tab.dart';
 import '../states/history_state.dart';
 import '../widgets/appointment_history_card.dart';
-import '../widgets/financial_overview_card.dart';
 
 /// Histórico: atendimentos e lançamentos financeiros, escolhidos
 /// no seletor do topo.
@@ -120,7 +120,12 @@ class _Lancamentos extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        FinancialOverviewCard(overview: state.overview),
+        AppFinancialSummaryCard(
+          titulo: 'TOTAL A RECEBER',
+          total: state.overview.total,
+          recebido: state.overview.received,
+          pendente: state.overview.pending,
+        ),
         const SizedBox(height: 28),
 
         Row(

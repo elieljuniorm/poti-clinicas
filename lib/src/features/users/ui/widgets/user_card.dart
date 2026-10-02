@@ -3,9 +3,9 @@ import 'package:material_symbols_icons/symbols.dart';
 
 import '../../../../core/ui/theme/app_colors.dart';
 import '../../../../core/ui/theme/app_decorations.dart';
+import '../../../../core/ui/widgets/app_avatar.dart';
 import '../../domain/models/user_model.dart';
 import '../../domain/models/user_role.dart';
-import 'user_avatar.dart';
 
 /// Card de um usuário: perfil, descrição, status, foto, nome e contatos.
 class UserCard extends StatelessWidget {
@@ -100,7 +100,7 @@ class UserCard extends StatelessWidget {
                 padding: const EdgeInsets.all(16),
                 child: Row(
                   children: [
-                    UserAvatar(photoUrl: user.photoUrl),
+                    AppAvatar(fotoUrl: user.photoUrl),
                     const SizedBox(width: 14),
                     Expanded(
                       child: Column(
