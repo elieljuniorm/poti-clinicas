@@ -1,6 +1,9 @@
 import '../../../profile/domain/models/address_model.dart';
 import 'bank_info_model.dart';
+import 'family_income.dart';
+import 'marital_status.dart';
 import 'patient_category.dart';
+import 'patient_responsible_model.dart';
 import 'user_role.dart';
 
 /// Dados de um usuário novo, cadastrado pela clínica.
@@ -9,7 +12,9 @@ import 'user_role.dart';
 ///   [document] é CPF ou CNPJ; [councilNumber] só para profissional de saúde;
 ///   [address] sem mapa e [bankInfo] (dados financeiros, opcionais).
 /// - Paciente: [document] é CPF, com [patientCategory], [professionalId]
-///   (profissional responsável) e [address].
+///   (profissional responsável), [address], estado civil, renda familiar,
+///   caso clínico e o [responsible] (o próprio paciente quando
+///   [selfResponsible]).
 class UserRegistrationModel {
   final String name;
   final String email;
@@ -29,6 +34,13 @@ class UserRegistrationModel {
   final String? professionalId;
   final AddressModel? address;
   final BankInfoModel? bankInfo;
+  final MaritalStatus? maritalStatus;
+  final FamilyIncome? familyIncome;
+  final String? clinicalCase;
+
+  /// O paciente é o seu próprio responsável.
+  final bool selfResponsible;
+  final PatientResponsibleModel? responsible;
 
   const UserRegistrationModel({
     required this.name,
@@ -43,5 +55,10 @@ class UserRegistrationModel {
     this.professionalId,
     this.address,
     this.bankInfo,
+    this.maritalStatus,
+    this.familyIncome,
+    this.clinicalCase,
+    this.selfResponsible = false,
+    this.responsible,
   });
 }

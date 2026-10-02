@@ -10,15 +10,20 @@ import '../../../../profile/ui/widgets/address_form_section.dart';
 import '../../../../profile/ui/widgets/profile_field.dart';
 import '../../../application/user_registration_controller.dart';
 import '../../../application/users_controller.dart';
+import '../../../domain/models/family_income.dart';
+import '../../../domain/models/marital_status.dart';
 import '../../../domain/models/patient_category.dart';
+import '../../../domain/models/patient_responsible_model.dart';
 import '../../../domain/models/user_registration_model.dart';
 import '../../../domain/models/user_role.dart';
 import '../../states/user_registration_state.dart';
+import 'patient_responsible_section.dart';
 import 'registration_contact_fields.dart';
 
 /// Cadastro de paciente: vínculo com um profissional, perfil fixo
-/// "Paciente", categoria e endereço com mapa (mesma lógica da edição
-/// do perfil, aqui preenchida pela clínica).
+/// "Paciente", categoria, dados socioeconômicos, caso clínico, responsável
+/// e endereço com mapa (mesma lógica da edição do perfil, aqui preenchida
+/// pela clínica).
 class PatientRegistrationForm extends ConsumerStatefulWidget {
   final VoidCallback aoCancelar;
 
@@ -45,10 +50,14 @@ class _PatientRegistrationFormState
   final _telefoneController = TextEditingController();
   final _nascimentoController = TextEditingController();
   final _cpfController = TextEditingController();
+  final _casoClinicoController = TextEditingController();
   final _endereco = AddressFormControllers();
+  final _responsavel = PatientResponsibleFormControllers();
 
   String? _profissionalId;
   PatientCategory? _categoria;
+  MaritalStatus? _estadoCivil;
+  FamilyIncome? _rendaFamiliar;
 
   @override
   void dispose() {
@@ -58,15 +67,28 @@ class _PatientRegistrationFormState
       _telefoneController,
       _nascimentoController,
       _cpfController,
+      _casoClinicoController,
     ]) {
       controller.dispose();
     }
     _endereco.dispose();
+    _responsavel.dispose();
     super.dispose();
   }
 
   void _salvar() {
     if (!_formKey.currentState!.validate()) return;
+
+    final proprioResponsavel = _responsavel.proprioResponsavel;
+    // Próprio responsável: o responsável leva os dados do paciente.
+    final responsavel = proprioResponsavel
+        ? PatientResponsibleModel(
+            name: _nomeController.text.trim(),
+            email: _emailController.text.trim(),
+            phone: _telefoneController.text,
+            birthDate: _nascimentoController.text.trim(),
+          )
+        : _responsavel.dados;
 
     ref
         .read(userRegistrationControllerProvider.notifier)
@@ -81,6 +103,11 @@ class _PatientRegistrationFormState
             patientCategory: _categoria,
             professionalId: _profissionalId,
             address: _endereco.endereco,
+            maritalStatus: _estadoCivil,
+            familyIncome: _rendaFamiliar,
+            clinicalCase: _casoClinicoController.text.trim(),
+            selfResponsible: proprioResponsavel,
+            responsible: responsavel,
           ),
         );
   }
@@ -161,6 +188,37 @@ class _PatientRegistrationFormState
             aoMudar: (valor) => setState(() => _categoria = valor),
             validator: FormValidators.selecao,
           ),
+          AppSelectField<MaritalStatus>(
+            rotulo: 'ESTADO CIVIL',
+            opcoes: MaritalStatus.values,
+            rotuloOpcao: _rotuloEstadoCivil,
+            valor: _estadoCivil,
+            habilitado: !salvando,
+            aoMudar: (valor) => setState(() => _estadoCivil = valor),
+            validator: FormValidators.selecao,
+          ),
+          AppSelectField<FamilyIncome>(
+            rotulo: 'RENDA FAMILIAR',
+            opcoes: FamilyIncome.values,
+            rotuloOpcao: _rotuloRenda,
+            valor: _rendaFamiliar,
+            habilitado: !salvando,
+            aoMudar: (valor) => setState(() => _rendaFamiliar = valor),
+            validator: FormValidators.selecao,
+          ),
+          ProfileField(
+            rotulo: 'CASO CLÍNICO',
+            controller: _casoClinicoController,
+            habilitado: !salvando,
+            altura: 139,
+            dica: 'Descreva o caso clínico do paciente',
+          ),
+
+          // ---------- Responsável ----------
+          PatientResponsibleSection(
+            controllers: _responsavel,
+            habilitado: !salvando,
+          ),
 
           // ---------- Endereço (com mapa) ----------
           AddressFormSection(
@@ -187,3 +245,7 @@ class _PatientRegistrationFormState
 String _rotuloPerfil(UserRole perfil) => perfil.label;
 
 String _rotuloCategoria(PatientCategory categoria) => categoria.label;
+
+String _rotuloEstadoCivil(MaritalStatus estado) => estado.label;
+
+String _rotuloRenda(FamilyIncome renda) => renda.label;

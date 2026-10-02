@@ -117,7 +117,7 @@ class _ProfessionalRegistrationFormState
             telefone: _telefoneController,
             nascimento: _nascimentoController,
             habilitado: !salvando,
-            dicaEmail: 'email@.com',
+            dicaEmail: 'email@gmail.com',
           ),
           AppSelectField<UserRole>(
             rotulo: 'PERFIL DE ACESSO',

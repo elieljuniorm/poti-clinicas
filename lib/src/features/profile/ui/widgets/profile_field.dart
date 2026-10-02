@@ -30,6 +30,11 @@ class ProfileField extends StatefulWidget {
   /// Máscaras de digitação (ex.: [CepInputFormatter]).
   final List<TextInputFormatter>? formatadores;
 
+  /// Altura fixa para textos longos (ex.: caso clínico): o campo aceita
+  /// várias linhas e rola por dentro, sem crescer. Uma mensagem de erro
+  /// ocupa parte dessa altura.
+  final double? altura;
+
   const ProfileField({
     super.key,
     required this.rotulo,
@@ -43,6 +48,7 @@ class ProfileField extends StatefulWidget {
     this.dica,
     this.validator,
     this.formatadores,
+    this.altura,
   });
 
   @override
@@ -52,9 +58,12 @@ class ProfileField extends StatefulWidget {
 class _ProfileFieldState extends State<ProfileField> {
   late bool _ocultar = widget.senha;
 
+  bool get _textoLongo => widget.altura != null;
+
   OutlineInputBorder _borda(Color cor, [double largura = 1.5]) {
     return OutlineInputBorder(
-      borderRadius: BorderRadius.circular(30),
+      // Texto longo: cantos menores, a pílula cortaria as linhas.
+      borderRadius: BorderRadius.circular(_textoLongo ? 20 : 30),
       borderSide: BorderSide(color: cor, width: largura),
     );
   }
@@ -72,45 +81,55 @@ class _ProfileFieldState extends State<ProfileField> {
             padding: const EdgeInsets.only(left: 4, bottom: 6),
             child: Text(widget.rotulo, style: AppTextStyles.fieldLabel),
           ),
-          TextFormField(
-            controller: widget.controller,
-            initialValue: widget.controller == null ? valor : null,
-            enabled: widget.habilitado,
-            obscureText: _ocultar,
-            keyboardType: widget.teclado,
-            validator: widget.validator,
-            inputFormatters: widget.formatadores,
-            style: AppTextStyles.fieldValue,
-            decoration: InputDecoration(
-              isDense: true,
-              filled: true,
-              fillColor: widget.habilitado
-                  ? AppColors.surface
-                  : AppColors.surfaceMuted,
-              hintText: widget.habilitado ? widget.dica : '—',
-              hintStyle: AppTextStyles.formHint,
-              helperText: widget.textoAjuda,
-              prefixIcon: widget.icon == null
-                  ? null
-                  : Icon(widget.icon, color: AppColors.borderAccent),
-              // Sem ícone, o texto não encosta na borda arredondada.
-              contentPadding: widget.icon == null
-                  ? const EdgeInsets.symmetric(horizontal: 20, vertical: 14)
-                  : null,
-              suffixIcon: widget.senha
-                  ? IconButton(
-                      icon: Icon(
-                        _ocultar ? Symbols.visibility : Symbols.visibility_off,
-                        color: AppColors.borderAccent,
-                      ),
-                      onPressed: () => setState(() => _ocultar = !_ocultar),
-                    )
-                  : null,
-              enabledBorder: _borda(AppColors.borderAccent),
-              focusedBorder: _borda(AppColors.borderAccent, 2),
-              disabledBorder: _borda(const Color.fromRGBO(141, 141, 141, 1)),
-              errorBorder: _borda(AppColors.error),
-              focusedErrorBorder: _borda(AppColors.error, 2),
+          SizedBox(
+            height: widget.altura,
+            child: TextFormField(
+              controller: widget.controller,
+              initialValue: widget.controller == null ? valor : null,
+              enabled: widget.habilitado,
+              obscureText: _ocultar,
+              keyboardType: _textoLongo
+                  ? TextInputType.multiline
+                  : widget.teclado,
+              maxLines: _textoLongo ? null : 1,
+              expands: _textoLongo,
+              textAlignVertical: _textoLongo ? TextAlignVertical.top : null,
+              validator: widget.validator,
+              inputFormatters: widget.formatadores,
+              style: AppTextStyles.fieldValue,
+              decoration: InputDecoration(
+                isDense: true,
+                filled: true,
+                fillColor: widget.habilitado
+                    ? AppColors.surface
+                    : AppColors.surfaceMuted,
+                hintText: widget.habilitado ? widget.dica : '—',
+                hintStyle: AppTextStyles.formHint,
+                helperText: widget.textoAjuda,
+                prefixIcon: widget.icon == null
+                    ? null
+                    : Icon(widget.icon, color: AppColors.borderAccent),
+                // Sem ícone, o texto não encosta na borda arredondada.
+                contentPadding: _textoLongo || widget.icon == null
+                    ? const EdgeInsets.symmetric(horizontal: 20, vertical: 14)
+                    : null,
+                suffixIcon: widget.senha
+                    ? IconButton(
+                        icon: Icon(
+                          _ocultar
+                              ? Symbols.visibility
+                              : Symbols.visibility_off,
+                          color: AppColors.borderAccent,
+                        ),
+                        onPressed: () => setState(() => _ocultar = !_ocultar),
+                      )
+                    : null,
+                enabledBorder: _borda(AppColors.borderAccent),
+                focusedBorder: _borda(AppColors.borderAccent, 2),
+                disabledBorder: _borda(const Color.fromRGBO(141, 141, 141, 1)),
+                errorBorder: _borda(AppColors.error),
+                focusedErrorBorder: _borda(AppColors.error, 2),
+              ),
             ),
           ),
         ],

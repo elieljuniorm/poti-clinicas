@@ -8,9 +8,12 @@ import 'package:poti_5f/src/core/ui/widgets/app_section_divider.dart';
 import 'package:poti_5f/src/features/profile/application/address_map_controller.dart';
 import 'package:poti_5f/src/features/users/application/users_controller.dart';
 import 'package:poti_5f/src/features/users/domain/models/bank_info_model.dart';
+import 'package:poti_5f/src/features/users/domain/models/family_income.dart';
+import 'package:poti_5f/src/features/users/domain/models/marital_status.dart';
 import 'package:poti_5f/src/features/users/domain/models/patient_category.dart';
 import 'package:poti_5f/src/features/users/domain/models/user_role.dart';
 import 'package:poti_5f/src/features/users/ui/pages/user_registration_screen.dart';
+import 'package:poti_5f/src/features/users/ui/widgets/registration/patient_responsible_section.dart';
 
 import '../../profile/application/fake_geocoding_repository.dart';
 import '../application/fake_users_repository.dart';
@@ -202,7 +205,8 @@ void main() {
 
     // Vazio: obrigatórios do paciente e do endereço.
     await salvar(tester);
-    expect(find.text('Selecione uma opção'), findsNWidgets(2));
+    // Profissional, categoria, estado civil e renda familiar.
+    expect(find.text('Selecione uma opção'), findsNWidgets(4));
     expect(users.cadastros, isEmpty);
 
     await tester.enterText(campo('NOME'), 'Maria Souza');
@@ -212,6 +216,16 @@ void main() {
     await tester.enterText(campo('CPF'), '52998224725');
     await escolher(tester, 'PROFISSIONAL', 'Arnaldo Ribeiro');
     await escolher(tester, 'CATEGORIA', 'Adulto');
+    await escolher(tester, 'ESTADO CIVIL', 'Solteiro (a)');
+    await escolher(
+      tester,
+      'RENDA FAMILIAR',
+      'Entre 7 mil reais e 22 mil reais por mês',
+    );
+    await tester.enterText(
+      campo('CASO CLÍNICO'),
+      'Formigamento no pé direito.',
+    );
 
     // Endereço: digitar busca no mapa depois da pausa (igual ao perfil).
     await tester.enterText(campo('CEP'), '66017000');
@@ -230,6 +244,29 @@ void main() {
     await tester.enterText(campo('CEP'), '64000020');
     await tester.enterText(campo('NÚMERO'), '10');
 
+    // Responsável: marcado por padrão; desmarcado, abre o formulário.
+    expect(
+      find.widgetWithText(AppSectionDivider, 'RESPONSÁVEL'),
+      findsOneWidget,
+    );
+    final responsavel = find.descendant(
+      of: find.byType(PatientResponsibleSection),
+      matching: find.byType(TextFormField),
+    );
+    expect(responsavel, findsNothing);
+    await tester.ensureVisible(find.byType(Checkbox));
+    await tester.tap(find.byType(Checkbox));
+    await tester.pumpAndSettle();
+    expect(responsavel, findsNWidgets(4));
+
+    await salvar(tester);
+    expect(users.cadastros, isEmpty);
+
+    await tester.enterText(responsavel.at(0), 'Luiz Marques Pontes');
+    await tester.enterText(responsavel.at(1), 'luiz-marques@gmail.com');
+    await tester.enterText(responsavel.at(2), '91999999999');
+    await tester.enterText(responsavel.at(3), '18121999');
+
     await salvar(tester);
     await tester.pumpAndSettle();
 
@@ -244,6 +281,12 @@ void main() {
     expect(cadastro.address!.city, 'Teresina');
     expect(cadastro.address!.zipCode, '64000-020');
     expect(cadastro.bankInfo, isNull);
+    expect(cadastro.maritalStatus, MaritalStatus.single);
+    expect(cadastro.familyIncome, FamilyIncome.from7000To22000);
+    expect(cadastro.clinicalCase, 'Formigamento no pé direito.');
+    expect(cadastro.selfResponsible, isFalse);
+    expect(cadastro.responsible!.name, 'Luiz Marques Pontes');
+    expect(cadastro.responsible!.birthDate, '18/12/1999');
     expect(find.text('LISTA DE USUÁRIOS'), findsOneWidget);
   });
 

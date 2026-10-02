@@ -1,6 +1,7 @@
 import '../../../../core/utils/documento.dart';
 import '../../../profile/data/dtos/address_dto.dart';
 import '../../domain/models/bank_info_model.dart';
+import '../../domain/models/patient_responsible_model.dart';
 import '../../domain/models/user_registration_model.dart';
 
 /// Representa o cadastro exatamente como a API recebe.
@@ -18,6 +19,11 @@ class UserRegistrationDto {
   final String? professionalId;
   final AddressDto? address;
   final Map<String, dynamic>? bankInfo;
+  final String? maritalStatus;
+  final String? familyIncome;
+  final String? clinicalCase;
+  final bool? selfResponsible;
+  final Map<String, dynamic>? responsible;
 
   UserRegistrationDto({
     required this.name,
@@ -32,6 +38,11 @@ class UserRegistrationDto {
     this.professionalId,
     this.address,
     this.bankInfo,
+    this.maritalStatus,
+    this.familyIncome,
+    this.clinicalCase,
+    this.selfResponsible,
+    this.responsible,
   });
 
   // Model de domínio → DTO
@@ -54,7 +65,27 @@ class UserRegistrationDto {
       professionalId: model.professionalId,
       address: address == null ? null : AddressDto.fromDomain(address),
       bankInfo: _bankInfoJson(model.bankInfo),
+      maritalStatus: model.maritalStatus?.name,
+      familyIncome: model.familyIncome?.name,
+      clinicalCase: texto(model.clinicalCase),
+      // Só o cadastro de paciente tem responsável.
+      selfResponsible: model.responsible == null ? null : model.selfResponsible,
+      responsible: _responsibleJson(model.responsible),
     );
+  }
+
+  /// Responsável no formato da API, com telefone só com dígitos.
+  static Map<String, dynamic>? _responsibleJson(
+    PatientResponsibleModel? responsavel,
+  ) {
+    if (responsavel == null) return null;
+    final nascimento = responsavel.birthDate.trim();
+    return {
+      'name': responsavel.name.trim(),
+      'email': responsavel.email.trim(),
+      'phone': Documento.digitos(responsavel.phone),
+      'birth_date': ?(nascimento.isEmpty ? null : nascimento),
+    };
   }
 
   /// Dados financeiros no formato da API. Agência e conta só com dígitos
@@ -91,6 +122,11 @@ class UserRegistrationDto {
       'professional_id': ?professionalId,
       'address': ?address?.toJson(),
       'bank_info': ?bankInfo,
+      'marital_status': ?maritalStatus,
+      'family_income': ?familyIncome,
+      'clinical_case': ?clinicalCase,
+      'self_responsible': ?selfResponsible,
+      'responsible': ?responsible,
     };
   }
 }
