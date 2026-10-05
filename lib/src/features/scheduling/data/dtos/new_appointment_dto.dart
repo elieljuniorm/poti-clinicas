@@ -4,14 +4,18 @@ import '../../domain/models/new_appointment_model.dart';
 /// Datas em ISO 8601 no horário local (ex.: "2025-07-15T14:30:00.000").
 class NewAppointmentDto {
   final String patientId;
+  final String patientName;
   final String professionalId;
+  final String professionalName;
   final String type;
   final String? clinicalCase;
   final List<({String start, String end})> sessions;
 
   NewAppointmentDto({
     required this.patientId,
+    required this.patientName,
     required this.professionalId,
+    required this.professionalName,
     required this.type,
     this.clinicalCase,
     required this.sessions,
@@ -22,7 +26,9 @@ class NewAppointmentDto {
     final caso = model.clinicalCase?.trim();
     return NewAppointmentDto(
       patientId: model.patientId,
+      patientName: model.patientName,
       professionalId: model.professionalId,
+      professionalName: model.professionalName,
       type: model.appointmentType,
       clinicalCase: caso == null || caso.isEmpty ? null : caso,
       sessions: [
@@ -39,7 +45,9 @@ class NewAppointmentDto {
   Map<String, dynamic> toJson() {
     return {
       'patient_id': patientId,
+      'patient_name': patientName,
       'professional_id': professionalId,
+      'professional_name': professionalName,
       'type': type,
       'clinical_case': ?clinicalCase,
       'sessions': [

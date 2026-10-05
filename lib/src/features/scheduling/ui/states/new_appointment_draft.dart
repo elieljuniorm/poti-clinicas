@@ -161,12 +161,15 @@ class NewAppointmentDraft {
   /// Model para enviar. Só chame com o rascunho válido.
   NewAppointmentModel toModel({
     required String professionalId,
+    required String professionalName,
     required String appointmentType,
     String? clinicalCase,
   }) {
     return NewAppointmentModel(
       patientId: patient!.id,
+      patientName: patient!.name,
       professionalId: professionalId,
+      professionalName: professionalName,
       appointmentType: appointmentType,
       clinicalCase: clinicalCase,
       sessions: [for (final s in sessions) s.toModel()],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:go_router/go_router.dart';
 import 'package:poti_5f/src/features/scheduling/application/scheduling_controller.dart';
 import 'package:poti_5f/src/features/scheduling/ui/pages/new_appointment_screen.dart';
@@ -222,5 +223,21 @@ void main() {
       find.text('2 sessões agendadas para Antônio Araújo'),
       findsOneWidget,
     );
+  });
+
+  testWidgets('a seta do cabeçalho volta para a Agenda', (tester) async {
+    await abrir(tester);
+
+    // Na ponta direita da linha do menu.
+    final seta = tester.getCenter(find.byTooltip('Voltar'));
+    final menu = tester.getCenter(find.byIcon(Symbols.menu));
+    expect(seta.dy, moreOrLessEquals(menu.dy, epsilon: 1));
+    expect(seta.dx, greaterThan(menu.dx));
+
+    await tester.tap(find.byTooltip('Voltar'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('AGENDA'), findsOneWidget);
+    expect(agenda.agendados, isEmpty);
   });
 }

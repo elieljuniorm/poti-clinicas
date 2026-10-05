@@ -8,6 +8,8 @@ import 'package:poti_5f/src/features/scheduling/domain/models/scheduling_appoint
 import 'package:poti_5f/src/features/scheduling/domain/models/scheduling_period.dart';
 import 'package:poti_5f/src/features/scheduling/domain/repositories/scheduling_repository.dart';
 
+import 'appointment_fixture.dart';
+
 class _FakeSchedulingRepository implements SchedulingRepository {
   bool deveFalhar;
   final List<SchedulingPeriod> chamadas = [];
@@ -24,19 +26,16 @@ class _FakeSchedulingRepository implements SchedulingRepository {
     chamadas.add(periodo);
     await atrasos[periodo]?.future;
     if (deveFalhar) throw Exception('sem conexão');
-    return [
-      SchedulingAppointmentModel(
-        date: '02/02',
-        time: '08:30',
-        patient: 'Paciente ${periodo.name}',
-        appointmentType: 'Avaliação',
-        status: AppointmentStatus.confirmed,
-      ),
-    ];
+    return [atendimentoDeTeste(patient: 'Paciente ${periodo.name}')];
   }
 
   @override
   Future<void> agendar(NewAppointmentModel agendamento) async {}
+
+  @override
+  Future<SchedulingAppointmentModel> atualizarAtendimento(
+    SchedulingAppointmentModel atendimento,
+  ) async => atendimento;
 }
 
 void main() {

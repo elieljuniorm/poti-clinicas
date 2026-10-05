@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/ui/theme/app_colors.dart';
 import '../../../../core/ui/theme/app_text_styles.dart';
 import '../../../../core/ui/widgets/app_action_buttons.dart';
+import '../../../../core/ui/widgets/app_back_button.dart';
 import '../../../../core/ui/widgets/app_bottom_spacer.dart';
 import '../../../../core/ui/widgets/app_multi_date_calendar.dart';
 import '../../../../core/ui/widgets/app_quantity_stepper.dart';
@@ -104,7 +105,7 @@ class _NewAppointmentScreenState extends ConsumerState<NewAppointmentScreen> {
     );
   }
 
-  void _salvar() {
+  void _salvar(Map<String, String> profissionais) {
     setState(() => _tentouSalvar = true);
     final camposOk = _formKey.currentState!.validate();
     if (!camposOk || _rascunho.patient == null || !_rascunho.sessoesValidas) {
@@ -116,6 +117,7 @@ class _NewAppointmentScreenState extends ConsumerState<NewAppointmentScreen> {
         .agendar(
           _rascunho.toModel(
             professionalId: _profissionalId!,
+            professionalName: profissionais[_profissionalId] ?? '',
             appointmentType: _tipo!,
             clinicalCase: _casoClinicoController.text,
           ),
@@ -169,6 +171,7 @@ class _NewAppointmentScreenState extends ConsumerState<NewAppointmentScreen> {
     return AppScaffold(
       titulo: 'Novo Atendimento',
       rotaAtual: '/agenda/novo',
+      actions: const [AppBackButton(rotaAnterior: 'agenda')],
       backgroundColor: AppColors.background,
       body: ClipRRect(
         borderRadius: const BorderRadius.only(
@@ -289,7 +292,7 @@ class _NewAppointmentScreenState extends ConsumerState<NewAppointmentScreen> {
                   Center(
                     child: AppSaveButton(
                       carregando: salvando,
-                      onPressed: _salvar,
+                      onPressed: () => _salvar(profissionais),
                     ),
                   ),
                   // Espaço para o menu inferior flutuante

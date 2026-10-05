@@ -4,6 +4,7 @@ import 'package:material_symbols_icons/symbols.dart';
 
 import '../../../../core/ui/theme/app_colors.dart';
 import '../../../../core/ui/widgets/app_avatar.dart';
+import '../../../../core/ui/widgets/app_modal_sheet.dart';
 import '../../application/user_details_controller.dart';
 import '../../domain/models/user_details_model.dart';
 import '../../domain/models/user_model.dart';
@@ -11,28 +12,10 @@ import 'details/access_info_section.dart';
 import 'details/patient_sections.dart';
 import 'details/professional_sections.dart';
 
-/// Abre o modal com os dados do [user].
-///
-/// - Abre pelo navigator raiz: fica por cima do menu inferior e do Drawer,
-///   escurecendo a página por trás.
-/// - A altura máxima deixa o título da página visível (ver [_espacoTopo]).
-/// - Arrastar a barra do topo para baixo fecha o modal; o conteúdo
-///   rola por dentro, sem fechar.
+/// Abre o modal com os dados do [user] (padrão de [showAppModalSheet]).
 Future<void> showUserDetailsModal(BuildContext context, UserModel user) {
-  final tela = MediaQuery.of(context);
-  final alturaMaxima =
-      tela.size.height - tela.padding.top - UserDetailsModal._espacoTopo;
-
-  return showModalBottomSheet<void>(
-    context: context,
-    useRootNavigator: true,
-    isScrollControlled: true,
-    backgroundColor: AppColors.surface,
-    constraints: BoxConstraints(maxHeight: alturaMaxima),
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
-    ),
-    clipBehavior: Clip.antiAlias,
+  return showAppModalSheet<void>(
+    context,
     builder: (_) => UserDetailsModal(user: user),
   );
 }
@@ -41,10 +24,6 @@ class UserDetailsModal extends ConsumerWidget {
   final UserModel user;
 
   const UserDetailsModal({super.key, required this.user});
-
-  /// Espaço livre acima do modal: altura do cabeçalho do [AppScaffold]
-  /// (botão do menu + título da página), que continua visível e escurecido.
-  static const double _espacoTopo = 110;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -55,7 +34,7 @@ class UserDetailsModal extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         // Área fixa (não rola): arrastar aqui fecha o modal.
-        const _BarraArrastar(),
+        const AppSheetHandle(),
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
           child: _CabecalhoUsuario(user: user),
@@ -97,31 +76,6 @@ class UserDetailsModal extends ConsumerWidget {
 // ============================================================
 // Widgets internos
 // ============================================================
-
-/// Barra cinza do topo (indicador de arrastar para fechar).
-class _BarraArrastar extends StatelessWidget {
-  const _BarraArrastar();
-
-  @override
-  Widget build(BuildContext context) {
-    return Semantics(
-      label: 'Arraste para baixo para fechar',
-      child: SizedBox(
-        height: 32,
-        child: Center(
-          child: Container(
-            width: 40,
-            height: 5,
-            decoration: BoxDecoration(
-              color: Colors.grey[500],
-              borderRadius: BorderRadius.circular(3),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
 
 /// Card do topo com foto, nome e contatos do usuário.
 class _CabecalhoUsuario extends StatelessWidget {

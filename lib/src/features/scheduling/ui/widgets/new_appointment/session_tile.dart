@@ -12,7 +12,9 @@ class SessionTile extends StatelessWidget {
   final SessionDraft sessao;
   final VoidCallback aoEscolherInicio;
   final VoidCallback aoEscolherFim;
-  final VoidCallback aoRemover;
+
+  /// Sem ele, a linha não tem o "x" (ex.: editar um atendimento só).
+  final VoidCallback? aoRemover;
   final String? erro;
   final bool habilitado;
 
@@ -21,7 +23,7 @@ class SessionTile extends StatelessWidget {
     required this.sessao,
     required this.aoEscolherInicio,
     required this.aoEscolherFim,
-    required this.aoRemover,
+    this.aoRemover,
     this.erro,
     this.habilitado = true,
   });
@@ -75,10 +77,13 @@ class SessionTile extends StatelessWidget {
                     onTap: habilitado ? aoEscolherFim : null,
                   ),
                 ),
-                RemoveCircleButton(
-                  dica: 'Remover data',
-                  onTap: habilitado ? aoRemover : null,
-                ),
+                if (aoRemover != null)
+                  RemoveCircleButton(
+                    dica: 'Remover data',
+                    onTap: habilitado ? aoRemover : null,
+                  )
+                else
+                  const SizedBox(width: 10),
               ],
             ),
           ),

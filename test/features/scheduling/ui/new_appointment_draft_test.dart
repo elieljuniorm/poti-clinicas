@@ -173,9 +173,15 @@ void main() {
         .alternarData(d15)
         .definirInicio(d15, t1430)
         .definirFim(d15, t1530)
-        .toModel(professionalId: '1', appointmentType: 'Avaliação');
+        .toModel(
+          professionalId: '1',
+          professionalName: 'Dr. Arnaldo Ribeiro',
+          appointmentType: 'Avaliação',
+        );
 
     expect(model.patientId, '2');
+    expect(model.patientName, 'Jorge Silva');
+    expect(model.professionalName, 'Dr. Arnaldo Ribeiro');
     expect(model.sessions.single.start, DateTime(2030, 7, 15, 14, 30));
     expect(model.sessions.single.end, DateTime(2030, 7, 15, 15, 30));
   });

@@ -23,11 +23,16 @@ class AppSaveButton extends StatelessWidget {
   final String label;
   final bool carregando;
 
+  /// Largura do botão. Padrão: [AppActionButtonStyle.largura]; maior para
+  /// textos longos (ex.: "SALVAR ALTERAÇÕES").
+  final double largura;
+
   const AppSaveButton({
     super.key,
     required this.onPressed,
     this.label = 'Salvar',
     this.carregando = false,
+    this.largura = AppActionButtonStyle.largura,
   });
 
   @override
@@ -37,6 +42,7 @@ class AppSaveButton extends StatelessWidget {
       corFundo: AppColors.buttonSave,
       onPressed: onPressed,
       carregando: carregando,
+      largura: largura,
     );
   }
 }
@@ -119,18 +125,20 @@ class _AppActionButton extends StatelessWidget {
   final Color corFundo;
   final VoidCallback? onPressed;
   final bool carregando;
+  final double largura;
 
   const _AppActionButton({
     required this.label,
     required this.corFundo,
     required this.onPressed,
     this.carregando = false,
+    this.largura = AppActionButtonStyle.largura,
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: AppActionButtonStyle.largura,
+      width: largura,
       height: AppActionButtonStyle.altura,
       child: ElevatedButton(
         onPressed: carregando ? null : onPressed,

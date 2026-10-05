@@ -9,7 +9,11 @@ class AppointmentSessionModel {
 /// Novo agendamento: um paciente, um profissional e as sessões escolhidas.
 class NewAppointmentModel {
   final String patientId;
+
+  /// Nomes vão junto para a agenda mostrar sem buscar o cadastro.
+  final String patientName;
   final String professionalId;
+  final String professionalName;
   final String appointmentType;
 
   /// Caso clínico (opcional).
@@ -20,7 +24,9 @@ class NewAppointmentModel {
 
   const NewAppointmentModel({
     required this.patientId,
+    required this.patientName,
     required this.professionalId,
+    required this.professionalName,
     required this.appointmentType,
     this.clinicalCase,
     required this.sessions,

@@ -11,4 +11,9 @@ abstract class SchedulingRepository {
 
   /// Agenda as sessões do paciente com o profissional.
   Future<void> agendar(NewAppointmentModel agendamento);
+
+  /// Salva a edição de um atendimento e devolve como ficou.
+  Future<SchedulingAppointmentModel> atualizarAtendimento(
+    SchedulingAppointmentModel atendimento,
+  );
 }

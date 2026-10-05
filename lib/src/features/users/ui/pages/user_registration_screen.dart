@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/ui/theme/app_colors.dart';
 import '../../../../core/ui/theme/app_text_styles.dart';
+import '../../../../core/ui/widgets/app_back_button.dart';
 import '../../../../core/ui/widgets/app_bottom_spacer.dart';
 import '../../../../core/ui/widgets/app_scaffold.dart';
 import '../../../../core/ui/widgets/app_segmented_control.dart';
@@ -76,6 +77,7 @@ class _UserRegistrationScreenState
     return AppScaffold(
       titulo: 'Cadastrar Usuário',
       rotaAtual: '/usuario/novo',
+      actions: const [AppBackButton(rotaAnterior: 'usuario')],
       backgroundColor: AppColors.background,
       body: ClipRRect(
         borderRadius: const BorderRadius.only(

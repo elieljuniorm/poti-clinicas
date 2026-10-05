@@ -10,7 +10,9 @@ import 'fake_scheduling_repository.dart';
 void main() {
   final agendamento = NewAppointmentModel(
     patientId: '2',
+    patientName: 'Juliana Mendes Souza',
     professionalId: '1',
+    professionalName: 'Dr. Arnaldo Ribeiro',
     appointmentType: 'Avaliação',
     sessions: [
       AppointmentSessionModel(

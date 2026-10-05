@@ -9,7 +9,14 @@ import '../../domain/models/scheduling_appointment_model.dart';
 class SchedulingAppointmentsTable extends StatelessWidget {
   final List<SchedulingAppointmentModel> appointments;
 
-  const SchedulingAppointmentsTable({super.key, required this.appointments});
+  /// Toque na linha: abre o atendimento para edição.
+  final ValueChanged<SchedulingAppointmentModel>? aoTocar;
+
+  const SchedulingAppointmentsTable({
+    super.key,
+    required this.appointments,
+    this.aoTocar,
+  });
 
   IconData _getStatusIcon(AppointmentStatus status) {
     switch (status) {
@@ -106,71 +113,76 @@ class SchedulingAppointmentsTable extends StatelessWidget {
               final item = entry.value;
               final isEven = index % 2 == 0;
 
-              return Container(
+              return Material(
                 color: isEven ? AppColors.tableRowEven : AppColors.tableRowOdd,
-                padding: const EdgeInsets.symmetric(
-                  vertical: 12,
-                  horizontal: 16,
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Text(
-                        item.date,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: Colors.black87,
-                        ),
-                      ),
+                child: InkWell(
+                  onTap: aoTocar == null ? null : () => aoTocar!(item),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 12,
+                      horizontal: 16,
                     ),
-                    Expanded(
-                      flex: 2,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            item.patient,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            item.date,
                             textAlign: TextAlign.center,
                             style: const TextStyle(
-                              fontWeight: FontWeight.w400,
                               fontSize: 14,
                               color: Colors.black87,
                             ),
                           ),
-                          Text(
-                            item.time,
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                item.patient,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                              Text(
+                                item.time,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Text(
+                            item.appointmentType,
                             textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.grey[600],
-                              fontSize: 12,
+                            style: const TextStyle(
+                              fontSize: 13,
+                              color: Colors.black87,
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: Text(
-                        item.appointmentType,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: 13,
-                          color: Colors.black87,
                         ),
-                      ),
+                        Expanded(
+                          flex: 1,
+                          child: Icon(
+                            _getStatusIcon(item.status),
+                            color: _getStatusColor(item.status),
+                            size: 20,
+                          ),
+                        ),
+                      ],
                     ),
-                    Expanded(
-                      flex: 1,
-                      child: Icon(
-                        _getStatusIcon(item.status),
-                        color: _getStatusColor(item.status),
-                        size: 20,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               );
             }),

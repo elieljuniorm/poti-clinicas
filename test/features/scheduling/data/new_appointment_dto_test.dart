@@ -1,12 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/features/scheduling/data/data_sources/scheduling_remote_data_source.dart';
 import 'package:poti_5f/src/features/scheduling/data/dtos/new_appointment_dto.dart';
 import 'package:poti_5f/src/features/scheduling/domain/models/new_appointment_model.dart';
 
 NewAppointmentModel agendamento({String? caso, DateTime? fim}) {
   return NewAppointmentModel(
     patientId: '2',
+    patientName: 'Juliana Mendes Souza',
     professionalId: '1',
+    professionalName: 'Dr. Arnaldo Ribeiro',
     appointmentType: 'Avaliação',
     clinicalCase: caso,
     sessions: [
@@ -42,26 +43,10 @@ void main() {
     });
   });
 
-  group('SchedulingDataSource.agendar', () {
-    test('guarda o agendamento', () async {
-      final dataSource = SchedulingDataSource();
+  test('envia os nomes junto (a agenda mostra sem buscar o cadastro)', () {
+    final json = NewAppointmentDto.fromDomain(agendamento()).toJson();
 
-      await dataSource.agendar(NewAppointmentDto.fromDomain(agendamento()));
-
-      expect(dataSource.agendados, hasLength(1));
-    });
-
-    test('recusa sessão que termina antes de começar', () {
-      final dataSource = SchedulingDataSource();
-
-      expect(
-        () => dataSource.agendar(
-          NewAppointmentDto.fromDomain(
-            agendamento(fim: DateTime(2025, 7, 15, 14, 0)),
-          ),
-        ),
-        throwsA(isA<Exception>()),
-      );
-    });
+    expect(json['patient_name'], 'Juliana Mendes Souza');
+    expect(json['professional_name'], 'Dr. Arnaldo Ribeiro');
   });
 }

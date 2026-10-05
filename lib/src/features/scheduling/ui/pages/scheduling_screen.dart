@@ -12,6 +12,7 @@ import '../../../../core/ui/widgets/app_status_legend.dart';
 import '../../application/scheduling_controller.dart';
 import '../../domain/models/scheduling_period.dart';
 import '../states/scheduling_state.dart';
+import '../widgets/edit_appointment/edit_appointment_modal.dart';
 import '../widgets/scheduling_appointments_table.dart';
 
 class SchedulingScreen extends ConsumerWidget {
@@ -75,7 +76,7 @@ class SchedulingScreen extends ConsumerWidget {
                 const SizedBox(height: 16),
 
                 // Só a tabela mostra loading/erro: o filtro continua visível.
-                _buildTabela(schedulingState),
+                _buildTabela(context, schedulingState),
                 // Espaço para o menu inferior flutuante
                 const AppBottomSpacer(),
               ],
@@ -86,7 +87,7 @@ class SchedulingScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildTabela(SchedulingState schedulingState) {
+  Widget _buildTabela(BuildContext context, SchedulingState schedulingState) {
     if (schedulingState.isLoading) {
       return const Padding(
         padding: EdgeInsets.symmetric(vertical: 32),
@@ -103,6 +104,8 @@ class SchedulingScreen extends ConsumerWidget {
 
     return SchedulingAppointmentsTable(
       appointments: schedulingState.appointments,
+      // Cada linha é um atendimento: o toque abre a edição dele.
+      aoTocar: (atendimento) => showEditAppointmentModal(context, atendimento),
     );
   }
 }

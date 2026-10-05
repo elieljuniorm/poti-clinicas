@@ -4,6 +4,7 @@ import '../../domain/models/scheduling_period.dart';
 import '../../domain/repositories/scheduling_repository.dart';
 import '../data_sources/scheduling_remote_data_source.dart';
 import '../dtos/new_appointment_dto.dart';
+import '../dtos/scheduling_appointment_dto.dart';
 
 /// Responsabilidade: fazer a ponte entre dados (DTO) e negócio (models).
 /// Converte o período para o parâmetro da API e DTO → model.
@@ -23,5 +24,15 @@ class SchedulingRepositoryImpl implements SchedulingRepository {
   @override
   Future<void> agendar(NewAppointmentModel agendamento) {
     return _dataSource.agendar(NewAppointmentDto.fromDomain(agendamento));
+  }
+
+  @override
+  Future<SchedulingAppointmentModel> atualizarAtendimento(
+    SchedulingAppointmentModel atendimento,
+  ) async {
+    final dto = await _dataSource.atualizarAtendimento(
+      SchedulingAppointmentDto.fromDomain(atendimento),
+    );
+    return dto.toDomain();
   }
 }
