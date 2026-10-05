@@ -8,6 +8,14 @@ abstract final class Documento {
   /// Só os dígitos: "123.456.789-09" → "12345678909".
   static String digitos(String valor) => valor.replaceAll(RegExp(r'\D'), '');
 
+  /// CPF com os 6 primeiros dígitos escondidos: "123.456.789-00" →
+  /// "***.***.789-00". Sem 11 dígitos, devolve o texto como veio.
+  static String mascararCpf(String valor) {
+    final d = digitos(valor);
+    if (d.length != tamanhoCpf) return valor;
+    return '***.***.${d.substring(6, 9)}-${d.substring(9)}';
+  }
+
   static bool cpfValido(String valor) {
     final d = digitos(valor);
     if (d.length != tamanhoCpf || _todosIguais(d)) return false;

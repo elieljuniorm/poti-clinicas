@@ -24,6 +24,7 @@ class UsersDataSource {
       'role': 'patient',
       'patient_category': 'adult',
       'status': 'active',
+      'document': '52998224725',
       'photo_url': null,
     },
     {
@@ -64,6 +65,7 @@ class UsersDataSource {
       'role': 'patient',
       'patient_category': 'elderly',
       'status': 'inactive',
+      'document': '11144477735',
       'photo_url': null,
     },
     {
@@ -84,6 +86,7 @@ class UsersDataSource {
       'role': 'patient',
       'patient_category': 'pediatric',
       'status': 'active',
+      'document': '39053344705',
       'photo_url': null,
     },
   ];
@@ -118,6 +121,7 @@ class UsersDataSource {
       'role': json['role'],
       'description': json['description'],
       'patient_category': json['patient_category'],
+      'document': json['document'],
       'status': 'active',
       'photo_url': null,
     };

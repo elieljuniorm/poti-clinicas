@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:poti_5f/src/features/scheduling/application/scheduling_controller.dart';
+import 'package:poti_5f/src/features/scheduling/domain/models/new_appointment_model.dart';
 import 'package:poti_5f/src/features/scheduling/domain/models/scheduling_appointment_model.dart';
 import 'package:poti_5f/src/features/scheduling/domain/models/scheduling_period.dart';
 import 'package:poti_5f/src/features/scheduling/domain/repositories/scheduling_repository.dart';
@@ -33,6 +34,9 @@ class _FakeSchedulingRepository implements SchedulingRepository {
       ),
     ];
   }
+
+  @override
+  Future<void> agendar(NewAppointmentModel agendamento) async {}
 }
 
 void main() {

@@ -14,6 +14,7 @@ class UserDto {
   final String? patientCategory;
   final String status;
   final String? photoUrl;
+  final String? document;
 
   UserDto({
     required this.id,
@@ -25,6 +26,7 @@ class UserDto {
     this.patientCategory,
     required this.status,
     this.photoUrl,
+    this.document,
   });
 
   // JSON → DTO
@@ -39,6 +41,7 @@ class UserDto {
       patientCategory: json['patient_category'],
       status: json['status'],
       photoUrl: json['photo_url'],
+      document: json['document'],
     );
   }
 
@@ -65,6 +68,7 @@ class UserDto {
       },
       active: status == 'active',
       photoUrl: photoUrl,
+      document: document,
     );
   }
 }

@@ -1,3 +1,4 @@
+import '../dtos/new_appointment_dto.dart';
 import '../dtos/scheduling_appointment_dto.dart';
 
 /// Responsabilidade: fazer a chamada externa real (HTTP, GraphQL, etc.).
@@ -84,5 +85,24 @@ class SchedulingDataSource {
     };
 
     return json.map(SchedulingAppointmentDto.fromJson).toList();
+  }
+
+  /// Agendamentos enviados nesta sessão (simula o banco da API).
+  final List<Map<String, dynamic>> agendados = [];
+
+  // Simula POST /appointments. Recusa sessão que termina antes de começar,
+  // como a API faria.
+  Future<void> agendar(NewAppointmentDto agendamento) async {
+    await Future.delayed(const Duration(seconds: 1));
+
+    final json = agendamento.toJson();
+    for (final sessao in json['sessions'] as List<Map<String, String>>) {
+      final inicio = DateTime.parse(sessao['start']!);
+      final fim = DateTime.parse(sessao['end']!);
+      if (!fim.isAfter(inicio)) {
+        throw Exception('Sessão com horário inválido');
+      }
+    }
+    agendados.add(json);
   }
 }

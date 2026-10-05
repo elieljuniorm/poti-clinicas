@@ -17,6 +17,9 @@ class UserModel {
   final bool active;
   final String? photoUrl;
 
+  /// CPF (ou CNPJ) só com dígitos, quando a API envia.
+  final String? document;
+
   const UserModel({
     required this.id,
     required this.name,
@@ -27,6 +30,7 @@ class UserModel {
     this.patientCategory,
     this.active = true,
     this.photoUrl,
+    this.document,
   });
 
   /// Texto exibido ao lado do perfil no card: a categoria para pacientes,

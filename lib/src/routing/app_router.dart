@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../core/ui/pages/em_construcao_screen.dart';
+import '../features/scheduling/ui/pages/new_appointment_screen.dart';
 import '../features/scheduling/ui/pages/scheduling_screen.dart';
 import '../features/finance/ui/pages/finance_screen.dart';
 import '../features/history/ui/pages/history_screen.dart';
@@ -74,14 +75,11 @@ final GoRouter appRouter = GoRouter(
       name: 'agenda',
       builder: (context, state) => const SchedulingScreen(),
       routes: [
-        // Sub-rota: /agenda/novo. Troque pela tela real de novo atendimento.
+        // Sub-rota: /agenda/novo. Aberta pelo card "Novo Atendimento".
         GoRoute(
           path: 'novo',
           name: 'agenda-novo', // usado por context.goNamed('agenda-novo')
-          builder: (context, state) => const EmConstrucaoScreen(
-            titulo: 'Novo Atendimento',
-            rotaAtual: '/agenda/novo',
-          ),
+          builder: (context, state) => const NewAppointmentScreen(),
         ),
       ],
     ),

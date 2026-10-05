@@ -13,11 +13,16 @@ class AppSearchField extends StatelessWidget {
   final ValueChanged<String> aoBuscar;
   final bool destaque;
 
+  /// Opcional: permite limpar ou preencher a busca por fora
+  /// (ex.: limpar depois de escolher um paciente).
+  final TextEditingController? controller;
+
   const AppSearchField({
     super.key,
     required this.dica,
     required this.aoBuscar,
     this.destaque = false,
+    this.controller,
   });
 
   OutlineInputBorder _borda(Color cor, double largura) {
@@ -33,6 +38,7 @@ class AppSearchField extends StatelessWidget {
     final corIcone = destaque ? AppColors.borderAccent : AppColors.textHint;
 
     return TextField(
+      controller: controller,
       onChanged: aoBuscar,
       textInputAction: TextInputAction.search,
       style: AppTextStyles.fieldValue,

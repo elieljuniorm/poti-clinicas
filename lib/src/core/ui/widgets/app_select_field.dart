@@ -231,6 +231,8 @@ class _Cabecalho extends StatelessWidget {
       expanded: aberto,
       label: rotulo,
       value: texto,
+      // excludeSemantics esconde o toque do InkWell: repassa aqui.
+      onTap: onTap,
       excludeSemantics: true,
       child: InkWell(
         onTap: onTap,
