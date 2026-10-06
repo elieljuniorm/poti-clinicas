@@ -10,7 +10,9 @@ class MedicalRecordSummaryDto {
   /// ISO 8601 (ex.: "2026-10-01T13:30:00").
   final String? lastSessionAt;
   final bool hasRecord;
-  final int pendingEvolutions;
+
+  /// ISO 8601: sessão realizada mais antiga ainda sem evolução.
+  final String? pendingEvolutionSince;
   final bool discharged;
 
   MedicalRecordSummaryDto({
@@ -19,7 +21,7 @@ class MedicalRecordSummaryDto {
     required this.specialty,
     this.lastSessionAt,
     required this.hasRecord,
-    required this.pendingEvolutions,
+    this.pendingEvolutionSince,
     required this.discharged,
   });
 
@@ -31,24 +33,25 @@ class MedicalRecordSummaryDto {
       specialty: json['specialty'],
       lastSessionAt: json['last_session_at'],
       hasRecord: json['has_record'] ?? false,
-      pendingEvolutions: json['pending_evolutions'] ?? 0,
+      pendingEvolutionSince: json['pending_evolution_since'],
       discharged: json['discharged'] ?? false,
     );
   }
 
   // DTO → Model de domínio
   MedicalRecordSummaryModel toDomain() {
-    final lastSessionAt = this.lastSessionAt;
     return MedicalRecordSummaryModel(
       patientId: patientId,
       patientName: patientName,
       specialty: specialty,
-      lastSession: lastSessionAt == null
-          ? null
-          : DateTime.tryParse(lastSessionAt),
+      lastSession: _data(lastSessionAt),
       hasRecord: hasRecord,
-      pendingEvolutions: pendingEvolutions,
+      pendingEvolutionSince: _data(pendingEvolutionSince),
       discharged: discharged,
     );
   }
+
+  /// Data inválida vira `null` em vez de quebrar a lista.
+  static DateTime? _data(String? iso) =>
+      iso == null ? null : DateTime.tryParse(iso);
 }

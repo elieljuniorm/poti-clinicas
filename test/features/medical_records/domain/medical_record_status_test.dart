@@ -3,48 +3,97 @@ import 'package:poti_5f/src/features/medical_records/domain/models/medical_recor
 import 'package:poti_5f/src/features/medical_records/domain/models/medical_record_status.dart';
 import 'package:poti_5f/src/features/medical_records/domain/models/medical_record_summary_model.dart';
 
+final agora = DateTime(2026, 10, 6, 12);
+final sessao = agora.subtract(const Duration(days: 3));
+
 MedicalRecordStatus status({
+  DateTime? lastSession,
+  bool semSessao = false,
   bool hasRecord = true,
-  int pendingEvolutions = 0,
+  DateTime? pendingEvolutionSince,
   bool discharged = false,
 }) {
   return MedicalRecordSummaryModel(
     patientId: '1',
     patientName: 'Paciente',
     specialty: 'Fisioterapia',
+    lastSession: semSessao ? null : lastSession ?? sessao,
     hasRecord: hasRecord,
-    pendingEvolutions: pendingEvolutions,
+    pendingEvolutionSince: pendingEvolutionSince,
     discharged: discharged,
-  ).status;
+  ).statusEm(agora);
 }
 
 void main() {
   group('status do prontuário', () {
-    test('sem prontuário: Novo', () {
-      expect(status(hasRecord: false), MedicalRecordStatus.newPatient);
+    test('nenhuma sessão realizada: Novo (com ou sem prontuário)', () {
+      expect(
+        status(semSessao: true, hasRecord: false),
+        MedicalRecordStatus.newPatient,
+      );
+      expect(status(semSessao: true), MedicalRecordStatus.newPatient);
     });
 
-    test('com prontuário e evoluções em dia: Em Terapia', () {
+    test('sessão realizada sem prontuário: Pendente, mesmo dentro de 24h', () {
+      expect(status(hasRecord: false), MedicalRecordStatus.pending);
+      expect(
+        status(
+          hasRecord: false,
+          lastSession: agora.subtract(const Duration(hours: 1)),
+        ),
+        MedicalRecordStatus.pending,
+      );
+    });
+
+    test('prontuário e evoluções em dia: Em Terapia', () {
       expect(status(), MedicalRecordStatus.inTherapy);
     });
 
-    test('uma ou mais evoluções pendentes: Pendente', () {
-      expect(status(pendingEvolutions: 1), MedicalRecordStatus.pending);
-      expect(status(pendingEvolutions: 3), MedicalRecordStatus.pending);
-    });
-
-    test('com alta: Alta Médica', () {
-      expect(status(discharged: true), MedicalRecordStatus.discharged);
-    });
-
-    test('pendência aparece mesmo sem prontuário ou com alta', () {
+    test('sessão sem evolução há mais de 24h: Pendente', () {
       expect(
-        status(hasRecord: false, pendingEvolutions: 1),
+        status(pendingEvolutionSince: sessao),
         MedicalRecordStatus.pending,
       );
       expect(
-        status(discharged: true, pendingEvolutions: 1),
+        status(
+          pendingEvolutionSince: agora.subtract(
+            const Duration(hours: 24, minutes: 1),
+          ),
+        ),
         MedicalRecordStatus.pending,
+      );
+    });
+
+    test('sessão sem evolução dentro das 24h: continua Em Terapia', () {
+      final recente = agora.subtract(const Duration(hours: 23));
+      expect(
+        status(lastSession: recente, pendingEvolutionSince: recente),
+        MedicalRecordStatus.inTherapy,
+      );
+      // Exatamente 24h ainda está no prazo.
+      final limite = agora.subtract(MedicalRecordSummaryModel.prazoEvolucao);
+      expect(
+        status(lastSession: limite, pendingEvolutionSince: limite),
+        MedicalRecordStatus.inTherapy,
+      );
+    });
+
+    test('vale a sessão mais antiga sem evolução, não a última', () {
+      // Última sessão há 2h, mas uma de 3 dias atrás ficou sem evolução.
+      expect(
+        status(
+          lastSession: agora.subtract(const Duration(hours: 2)),
+          pendingEvolutionSince: sessao,
+        ),
+        MedicalRecordStatus.pending,
+      );
+    });
+
+    test('prontuário fechado: Alta Médica, mesmo com pendência', () {
+      expect(status(discharged: true), MedicalRecordStatus.discharged);
+      expect(
+        status(discharged: true, pendingEvolutionSince: sessao),
+        MedicalRecordStatus.discharged,
       );
     });
   });

@@ -1,15 +1,17 @@
-/// Situação do paciente no prontuário.
+/// Situação do paciente no prontuário (regra em
+/// [MedicalRecordSummaryModel.statusEm]).
 enum MedicalRecordStatus {
-  /// Ainda sem prontuário criado (paciente recém-cadastrado).
+  /// Nenhuma sessão realizada ainda.
   newPatient('Novo'),
 
-  /// Prontuário criado e evolução do último atendimento feita.
+  /// Prontuário criado e evoluções em dia.
   inTherapy('Em Terapia'),
 
-  /// Um ou mais atendimentos com evolução pendente.
+  /// Sessão realizada sem prontuário, ou sessão realizada há mais de 24h
+  /// sem evolução registrada.
   pending('Pendente'),
 
-  /// Paciente evoluiu para alta.
+  /// Prontuário fechado: alta médica ou outro motivo relatado no prontuário.
   discharged('Alta Médica');
 
   final String label;

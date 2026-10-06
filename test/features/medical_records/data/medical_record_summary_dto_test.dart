@@ -12,7 +12,7 @@ void main() {
         'specialty': 'Fisioterapia',
         'last_session_at': '2026-10-01T13:30:00',
         'has_record': true,
-        'pending_evolutions': 0,
+        'pending_evolution_since': null,
         'discharged': false,
       }).toDomain();
 
@@ -43,6 +43,20 @@ void main() {
       }).toDomain();
 
       expect(model.lastSession, isNull);
+    });
+
+    test('converte a sessão mais antiga sem evolução', () {
+      final model = MedicalRecordSummaryDto.fromJson({
+        'patient_id': '8',
+        'patient_name': 'Lucas Freitas',
+        'specialty': 'Terapia Ocupacional',
+        'last_session_at': '2026-10-01T18:00:00',
+        'has_record': true,
+        'pending_evolution_since': '2026-09-28T18:00:00',
+      }).toDomain();
+
+      expect(model.pendingEvolutionSince, DateTime(2026, 9, 28, 18));
+      expect(model.status, MedicalRecordStatus.pending);
     });
   });
 

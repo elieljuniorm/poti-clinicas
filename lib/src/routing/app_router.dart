@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../core/ui/pages/em_construcao_screen.dart';
 import '../features/scheduling/ui/pages/new_appointment_screen.dart';
 import '../features/scheduling/ui/pages/scheduling_screen.dart';
 import '../features/finance/ui/pages/finance_screen.dart';
@@ -9,6 +8,9 @@ import '../features/finance/ui/pages/new_invoice_screen.dart';
 import '../features/history/ui/pages/history_screen.dart';
 import '../features/home/ui/pages/home_screen.dart';
 import '../features/login/ui/pages/login_screen.dart';
+import '../features/medical_records/domain/models/medical_record_content.dart';
+import '../features/medical_records/ui/pages/medical_record_form_screen.dart';
+import '../features/medical_records/ui/pages/medical_record_screen.dart';
 import '../features/medical_records/ui/pages/medical_records_screen.dart';
 import '../features/profile/ui/pages/profile_edit_screen.dart';
 import '../features/profile/ui/pages/profile_screen.dart';
@@ -99,22 +101,33 @@ final GoRouter appRouter = GoRouter(
       name: 'prontuario',
       builder: (context, state) => const MedicalRecordsScreen(),
       routes: [
-        // Sub-rotas do registro do paciente. Troque pelas telas reais.
+        // Sub-rotas do prontuário do paciente.
         GoRoute(
           path: ':patientId/novo',
           name: 'prontuario-criar', // "Criar Registro"
-          builder: (context, state) => const EmConstrucaoScreen(
-            titulo: 'Cadastrar Prontuário',
-            rotaAtual: '/prontuario/novo',
+          builder: (context, state) => MedicalRecordFormScreen(
+            patientId: state.pathParameters['patientId']!,
           ),
         ),
         GoRoute(
           path: ':patientId',
           name: 'prontuario-registro', // "Ver / Editar Registro"
-          builder: (context, state) => const EmConstrucaoScreen(
-            titulo: 'Visualizar Prontuário',
-            rotaAtual: '/prontuario/registro',
+          builder: (context, state) => MedicalRecordScreen(
+            patientId: state.pathParameters['patientId']!,
           ),
+          // Sub-rota: o voltar da edição retorna à visualização.
+          routes: [
+            GoRoute(
+              path: 'editar',
+              name: 'prontuario-editar', // lápis da anamnese
+              builder: (context, state) => MedicalRecordFormScreen(
+                patientId: state.pathParameters['patientId']!,
+                edicao: true,
+                secao: MedicalRecordSection.values
+                    .asNameMap()[state.uri.queryParameters['secao']],
+              ),
+            ),
+          ],
         ),
       ],
     ),

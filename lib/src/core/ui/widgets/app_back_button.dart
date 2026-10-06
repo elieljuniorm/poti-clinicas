@@ -11,13 +11,20 @@ class AppBackButton extends StatelessWidget {
   /// Nome da rota usada quando não há para onde voltar (ex.: 'agenda').
   final String rotaAnterior;
 
-  const AppBackButton({super.key, required this.rotaAnterior});
+  /// Parâmetros da [rotaAnterior] (ex.: `{'patientId': '2'}`).
+  final Map<String, String> parametros;
+
+  const AppBackButton({
+    super.key,
+    required this.rotaAnterior,
+    this.parametros = const {},
+  });
 
   void _voltar(BuildContext context) {
     if (context.canPop()) {
       context.pop();
     } else {
-      context.goNamed(rotaAnterior);
+      context.goNamed(rotaAnterior, pathParameters: parametros);
     }
   }
 

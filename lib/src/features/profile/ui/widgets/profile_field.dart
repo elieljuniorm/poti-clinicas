@@ -35,6 +35,11 @@ class ProfileField extends StatefulWidget {
   /// ocupa parte dessa altura.
   final double? altura;
 
+  /// Texto de várias linhas que cresce com o conteúdo (ex.: campos do
+  /// prontuário). Começa com [linhasMinimas]; ignorado quando há [altura].
+  final bool multilinha;
+  final int linhasMinimas;
+
   /// Mostra o valor com o visual de campo editável, mas sem deixar
   /// digitar (ex.: total calculado a partir de outros campos).
   final bool somenteLeitura;
@@ -56,6 +61,8 @@ class ProfileField extends StatefulWidget {
     this.validator,
     this.formatadores,
     this.altura,
+    this.multilinha = false,
+    this.linhasMinimas = 2,
     this.somenteLeitura = false,
     this.sufixo,
   });
@@ -67,7 +74,9 @@ class ProfileField extends StatefulWidget {
 class _ProfileFieldState extends State<ProfileField> {
   late bool _ocultar = widget.senha;
 
-  bool get _textoLongo => widget.altura != null;
+  bool get _alturaFixa => widget.altura != null;
+
+  bool get _textoLongo => _alturaFixa || widget.multilinha;
 
   OutlineInputBorder _borda(Color cor, [double largura = 1.5]) {
     return OutlineInputBorder(
@@ -102,7 +111,10 @@ class _ProfileFieldState extends State<ProfileField> {
                   ? TextInputType.multiline
                   : widget.teclado,
               maxLines: _textoLongo ? null : 1,
-              expands: _textoLongo,
+              minLines: _textoLongo && !_alturaFixa
+                  ? widget.linhasMinimas
+                  : null,
+              expands: _alturaFixa,
               textAlignVertical: _textoLongo ? TextAlignVertical.top : null,
               validator: widget.validator,
               inputFormatters: widget.formatadores,
