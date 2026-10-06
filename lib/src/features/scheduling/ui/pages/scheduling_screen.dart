@@ -41,7 +41,7 @@ class SchedulingScreen extends ConsumerWidget {
                 const Padding(
                   padding: EdgeInsets.fromLTRB(16, 24, 16, 0),
                   child: Text(
-                    'CONFIRA ABAIXO TODOS OS ATENDIMENTOS AGENDADOS\nCOM HORÁRIO E STATUS',
+                    'CONFIRA ABAIXO TODOS OS ATENDIMENTOS AGENDADOS COM HORÁRIO E STATUS',
                     textAlign: TextAlign.center,
                     style: AppTextStyles.pageDescription,
                   ),
