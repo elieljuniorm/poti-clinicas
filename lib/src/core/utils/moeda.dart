@@ -10,6 +10,14 @@ abstract final class Moeda {
     return '${sinal}R\$ ${_agrupar(inteiro)},$decimal';
   }
 
+  /// Lê o valor de um campo com máscara de moeda: os dígitos são os
+  /// centavos. "R$ 1.234,56" → 1234.56; sem dígitos → `null`.
+  static double? ler(String texto) {
+    final digitos = texto.replaceAll(RegExp(r'\D'), '');
+    if (digitos.isEmpty) return null;
+    return int.parse(digitos) / 100;
+  }
+
   /// Número inteiro com ponto de milhar, sem símbolo: 1500 → "1.500".
   /// Usado nos eixos de gráficos.
   static String formatarInteiro(double valor) {

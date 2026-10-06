@@ -14,6 +14,7 @@ import '../../../../core/ui/widgets/app_select_field.dart';
 import '../../../../core/ui/widgets/app_time_picker.dart';
 import '../../../../core/utils/datas.dart';
 import '../../../../core/utils/form_validators.dart';
+import '../../../finance/ui/widgets/patient_credits_info.dart';
 import '../../../profile/ui/widgets/profile_field.dart';
 import '../../../users/application/users_controller.dart';
 import '../../../users/domain/models/user_role.dart';
@@ -124,6 +125,32 @@ class _NewAppointmentScreenState extends ConsumerState<NewAppointmentScreen> {
         );
   }
 
+  /// "2 sessões agendadas para Ana. Pré-fatura de 2 sessões no Financeiro"
+  String _mensagemSucesso(NewAppointmentSuccess sucesso) {
+    final paciente = _rascunho.patient?.name ?? 'o paciente';
+    final agendadas = sucesso.sessions == 1
+        ? '1 sessão agendada'
+        : '${sucesso.sessions} sessões agendadas';
+    final base = '$agendadas para $paciente';
+
+    final faturamento = sucesso.billing;
+    if (faturamento == null) {
+      return '$base, mas a pré-fatura não foi gerada: ${sucesso.billingError}';
+    }
+
+    String sessoes(int n) => n == 1 ? '1 sessão' : '$n sessões';
+    final usados = faturamento.creditsUsed;
+    final pendentes = faturamento.pendingSessions;
+    final creditos =
+        '${PatientCreditsInfo.creditos(usados)} '
+        '${usados == 1 ? 'usado' : 'usados'}';
+    final preFatura = 'pré-fatura de ${sessoes(pendentes)} no Financeiro';
+
+    if (usados == 0) return '$base. Gerada $preFatura';
+    if (pendentes == 0) return '$base. $creditos';
+    return '$base. $creditos e gerada $preFatura';
+  }
+
   String? get _erroDatas {
     if (!_tentouSalvar || _rascunho.datasCompletas) return null;
     final faltam = _rascunho.faltamDatas;
@@ -142,13 +169,7 @@ class _NewAppointmentScreenState extends ConsumerState<NewAppointmentScreen> {
       final messenger = ScaffoldMessenger.of(context)..hideCurrentSnackBar();
 
       if (next is NewAppointmentSuccess) {
-        final paciente = _rascunho.patient?.name ?? 'o paciente';
-        final sessoes = next.sessions == 1
-            ? '1 sessão agendada'
-            : '${next.sessions} sessões agendadas';
-        messenger.showSnackBar(
-          SnackBar(content: Text('$sessoes para $paciente')),
-        );
+        messenger.showSnackBar(SnackBar(content: Text(_mensagemSucesso(next))));
         context.goNamed('agenda');
       }
       if (next is NewAppointmentError) {
@@ -209,6 +230,14 @@ class _NewAppointmentScreenState extends ConsumerState<NewAppointmentScreen> {
                         _atualizar(_rascunho.selecionarPaciente(p)),
                     aoRemover: () => _atualizar(_rascunho.removerPaciente()),
                   ),
+                  if (_rascunho.patient != null)
+                    PatientCreditsInfo(
+                      patientId: _rascunho.patient!.id,
+                      mensagem: (n) =>
+                          'O paciente tem ${PatientCreditsInfo.creditos(n)}. '
+                          'Eles cobrem as sessões deste agendamento antes '
+                          'de gerar pré-fatura.',
+                    ),
                   const SizedBox(height: 16),
 
                   // ---------- Sessões e calendário ----------

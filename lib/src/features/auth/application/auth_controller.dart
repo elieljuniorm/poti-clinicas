@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../domain/models/user.dart';
 
 /// Guarda o usuário logado globalmente usando a API moderna do Riverpod.
@@ -25,5 +26,6 @@ class AuthController extends Notifier<User?> {
 }
 
 /// O provider agora usa NotifierProvider.
-final authControllerProvider =
-    NotifierProvider<AuthController, User?>(AuthController.new);
+final authControllerProvider = NotifierProvider<AuthController, User?>(
+  AuthController.new,
+);

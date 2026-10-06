@@ -3,23 +3,30 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:go_router/go_router.dart';
+import 'package:poti_5f/src/features/finance/application/finance_controller.dart';
 import 'package:poti_5f/src/features/scheduling/application/scheduling_controller.dart';
 import 'package:poti_5f/src/features/scheduling/ui/pages/new_appointment_screen.dart';
 import 'package:poti_5f/src/features/users/application/users_controller.dart';
 
+import '../../finance/application/fake_finance_repository.dart';
 import '../../users/application/fake_users_repository.dart';
 import '../application/fake_scheduling_repository.dart';
 
 void main() {
   late FakeSchedulingRepository agenda;
+  late FakeFinanceRepository financeiro;
 
-  Future<void> abrir(WidgetTester tester) async {
+  Future<void> abrir(
+    WidgetTester tester, {
+    Map<String, int> creditos = const {},
+  }) async {
     // Tela alta: tudo cabe sem rolar.
     tester.view.physicalSize = const Size(1000, 4000);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.reset);
 
     agenda = FakeSchedulingRepository();
+    financeiro = FakeFinanceRepository(creditos: {...creditos});
     final router = GoRouter(
       initialLocation: '/agenda/novo',
       routes: [
@@ -44,6 +51,7 @@ void main() {
         overrides: [
           usersRepositoryProvider.overrideWithValue(FakeUsersRepository()),
           schedulingRepositoryProvider.overrideWithValue(agenda),
+          financeRepositoryProvider.overrideWithValue(financeiro),
         ],
         child: MaterialApp.router(routerConfig: router),
       ),
@@ -218,11 +226,41 @@ void main() {
     expect(enviado.sessions.first.start.day, 10);
     expect(enviado.sessions.last.start.day, 12);
 
+    // As sessões foram para o Financeiro: sem créditos, viram pré-fatura.
+    final faturado = financeiro.vinculados.single;
+    expect(faturado.patientName, 'Antônio Araújo');
+    expect(faturado.professionalName, 'Arnaldo Ribeiro');
+    expect(faturado.sessions, 2);
+
     expect(find.text('AGENDA'), findsOneWidget);
     expect(
-      find.text('2 sessões agendadas para Antônio Araújo'),
+      find.text(
+        '2 sessões agendadas para Antônio Araújo. '
+        'Gerada pré-fatura de 2 sessões no Financeiro',
+      ),
       findsOneWidget,
     );
+  });
+
+  testWidgets('paciente com créditos de agendamento mostra o aviso', (
+    tester,
+  ) async {
+    await abrir(tester, creditos: {'2': 3});
+
+    await tester.enterText(find.byType(TextField).first, 'anto');
+    await tester.pump();
+    await tester.tap(find.text('Antônio Araújo'));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.textContaining('O paciente tem 3 créditos de agendamento'),
+      findsOneWidget,
+    );
+
+    // Sem créditos, o aviso some.
+    await tester.tap(find.byTooltip('Remover paciente'));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('créditos de agendamento'), findsNothing);
   });
 
   testWidgets('a seta do cabeçalho volta para a Agenda', (tester) async {

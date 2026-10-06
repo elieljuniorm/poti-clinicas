@@ -35,6 +35,13 @@ class ProfileField extends StatefulWidget {
   /// ocupa parte dessa altura.
   final double? altura;
 
+  /// Mostra o valor com o visual de campo editável, mas sem deixar
+  /// digitar (ex.: total calculado a partir de outros campos).
+  final bool somenteLeitura;
+
+  /// Texto fixo depois do valor digitado (ex.: "%").
+  final String? sufixo;
+
   const ProfileField({
     super.key,
     required this.rotulo,
@@ -49,6 +56,8 @@ class ProfileField extends StatefulWidget {
     this.validator,
     this.formatadores,
     this.altura,
+    this.somenteLeitura = false,
+    this.sufixo,
   });
 
   @override
@@ -87,6 +96,7 @@ class _ProfileFieldState extends State<ProfileField> {
               controller: widget.controller,
               initialValue: widget.controller == null ? valor : null,
               enabled: widget.habilitado,
+              readOnly: widget.somenteLeitura,
               obscureText: _ocultar,
               keyboardType: _textoLongo
                   ? TextInputType.multiline
@@ -106,6 +116,8 @@ class _ProfileFieldState extends State<ProfileField> {
                 hintText: widget.habilitado ? widget.dica : '—',
                 hintStyle: AppTextStyles.formHint,
                 helperText: widget.textoAjuda,
+                suffixText: widget.sufixo,
+                suffixStyle: AppTextStyles.fieldValue,
                 prefixIcon: widget.icon == null
                     ? null
                     : Icon(widget.icon, color: AppColors.borderAccent),

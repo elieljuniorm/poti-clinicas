@@ -3,9 +3,9 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:poti_5f/main.dart';
-import 'package:poti_5f/src/core/ui/pages/em_construcao_screen.dart';
 import 'package:poti_5f/src/core/ui/widgets/app_bottom_nav.dart';
 import 'package:poti_5f/src/features/finance/ui/pages/finance_screen.dart';
+import 'package:poti_5f/src/features/finance/ui/pages/new_invoice_screen.dart';
 import 'package:poti_5f/src/features/history/ui/pages/history_screen.dart';
 import 'package:poti_5f/src/features/home/ui/pages/home_screen.dart';
 import 'package:poti_5f/src/features/login/ui/pages/login_screen.dart';
@@ -87,11 +87,19 @@ void main() {
     expect(find.byType(FinanceScreen), findsOneWidget);
     expect(find.text('FATURAMENTO DO MÊS'), findsOneWidget);
 
-    // ---------- Ação ainda sem tela abre a tela provisória ----------
+    // ---------- Pré-faturas abaixo dos profissionais ----------
+    expect(find.text('PRÉ-FATURAS'), findsOneWidget);
+    expect(find.text('Juliana Mendes Souza'), findsOneWidget);
+
+    // ---------- "Novo Lançamento" abre o formulário de fatura ----------
     await tester.tap(find.text('Novo Lançamento'));
+    await tester.pump(const Duration(seconds: 1));
     await tester.pumpAndSettle();
-    expect(find.byType(EmConstrucaoScreen), findsOneWidget);
-    expect(find.text('EM CONSTRUÇÃO'), findsOneWidget);
+    expect(find.byType(NewInvoiceScreen), findsOneWidget);
+    expect(
+      find.text('PREENCHA OS DADOS PARA LANÇAR UMA NOVA FATURA'),
+      findsOneWidget,
+    );
 
     // ---------- Cabeçalho do menu abre "Meus dados" ----------
     await tester.tap(find.byIcon(Symbols.menu));

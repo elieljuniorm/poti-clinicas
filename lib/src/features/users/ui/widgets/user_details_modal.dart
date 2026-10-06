@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 import '../../../../core/ui/theme/app_colors.dart';
@@ -77,45 +78,69 @@ class UserDetailsModal extends ConsumerWidget {
 // Widgets internos
 // ============================================================
 
-/// Card do topo com foto, nome e contatos do usuário.
+/// Card do topo com foto, nome e contatos do usuário. O toque fecha o
+/// modal e abre a edição do cadastro (seta à direita).
 class _CabecalhoUsuario extends StatelessWidget {
   final UserModel user;
 
   const _CabecalhoUsuario({required this.user});
 
+  void _editar(BuildContext context) {
+    // O router é lido antes de fechar: depois do pop o contexto do modal
+    // deixa de existir.
+    final router = GoRouter.of(context);
+    Navigator.pop(context);
+    router.goNamed('usuario-editar', pathParameters: {'userId': user.id});
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.actionCardBackground,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.borderAccent),
+    final borda = BorderRadius.circular(12);
+
+    return Material(
+      color: AppColors.actionCardBackground,
+      shape: RoundedRectangleBorder(
+        borderRadius: borda,
+        side: const BorderSide(color: AppColors.borderAccent),
       ),
-      child: Row(
-        children: [
-          AppAvatar(fotoUrl: user.photoUrl, raio: 32),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  user.name,
-                  style: const TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textPrimary,
-                  ),
+      child: InkWell(
+        borderRadius: borda,
+        onTap: () => _editar(context),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: [
+              AppAvatar(fotoUrl: user.photoUrl, raio: 32),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      user.name,
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    _Contato(icon: Symbols.mail, texto: user.email),
+                    const SizedBox(height: 2),
+                    _Contato(icon: Symbols.call, texto: user.phone),
+                  ],
                 ),
-                const SizedBox(height: 4),
-                _Contato(icon: Symbols.mail, texto: user.email),
-                const SizedBox(height: 2),
-                _Contato(icon: Symbols.call, texto: user.phone),
-              ],
-            ),
+              ),
+              const SizedBox(width: 8),
+              const Icon(
+                Symbols.chevron_right,
+                size: 28,
+                color: AppColors.borderAccent,
+                semanticLabel: 'Editar cadastro',
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

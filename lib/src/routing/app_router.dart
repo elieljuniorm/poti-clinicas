@@ -5,6 +5,7 @@ import '../core/ui/pages/em_construcao_screen.dart';
 import '../features/scheduling/ui/pages/new_appointment_screen.dart';
 import '../features/scheduling/ui/pages/scheduling_screen.dart';
 import '../features/finance/ui/pages/finance_screen.dart';
+import '../features/finance/ui/pages/new_invoice_screen.dart';
 import '../features/history/ui/pages/history_screen.dart';
 import '../features/home/ui/pages/home_screen.dart';
 import '../features/login/ui/pages/login_screen.dart';
@@ -12,6 +13,7 @@ import '../features/medical_records/ui/pages/medical_records_screen.dart';
 import '../features/profile/ui/pages/profile_edit_screen.dart';
 import '../features/profile/ui/pages/profile_screen.dart';
 import '../features/splash/ui/pages/splash_screen.dart';
+import '../features/users/ui/pages/user_edit_screen.dart';
 import '../features/users/ui/pages/user_registration_screen.dart';
 import '../features/users/ui/pages/users_screen.dart';
 
@@ -68,6 +70,15 @@ final GoRouter appRouter = GoRouter(
           name: 'usuario-novo', // ← usado por context.goNamed('usuario-novo')
           builder: (context, state) => const UserRegistrationScreen(),
         ),
+        // Sub-rota: /usuario/:userId/editar. Aberta pelo card do topo do
+        // modal do usuário.
+        GoRoute(
+          path: ':userId/editar',
+          name:
+              'usuario-editar', // ← usado por context.goNamed('usuario-editar')
+          builder: (context, state) =>
+              UserEditScreen(userId: state.pathParameters['userId']!),
+        ),
       ],
     ),
     GoRoute(
@@ -117,13 +128,20 @@ final GoRouter appRouter = GoRouter(
       name: 'financeiro',
       builder: (context, state) => const FinanceScreen(),
       routes: [
-        // Sub-rota: /financeiro/novo. Troque pela tela real de lançamento.
+        // Sub-rota: /financeiro/novo. Fatura sem atendimento: as sessões
+        // viram créditos de agendamento do paciente.
         GoRoute(
           path: 'novo',
           name: 'financeiro-novo', // ← card "Novo Lançamento"
-          builder: (context, state) => const EmConstrucaoScreen(
-            titulo: 'Novo Lançamento',
-            rotaAtual: '/financeiro/novo',
+          builder: (context, state) => const NewInvoiceScreen(),
+        ),
+        // Sub-rota: /financeiro/pre-fatura/:id. Finaliza a pré-fatura
+        // gerada pelo "Novo Atendimento" da Agenda.
+        GoRoute(
+          path: 'pre-fatura/:preInvoiceId',
+          name: 'financeiro-pre-fatura', // ← card da pré-fatura
+          builder: (context, state) => NewInvoiceScreen(
+            preInvoiceId: state.pathParameters['preInvoiceId'],
           ),
         ),
       ],

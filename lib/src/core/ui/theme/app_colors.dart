@@ -100,6 +100,15 @@ class AppColors {
   static const Color userInactive = Color(0xFF757575);
   static const Color userInactiveBackground = Color(0xFFEEEEEE);
 
+  /// Botões de "ADMINISTRAR USUÁRIO" (editar usuário): contorno e texto na
+  /// cor forte, fundo na cor clara.
+  static const Color userActivate = Color(0xFF007952);
+  static const Color userActivateBackground = Color(0xFFE8F5EE);
+  static const Color userDeactivate = Color(0xFFE64A19);
+  static const Color userDeactivateBackground = Color(0xFFFDEDEA);
+  static const Color userResetPassword = Color(0xFFF57C00);
+  static const Color userResetPasswordBackground = Color(0xFFFFF6E5);
+
   // ---------- Chips de filtro ----------
   /// Fundo do chip escolhido no [AppFilterChips] (#034965).
   static const Color chipSelected = Color(0xFF034965);

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../core/ui/formatters/mask_input_formatter.dart';
 import '../../../../../core/ui/theme/app_colors.dart';
 import '../../../../../core/ui/theme/app_text_styles.dart';
 import '../../../../../core/ui/widgets/app_section_divider.dart';
@@ -9,14 +10,26 @@ import 'registration_contact_fields.dart';
 /// Campos do responsável. Ficam com o formulário (que lê os valores ao
 /// salvar); a [PatientResponsibleSection] só os exibe e valida.
 class PatientResponsibleFormControllers {
-  final nome = TextEditingController();
-  final email = TextEditingController();
-  final telefone = TextEditingController();
-  final nascimento = TextEditingController();
+  final TextEditingController nome;
+  final TextEditingController email;
+  final TextEditingController telefone;
+  final TextEditingController nascimento;
 
   /// Marcado: o paciente é o seu próprio responsável e o formulário do
   /// responsável fica escondido.
-  bool proprioResponsavel = true;
+  bool proprioResponsavel;
+
+  /// Com [dados], os campos já começam preenchidos (edição). O telefone
+  /// vem só com dígitos e ganha a máscara aqui.
+  PatientResponsibleFormControllers([
+    PatientResponsibleModel? dados,
+    this.proprioResponsavel = true,
+  ]) : nome = TextEditingController(text: dados?.name),
+       email = TextEditingController(text: dados?.email),
+       telefone = TextEditingController(
+         text: MaskInputFormatter.telefone().formatar(dados?.phone ?? ''),
+       ),
+       nascimento = TextEditingController(text: dados?.birthDate);
 
   PatientResponsibleModel get dados => PatientResponsibleModel(
     name: nome.text.trim(),

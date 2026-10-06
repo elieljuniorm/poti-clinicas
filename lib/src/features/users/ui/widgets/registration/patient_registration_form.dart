@@ -3,12 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 import '../../../../../core/ui/formatters/mask_input_formatter.dart';
-import '../../../../../core/ui/widgets/app_action_buttons.dart';
 import '../../../../../core/ui/widgets/app_select_field.dart';
 import '../../../../../core/utils/form_validators.dart';
+import '../../../../profile/domain/models/address_model.dart';
 import '../../../../profile/ui/widgets/address_form_section.dart';
 import '../../../../profile/ui/widgets/profile_field.dart';
-import '../../../application/user_registration_controller.dart';
 import '../../../application/users_controller.dart';
 import '../../../domain/models/family_income.dart';
 import '../../../domain/models/marital_status.dart';
@@ -16,23 +15,37 @@ import '../../../domain/models/patient_category.dart';
 import '../../../domain/models/patient_responsible_model.dart';
 import '../../../domain/models/user_registration_model.dart';
 import '../../../domain/models/user_role.dart';
-import '../../states/user_registration_state.dart';
 import 'patient_responsible_section.dart';
 import 'registration_contact_fields.dart';
+import 'registration_form_buttons.dart';
 
 /// Cadastro de paciente: vínculo com um profissional, perfil fixo
 /// "Paciente", categoria, dados socioeconômicos, caso clínico, responsável
 /// e endereço com mapa (mesma lógica da edição do perfil, aqui preenchida
 /// pela clínica).
+///
+/// O mesmo formulário serve à edição: com [inicial], os campos já
+/// começam preenchidos.
 class PatientRegistrationForm extends ConsumerStatefulWidget {
-  final VoidCallback aoCancelar;
+  /// Cadastro já existente (edição). `null` no cadastro novo.
+  final UserRegistrationModel? inicial;
+  final bool salvando;
+  final ValueChanged<UserRegistrationModel> aoSalvar;
+
+  /// Sem ele, fica só o botão de salvar.
+  final VoidCallback? aoCancelar;
+  final String labelSalvar;
 
   /// Repassado ao mapa para a tela travar a rolagem.
   final ValueChanged<bool>? aoUsarMapa;
 
   const PatientRegistrationForm({
     super.key,
-    required this.aoCancelar,
+    this.inicial,
+    this.salvando = false,
+    required this.aoSalvar,
+    this.aoCancelar,
+    this.labelSalvar = 'Salvar',
     this.aoUsarMapa,
   });
 
@@ -45,19 +58,37 @@ class _PatientRegistrationFormState
     extends ConsumerState<PatientRegistrationForm> {
   final _formKey = GlobalKey<FormState>();
 
-  final _nomeController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _telefoneController = TextEditingController();
-  final _nascimentoController = TextEditingController();
-  final _cpfController = TextEditingController();
-  final _casoClinicoController = TextEditingController();
-  final _endereco = AddressFormControllers();
-  final _responsavel = PatientResponsibleFormControllers();
+  late final UserRegistrationModel? _inicial = widget.inicial;
 
-  String? _profissionalId;
-  PatientCategory? _categoria;
-  MaritalStatus? _estadoCivil;
-  FamilyIncome? _rendaFamiliar;
+  late final _nomeController = TextEditingController(text: _inicial?.name);
+  late final _emailController = TextEditingController(text: _inicial?.email);
+  late final _telefoneController = TextEditingController(
+    text: MaskInputFormatter.telefone().formatar(_inicial?.phone ?? ''),
+  );
+  late final _nascimentoController = TextEditingController(
+    text: _inicial?.birthDate,
+  );
+  late final _cpfController = TextEditingController(
+    text: MaskInputFormatter.cpf().formatar(_inicial?.document ?? ''),
+  );
+  late final _casoClinicoController = TextEditingController(
+    text: _inicial?.clinicalCase,
+  );
+  late final _endereco = AddressFormControllers(
+    _inicial?.address ?? const AddressModel(),
+  );
+  // Sem cadastro anterior, começa como o próprio responsável.
+  late final _responsavel = _inicial == null
+      ? PatientResponsibleFormControllers()
+      : PatientResponsibleFormControllers(
+          _inicial.selfResponsible ? null : _inicial.responsible,
+          _inicial.selfResponsible,
+        );
+
+  late String? _profissionalId = _inicial?.professionalId;
+  late PatientCategory? _categoria = _inicial?.patientCategory;
+  late MaritalStatus? _estadoCivil = _inicial?.maritalStatus;
+  late FamilyIncome? _rendaFamiliar = _inicial?.familyIncome;
 
   @override
   void dispose() {
@@ -90,26 +121,24 @@ class _PatientRegistrationFormState
           )
         : _responsavel.dados;
 
-    ref
-        .read(userRegistrationControllerProvider.notifier)
-        .cadastrar(
-          UserRegistrationModel(
-            name: _nomeController.text.trim(),
-            email: _emailController.text.trim(),
-            phone: _telefoneController.text,
-            birthDate: _nascimentoController.text.trim(),
-            role: UserRole.patient,
-            document: _cpfController.text,
-            patientCategory: _categoria,
-            professionalId: _profissionalId,
-            address: _endereco.endereco,
-            maritalStatus: _estadoCivil,
-            familyIncome: _rendaFamiliar,
-            clinicalCase: _casoClinicoController.text.trim(),
-            selfResponsible: proprioResponsavel,
-            responsible: responsavel,
-          ),
-        );
+    widget.aoSalvar(
+      UserRegistrationModel(
+        name: _nomeController.text.trim(),
+        email: _emailController.text.trim(),
+        phone: _telefoneController.text,
+        birthDate: _nascimentoController.text.trim(),
+        role: UserRole.patient,
+        document: _cpfController.text,
+        patientCategory: _categoria,
+        professionalId: _profissionalId,
+        address: _endereco.endereco,
+        maritalStatus: _estadoCivil,
+        familyIncome: _rendaFamiliar,
+        clinicalCase: _casoClinicoController.text.trim(),
+        selfResponsible: proprioResponsavel,
+        responsible: responsavel,
+      ),
+    );
   }
 
   /// Select de profissionais ativos, vindos da lista de usuários.
@@ -142,8 +171,7 @@ class _PatientRegistrationFormState
 
   @override
   Widget build(BuildContext context) {
-    final salvando =
-        ref.watch(userRegistrationControllerProvider) is UserRegistrationSaving;
+    final salvando = widget.salvando;
 
     return Form(
       key: _formKey,
@@ -225,14 +253,16 @@ class _PatientRegistrationFormState
             controllers: _endereco,
             habilitado: !salvando,
             aoUsarMapa: widget.aoUsarMapa,
-            buscarAoAbrir: false,
+            // Na edição, o mapa já abre no endereço salvo.
+            buscarAoAbrir: _inicial != null,
             obrigatorio: true,
             comDivisor: true,
           ),
 
           const SizedBox(height: 8),
-          AppSaveCancelButtons(
+          RegistrationFormButtons(
             salvando: salvando,
+            labelSalvar: widget.labelSalvar,
             aoSalvar: _salvar,
             aoCancelar: widget.aoCancelar,
           ),

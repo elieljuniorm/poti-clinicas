@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/data_sources/finance_remote_data_source.dart';
 import '../data/repository/finance_repository_impl.dart';
+import '../domain/models/pre_invoice_model.dart';
 import '../domain/repositories/finance_repository.dart';
 import '../ui/states/finance_state.dart';
 
@@ -38,6 +41,14 @@ class FinanceController extends Notifier<FinanceState> {
     }
   }
 
+  /// Pré-fatura pelo id, ou `null` se não estiver no painel carregado.
+  PreInvoiceModel? preFatura(String id) {
+    for (final preFatura in state.dashboard?.preInvoices ?? const []) {
+      if (preFatura.id == id) return preFatura;
+    }
+    return null;
+  }
+
   /// "Ver Todos" / "Ver Menos" dos profissionais.
   void alternarTodosProfissionais() {
     state = state.copyWith(showAllProfessionals: !state.showAllProfessionals);
@@ -58,3 +69,20 @@ final financeRepositoryProvider = Provider<FinanceRepository>((ref) {
 
 final financeControllerProvider =
     NotifierProvider<FinanceController, FinanceState>(FinanceController.new);
+
+/// Créditos de agendamento do paciente (faturas lançadas antes do
+/// atendimento). `autoDispose`: busca de novo a cada tela que abrir.
+final patientCreditsProvider = FutureProvider.autoDispose.family<int, String>(
+  (ref, patientId) =>
+      ref.watch(financeRepositoryProvider).buscarCreditos(patientId),
+);
+
+/// Chame depois de mudar pré-faturas ou créditos (novo atendimento, novo
+/// lançamento): recarrega o painel, se já estiver aberto, e descarta os
+/// créditos em cache.
+void atualizarFinanceiro(Ref ref) {
+  if (ref.exists(financeControllerProvider)) {
+    unawaited(ref.read(financeControllerProvider.notifier).carregar());
+  }
+  ref.invalidate(patientCreditsProvider);
+}

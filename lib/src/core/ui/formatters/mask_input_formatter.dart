@@ -82,3 +82,15 @@ class CpfCnpjInputFormatter extends TextInputFormatter {
         : MaskInputFormatter.aplicar(_cnpj, newValue, Documento.tamanhoCnpj);
   }
 }
+
+extension AplicarMascara on TextInputFormatter {
+  /// Formata um texto já salvo com esta máscara (ex.: telefone só com
+  /// dígitos ao preencher um formulário de edição).
+  String formatar(String texto) => formatEditUpdate(
+    TextEditingValue.empty,
+    TextEditingValue(
+      text: texto,
+      selection: TextSelection.collapsed(offset: texto.length),
+    ),
+  ).text;
+}

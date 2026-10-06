@@ -1,10 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:poti_5f/src/features/finance/application/finance_controller.dart';
 import 'package:poti_5f/src/features/scheduling/application/new_appointment_controller.dart';
 import 'package:poti_5f/src/features/scheduling/application/scheduling_controller.dart';
 import 'package:poti_5f/src/features/scheduling/domain/models/new_appointment_model.dart';
 import 'package:poti_5f/src/features/scheduling/ui/states/new_appointment_state.dart';
 
+import '../../finance/application/fake_finance_repository.dart';
 import 'fake_scheduling_repository.dart';
 
 void main() {
@@ -26,9 +28,17 @@ void main() {
     ],
   );
 
-  ProviderContainer criarContainer(FakeSchedulingRepository repository) {
+  ProviderContainer criarContainer(
+    FakeSchedulingRepository repository, {
+    FakeFinanceRepository? financeiro,
+  }) {
     final container = ProviderContainer.test(
-      overrides: [schedulingRepositoryProvider.overrideWithValue(repository)],
+      overrides: [
+        schedulingRepositoryProvider.overrideWithValue(repository),
+        financeRepositoryProvider.overrideWithValue(
+          financeiro ?? FakeFinanceRepository(),
+        ),
+      ],
     );
     // Mantém o autoDispose vivo durante o teste.
     container.listen(newAppointmentControllerProvider, (_, _) {});
@@ -73,5 +83,80 @@ void main() {
     final state = container.read(newAppointmentControllerProvider);
     expect(state, isA<NewAppointmentError>());
     expect((state as NewAppointmentError).message, 'Profissional indisponível');
+  });
+
+  group('faturamento das sessões', () {
+    test('sem créditos: as 2 sessões vão para a pré-fatura', () async {
+      final financeiro = FakeFinanceRepository();
+      final container = criarContainer(
+        FakeSchedulingRepository(),
+        financeiro: financeiro,
+      );
+
+      await container
+          .read(newAppointmentControllerProvider.notifier)
+          .agendar(agendamento);
+
+      final vinculado = financeiro.vinculados.single;
+      expect(vinculado.patientId, '2');
+      expect(vinculado.professionalId, '1');
+      expect(vinculado.sessions, 2);
+      final state = container.read(
+        newAppointmentControllerProvider,
+      ) as NewAppointmentSuccess;
+      expect(state.billing!.creditsUsed, 0);
+      expect(state.billing!.pendingSessions, 2);
+    });
+
+    test('com créditos: usa os créditos do paciente primeiro', () async {
+      final financeiro = FakeFinanceRepository(creditos: {'2': 1});
+      final container = criarContainer(
+        FakeSchedulingRepository(),
+        financeiro: financeiro,
+      );
+
+      await container
+          .read(newAppointmentControllerProvider.notifier)
+          .agendar(agendamento);
+
+      final state = container.read(
+        newAppointmentControllerProvider,
+      ) as NewAppointmentSuccess;
+      expect(state.billing!.creditsUsed, 1);
+      expect(state.billing!.pendingSessions, 1);
+    });
+
+    test('falha no Financeiro não desfaz o agendamento', () async {
+      final agenda = FakeSchedulingRepository();
+      final container = criarContainer(
+        agenda,
+        financeiro: FakeFinanceRepository(erroVincular: 'sem conexão'),
+      );
+
+      await container
+          .read(newAppointmentControllerProvider.notifier)
+          .agendar(agendamento);
+
+      final state = container.read(
+        newAppointmentControllerProvider,
+      ) as NewAppointmentSuccess;
+      expect(agenda.agendados, hasLength(1));
+      expect(state.billing, isNull);
+      expect(state.billingError, 'sem conexão');
+    });
+
+    test('agendamento recusado não chega ao Financeiro', () async {
+      final financeiro = FakeFinanceRepository();
+      final container = criarContainer(
+        FakeSchedulingRepository(erroAgendar: 'Profissional indisponível'),
+        financeiro: financeiro,
+      );
+
+      await container
+          .read(newAppointmentControllerProvider.notifier)
+          .agendar(agendamento);
+
+      expect(financeiro.vinculados, isEmpty);
+    });
   });
 }

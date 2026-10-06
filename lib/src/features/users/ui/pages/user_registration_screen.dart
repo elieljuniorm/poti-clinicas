@@ -73,6 +73,9 @@ class _UserRegistrationScreenState
 
     final salvando =
         ref.watch(userRegistrationControllerProvider) is UserRegistrationSaving;
+    final cadastrar = ref
+        .read(userRegistrationControllerProvider.notifier)
+        .cadastrar;
 
     return AppScaffold(
       titulo: 'Cadastrar Usuário',
@@ -119,12 +122,18 @@ class _UserRegistrationScreenState
                 Visibility(
                   visible: _tipo == _TipoCadastro.professional,
                   maintainState: true,
-                  child: ProfessionalRegistrationForm(aoCancelar: _voltar),
+                  child: ProfessionalRegistrationForm(
+                    salvando: salvando,
+                    aoSalvar: cadastrar,
+                    aoCancelar: _voltar,
+                  ),
                 ),
                 Visibility(
                   visible: _tipo == _TipoCadastro.patient,
                   maintainState: true,
                   child: PatientRegistrationForm(
+                    salvando: salvando,
+                    aoSalvar: cadastrar,
                     aoCancelar: _voltar,
                     aoUsarMapa: _aoUsarMapa,
                   ),

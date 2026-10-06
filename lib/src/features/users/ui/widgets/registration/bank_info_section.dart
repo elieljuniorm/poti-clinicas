@@ -11,12 +11,21 @@ import '../../../domain/models/bank_info_model.dart';
 /// Campos dos dados financeiros. Ficam com o formulário (que lê os valores
 /// ao salvar); a [BankInfoSection] só os exibe e valida.
 class BankInfoFormControllers {
-  final banco = TextEditingController();
-  final agencia = TextEditingController();
-  final conta = TextEditingController();
-  final chavePix = TextEditingController();
+  final TextEditingController banco;
+  final TextEditingController agencia;
+  final TextEditingController conta;
+  final TextEditingController chavePix;
   AccountType? tipoConta;
   PixKeyType? tipoChavePix;
+
+  /// Com [dados], os campos já começam preenchidos (edição).
+  BankInfoFormControllers([BankInfoModel? dados])
+    : banco = TextEditingController(text: dados?.bank),
+      agencia = TextEditingController(text: dados?.agency),
+      conta = TextEditingController(text: dados?.account),
+      chavePix = TextEditingController(text: dados?.pixKey),
+      tipoConta = dados?.accountType,
+      tipoChavePix = dados?.pixKeyType;
 
   /// Algum dado da conta bancária foi informado: aí a conta fica completa.
   bool get informouConta =>

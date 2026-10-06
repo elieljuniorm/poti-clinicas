@@ -1,3 +1,4 @@
+import '../../../../core/utils/documento.dart';
 import '../dtos/user_details_dto.dart';
 import '../dtos/user_dto.dart';
 import '../dtos/user_registration_dto.dart';
@@ -5,7 +6,7 @@ import '../dtos/user_registration_dto.dart';
 /// Responsabilidade: fazer a chamada externa real (HTTP).
 /// É o único lugar que "sabe" que existe uma API.
 class UsersDataSource {
-  static const _usuarios = [
+  static const _usuariosIniciais = [
     {
       'id': '1',
       'name': 'Arnaldo Ribeiro',
@@ -91,14 +92,89 @@ class UsersDataSource {
     },
   ];
 
-  /// Usuários cadastrados nesta sessão (simula o banco da API).
-  final List<Map<String, dynamic>> _cadastrados = [];
+  /// Cadastro completo dos usuários de exemplo, no formato da API (o mesmo
+  /// do [UserRegistrationDto]). Quem não está aqui tem o cadastro montado
+  /// a partir dos dados da lista (ver [_cadastroBasico]).
+  static const _cadastrosIniciais = <String, Map<String, dynamic>>{
+    '1': {
+      'name': 'Arnaldo Ribeiro',
+      'email': 'arnaldo.ribeiro@5f.com',
+      'phone': '91984551212',
+      'birth_date': '01/10/1988',
+      'role': 'professional',
+      'document': '52998224725',
+      'council_number': '123456-F',
+      'description': 'Fisioterapeuta',
+      'address': {
+        'zip_code': '67030-000',
+        'street': 'BR 316',
+        'number': '1835',
+        'complement': '',
+        'neighborhood': 'Guanabara',
+        'city': 'Ananindeua',
+        'state': 'PA',
+      },
+      'bank_info': {
+        'bank': '001 - Banco do Brasil',
+        'agency': '1234-5',
+        'account': '00012345-6',
+        'account_type': 'checking',
+        'pix_key_type': 'email',
+        'pix_key': 'arnaldo.ribeiro@5f.com',
+      },
+    },
+    '2': {
+      'name': 'Juliana Mendes Souza',
+      'email': 'juliana.mendes@gmail.com',
+      'phone': '91992114566',
+      'birth_date': '08/02/2000',
+      'role': 'patient',
+      'document': '52998224725',
+      'patient_category': 'adult',
+      'professional_id': '1',
+      'address': {
+        'zip_code': '67030-000',
+        'street': 'BR 316',
+        'number': '1835',
+        'complement': 'Próximo ao Colégio Bom Pastor',
+        'neighborhood': 'Guanabara',
+        'city': 'Ananindeua',
+        'state': 'PA',
+      },
+      'marital_status': 'single',
+      'family_income': 'from7000To22000',
+      'clinical_case':
+          'Formigamento e dormência no pé direito ao permanecer sentado '
+          'por mais de 30 minutos.',
+      'self_responsible': false,
+      'responsible': {
+        'name': 'Luiz Marques Pontes',
+        'email': 'luiz-marques@gmail.com',
+        'phone': '91999999999',
+        'birth_date': '18/12/1999',
+      },
+    },
+  };
+
+  /// Usuários da lista (simula o banco da API): os de exemplo mais os
+  /// cadastrados nesta sessão. Edições e mudanças de status ficam aqui.
+  final List<Map<String, dynamic>> _usuarios = [
+    for (final usuario in _usuariosIniciais) {...usuario},
+  ];
+
+  /// Cadastro completo por id, já com as edições desta sessão.
+  final Map<String, Map<String, dynamic>> _cadastros = {
+    for (final MapEntry(:key, :value) in _cadastrosIniciais.entries)
+      key: {...value},
+  };
+
+  int _novos = 0;
 
   // Simula a chamada de API com delay de 1 segundo e resposta em JSON.
   Future<List<UserDto>> buscarUsuarios() async {
     await Future.delayed(const Duration(seconds: 1));
 
-    return [..._usuarios, ..._cadastrados].map(UserDto.fromJson).toList();
+    return _usuarios.map(UserDto.fromJson).toList();
   }
 
   // Simula POST /users. Recusa e-mail já cadastrado, como a API faria.
@@ -106,28 +182,102 @@ class UsersDataSource {
     await Future.delayed(const Duration(seconds: 1));
 
     final json = cadastro.toJson();
-    final email = (json['email'] as String).toLowerCase();
-    final existe = [
-      ..._usuarios,
-      ..._cadastrados,
-    ].any((u) => (u['email'] as String).toLowerCase() == email);
-    if (existe) throw Exception('Já existe um usuário com este e-mail');
+    _validarEmail(json['email'] as String);
 
+    final id = 'novo-${++_novos}';
     final usuario = <String, dynamic>{
-      'id': 'novo-${_cadastrados.length + 1}',
-      'name': json['name'],
-      'email': json['email'],
-      'phone': _mascararTelefone(json['phone']),
-      'role': json['role'],
-      'description': json['description'],
-      'patient_category': json['patient_category'],
-      'document': json['document'],
+      'id': id,
+      ..._dadosDaLista(json),
       'status': 'active',
       'photo_url': null,
     };
-    _cadastrados.add(usuario);
+    _usuarios.add(usuario);
+    _cadastros[id] = json;
     return UserDto.fromJson(usuario);
   }
+
+  // Simula GET /users/{id}/registration.
+  Future<({UserDto usuario, UserRegistrationDto cadastro})> buscarCadastro(
+    String userId,
+  ) async {
+    await Future.delayed(const Duration(seconds: 1));
+
+    final usuario = _usuario(userId);
+    final cadastro = _cadastros[userId] ?? _cadastroBasico(usuario);
+    return (
+      usuario: UserDto.fromJson(usuario),
+      cadastro: UserRegistrationDto.fromJson(cadastro),
+    );
+  }
+
+  // Simula PUT /users/{id}. O e-mail não pode ser o de outro usuário.
+  Future<UserDto> atualizarUsuario(
+    String userId,
+    UserRegistrationDto cadastro,
+  ) async {
+    await Future.delayed(const Duration(seconds: 1));
+
+    final usuario = _usuario(userId);
+    final json = cadastro.toJson();
+    _validarEmail(json['email'] as String, ignorarId: userId);
+
+    usuario.addAll(_dadosDaLista(json));
+    _cadastros[userId] = json;
+    return UserDto.fromJson(usuario);
+  }
+
+  // Simula PATCH /users/{id}/status.
+  Future<UserDto> alterarStatus(String userId, {required bool ativo}) async {
+    await Future.delayed(const Duration(seconds: 1));
+
+    final usuario = _usuario(userId);
+    usuario['status'] = ativo ? 'active' : 'inactive';
+    return UserDto.fromJson(usuario);
+  }
+
+  // Simula POST /users/{id}/reset-password (a API envia o link por e-mail).
+  Future<void> resetarSenha(String userId) async {
+    await Future.delayed(const Duration(seconds: 1));
+    _usuario(userId);
+  }
+
+  Map<String, dynamic> _usuario(String userId) {
+    for (final usuario in _usuarios) {
+      if (usuario['id'] == userId) return usuario;
+    }
+    throw Exception('Usuário não encontrado');
+  }
+
+  void _validarEmail(String email, {String? ignorarId}) {
+    final existe = _usuarios.any(
+      (u) =>
+          u['id'] != ignorarId &&
+          (u['email'] as String).toLowerCase() == email.toLowerCase(),
+    );
+    if (existe) throw Exception('Já existe um usuário com este e-mail');
+  }
+
+  /// Campos do cadastro que aparecem na lista de usuários.
+  static Map<String, dynamic> _dadosDaLista(Map<String, dynamic> cadastro) => {
+    'name': cadastro['name'],
+    'email': cadastro['email'],
+    'phone': _mascararTelefone(cadastro['phone']),
+    'role': cadastro['role'],
+    'description': cadastro['description'],
+    'patient_category': cadastro['patient_category'],
+    'document': cadastro['document'],
+  };
+
+  /// Cadastro mínimo de quem não tem cadastro completo: os dados da lista.
+  static Map<String, dynamic> _cadastroBasico(Map<String, dynamic> usuario) => {
+    'name': usuario['name'],
+    'email': usuario['email'],
+    'phone': Documento.digitos(usuario['phone']),
+    'role': usuario['role'],
+    'document': usuario['document'] ?? '',
+    'description': usuario['description'],
+    'patient_category': usuario['patient_category'],
+  };
 
   /// A lista exibe o telefone formatado: "91999999999" → "(91) 9 9999-9999".
   static String _mascararTelefone(String digitos) {

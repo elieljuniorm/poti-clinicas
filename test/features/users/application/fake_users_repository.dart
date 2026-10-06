@@ -1,5 +1,6 @@
 import 'package:poti_5f/src/features/users/domain/models/consumption_model.dart';
 import 'package:poti_5f/src/features/users/domain/models/user_details_model.dart';
+import 'package:poti_5f/src/features/users/domain/models/user_edit_model.dart';
 import 'package:poti_5f/src/features/users/domain/models/user_model.dart';
 import 'package:poti_5f/src/features/users/domain/models/user_registration_model.dart';
 import 'package:poti_5f/src/features/users/domain/models/user_role.dart';
@@ -9,14 +10,24 @@ class FakeUsersRepository implements UsersRepository {
   bool deveFalhar;
   bool falharDetalhes;
   String? erroCadastro;
+  String? erroEdicao;
   final List<String> detalhesBuscados = [];
   final List<UserRegistrationModel> cadastros = [];
+  final List<UserRegistrationModel> edicoes = [];
+  final List<bool> statusAlterados = [];
+  final List<String> senhasResetadas = [];
   int buscasUsuarios = 0;
+
+  /// Cadastro devolvido por [buscarCadastro], por id. Sem cadastro aqui,
+  /// devolve só os dados da lista.
+  final Map<String, UserRegistrationModel> cadastrosCompletos;
 
   FakeUsersRepository({
     this.deveFalhar = false,
     this.falharDetalhes = false,
     this.erroCadastro,
+    this.erroEdicao,
+    this.cadastrosCompletos = const {},
   });
 
   static const usuarios = [
@@ -75,5 +86,70 @@ class FakeUsersRepository implements UsersRepository {
       phone: cadastro.phone,
       role: cadastro.role,
     );
+  }
+
+  final Map<String, bool> _ativos = {};
+
+  UserModel _usuario(String userId) {
+    final user = usuarios.firstWhere((u) => u.id == userId);
+    return UserModel(
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+      role: user.role,
+      active: _ativos[userId] ?? user.active,
+    );
+  }
+
+  @override
+  Future<UserEditModel> buscarCadastro(String userId) async {
+    if (falharDetalhes) throw Exception('sem conexão');
+    final user = _usuario(userId);
+    return UserEditModel(
+      user: user,
+      cadastro:
+          cadastrosCompletos[userId] ??
+          UserRegistrationModel(
+            name: user.name,
+            email: user.email,
+            phone: user.phone,
+            role: user.role,
+            document: '',
+          ),
+    );
+  }
+
+  @override
+  Future<UserModel> atualizarUsuario(
+    String userId,
+    UserRegistrationModel cadastro,
+  ) async {
+    final erro = erroEdicao;
+    if (erro != null) throw Exception(erro);
+    edicoes.add(cadastro);
+    return UserModel(
+      id: userId,
+      name: cadastro.name,
+      email: cadastro.email,
+      phone: cadastro.phone,
+      role: cadastro.role,
+    );
+  }
+
+  @override
+  Future<UserModel> alterarStatus(String userId, {required bool ativo}) async {
+    final erro = erroEdicao;
+    if (erro != null) throw Exception(erro);
+    statusAlterados.add(ativo);
+    _ativos[userId] = ativo;
+    return _usuario(userId);
+  }
+
+  @override
+  Future<void> resetarSenha(String userId) async {
+    final erro = erroEdicao;
+    if (erro != null) throw Exception(erro);
+    senhasResetadas.add(userId);
   }
 }

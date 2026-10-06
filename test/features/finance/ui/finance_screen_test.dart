@@ -4,13 +4,39 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:poti_5f/src/core/ui/widgets/app_area_chart.dart';
 import 'package:poti_5f/src/features/finance/application/finance_controller.dart';
+import 'package:poti_5f/src/features/finance/domain/models/pre_invoice_model.dart';
 import 'package:poti_5f/src/features/finance/ui/pages/finance_screen.dart';
+import 'package:poti_5f/src/features/finance/ui/widgets/pre_invoice_card.dart';
 import 'package:poti_5f/src/features/finance/ui/widgets/professional_payout_card.dart';
 
 import '../application/fake_finance_repository.dart';
 
 void main() {
-  Future<void> abrir(WidgetTester tester) async {
+  final preFaturas = [
+    PreInvoiceModel(
+      id: '7',
+      patientId: '2',
+      patientName: 'Juliana Mendes Souza',
+      professionalId: '1',
+      professionalName: 'Arnaldo Ribeiro',
+      sessions: 3,
+      createdAt: DateTime(2026, 7, 14),
+    ),
+    PreInvoiceModel(
+      id: '8',
+      patientId: '8',
+      patientName: 'Lucas Freitas',
+      professionalId: '3',
+      professionalName: 'Beatriz Nogueira',
+      sessions: 1,
+      createdAt: DateTime(2026, 7, 15),
+    ),
+  ];
+
+  Future<void> abrir(
+    WidgetTester tester, {
+    List<PreInvoiceModel> preFaturas = const [],
+  }) async {
     tester.view.physicalSize = const Size(1200, 5000);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.reset);
@@ -28,6 +54,12 @@ void main() {
               name: 'financeiro-novo',
               builder: (context, state) => const Text('NOVO LANÇAMENTO'),
             ),
+            GoRoute(
+              path: 'pre-fatura/:preInvoiceId',
+              name: 'financeiro-pre-fatura',
+              builder: (context, state) =>
+                  Text('PRÉ-FATURA ${state.pathParameters['preInvoiceId']}'),
+            ),
           ],
         ),
       ],
@@ -37,7 +69,9 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
-          financeRepositoryProvider.overrideWithValue(FakeFinanceRepository()),
+          financeRepositoryProvider.overrideWithValue(
+            FakeFinanceRepository(preFaturas: preFaturas),
+          ),
         ],
         child: MaterialApp.router(routerConfig: router),
       ),
@@ -85,5 +119,37 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('NOVO LANÇAMENTO'), findsOneWidget);
+  });
+
+  testWidgets('pré-faturas abaixo dos profissionais: paciente, '
+      'profissional e sessões', (tester) async {
+    await abrir(tester, preFaturas: preFaturas);
+
+    expect(find.text('PRÉ-FATURAS'), findsOneWidget);
+    expect(
+      tester.getTopLeft(find.text('PRÉ-FATURAS')).dy,
+      greaterThan(tester.getTopLeft(find.text('PROFISSIONAIS')).dy),
+    );
+    expect(find.byType(PreInvoiceCard), findsNWidgets(2));
+    expect(find.text('Juliana Mendes Souza'), findsOneWidget);
+    expect(find.text('Arnaldo Ribeiro'), findsOneWidget);
+    expect(find.text('3 sessões'), findsOneWidget);
+    expect(find.text('1 sessão'), findsOneWidget);
+  });
+
+  testWidgets('tocar na pré-fatura abre a finalização dela', (tester) async {
+    await abrir(tester, preFaturas: preFaturas);
+
+    await tester.tap(find.text('Lucas Freitas'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('PRÉ-FATURA 8'), findsOneWidget);
+  });
+
+  testWidgets('sem pré-faturas mostra o aviso', (tester) async {
+    await abrir(tester);
+
+    expect(find.text('Nenhuma pré-fatura pendente'), findsOneWidget);
+    expect(find.byType(PreInvoiceCard), findsNothing);
   });
 }

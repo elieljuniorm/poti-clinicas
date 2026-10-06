@@ -11,11 +11,14 @@ import '../../../../core/ui/widgets/app_financial_summary_card.dart';
 import '../../../../core/ui/widgets/app_scaffold.dart';
 import '../../application/finance_controller.dart';
 import '../../domain/models/finance_dashboard_model.dart';
+import '../../domain/models/pre_invoice_model.dart';
 import '../states/finance_state.dart';
+import '../widgets/pre_invoice_card.dart';
 import '../widgets/professional_payout_card.dart';
 
 /// Financeiro: novo lançamento (fatura do paciente), faturamento do mês,
-/// gráfico da semana e repasse por profissional.
+/// gráfico da semana, repasse por profissional e pré-faturas dos
+/// atendimentos aguardando lançamento.
 class FinanceScreen extends ConsumerWidget {
   const FinanceScreen({super.key});
 
@@ -52,7 +55,7 @@ class FinanceScreen extends ConsumerWidget {
 
                 // Só o painel mostra loading/erro: o "Novo Lançamento"
                 // continua disponível.
-                _buildPainel(financeState, controller),
+                _buildPainel(context, financeState, controller),
                 // Espaço para o menu inferior flutuante
                 const AppBottomSpacer(),
               ],
@@ -63,7 +66,11 @@ class FinanceScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildPainel(FinanceState state, FinanceController controller) {
+  Widget _buildPainel(
+    BuildContext context,
+    FinanceState state,
+    FinanceController controller,
+  ) {
     if (state.isLoading) {
       return const Padding(
         padding: EdgeInsets.symmetric(vertical: 32),
@@ -99,6 +106,15 @@ class FinanceScreen extends ConsumerWidget {
         _Profissionais(
           state: state,
           aoVerTodos: controller.alternarTodosProfissionais,
+        ),
+        const SizedBox(height: 32),
+
+        _PreFaturas(
+          preFaturas: painel.preInvoices,
+          aoAbrir: (preFatura) => context.goNamed(
+            'financeiro-pre-fatura',
+            pathParameters: {'preInvoiceId': preFatura.id},
+          ),
         ),
       ],
     );
@@ -189,6 +205,45 @@ class _Profissionais extends StatelessWidget {
         else
           for (final profissional in profissionais)
             ProfessionalPayoutCard(payout: profissional),
+      ],
+    );
+  }
+}
+
+class _PreFaturas extends StatelessWidget {
+  final List<PreInvoiceModel> preFaturas;
+  final ValueChanged<PreInvoiceModel> aoAbrir;
+
+  const _PreFaturas({required this.preFaturas, required this.aoAbrir});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const Text('PRÉ-FATURAS', style: AppTextStyles.detailsSectionTitle),
+        const SizedBox(height: 4),
+        const Text(
+          'Atendimentos agendados aguardando lançamento da fatura',
+          style: TextStyle(fontSize: 12, color: AppColors.textHint),
+        ),
+        const SizedBox(height: 12),
+
+        if (preFaturas.isEmpty)
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 32),
+            child: Text(
+              'Nenhuma pré-fatura pendente',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 13, color: Colors.grey),
+            ),
+          )
+        else
+          for (final preFatura in preFaturas)
+            PreInvoiceCard(
+              preInvoice: preFatura,
+              onTap: () => aoAbrir(preFatura),
+            ),
       ],
     );
   }

@@ -1,4 +1,5 @@
 import '../../domain/models/user_details_model.dart';
+import '../../domain/models/user_edit_model.dart';
 import '../../domain/models/user_model.dart';
 import '../../domain/models/user_registration_model.dart';
 import '../../domain/repositories/users_repository.dart';
@@ -31,4 +32,34 @@ class UsersRepositoryImpl implements UsersRepository {
     );
     return dto.toDomain();
   }
+
+  @override
+  Future<UserEditModel> buscarCadastro(String userId) async {
+    final resposta = await _dataSource.buscarCadastro(userId);
+    return UserEditModel(
+      user: resposta.usuario.toDomain(),
+      cadastro: resposta.cadastro.toDomain(),
+    );
+  }
+
+  @override
+  Future<UserModel> atualizarUsuario(
+    String userId,
+    UserRegistrationModel cadastro,
+  ) async {
+    final dto = await _dataSource.atualizarUsuario(
+      userId,
+      UserRegistrationDto.fromDomain(cadastro),
+    );
+    return dto.toDomain();
+  }
+
+  @override
+  Future<UserModel> alterarStatus(String userId, {required bool ativo}) async {
+    final dto = await _dataSource.alterarStatus(userId, ativo: ativo);
+    return dto.toDomain();
+  }
+
+  @override
+  Future<void> resetarSenha(String userId) => _dataSource.resetarSenha(userId);
 }

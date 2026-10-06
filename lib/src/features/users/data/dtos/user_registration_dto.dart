@@ -1,8 +1,12 @@
 import '../../../../core/utils/documento.dart';
 import '../../../profile/data/dtos/address_dto.dart';
 import '../../domain/models/bank_info_model.dart';
+import '../../domain/models/family_income.dart';
+import '../../domain/models/marital_status.dart';
+import '../../domain/models/patient_category.dart';
 import '../../domain/models/patient_responsible_model.dart';
 import '../../domain/models/user_registration_model.dart';
+import '../../domain/models/user_role.dart';
 
 /// Representa o cadastro exatamente como a API recebe.
 /// Documento e telefone trafegam só com dígitos.
@@ -105,6 +109,73 @@ class UserRegistrationDto {
       'pix_key': ?texto(info.pixKey),
     };
     return json.isEmpty ? null : json;
+  }
+
+  // JSON → DTO (cadastro completo, usado na edição)
+  factory UserRegistrationDto.fromJson(Map<String, dynamic> json) {
+    final address = json['address'] as Map<String, dynamic>?;
+    return UserRegistrationDto(
+      name: json['name'],
+      email: json['email'],
+      phone: json['phone'],
+      birthDate: json['birth_date'],
+      role: json['role'],
+      document: json['document'] ?? '',
+      councilNumber: json['council_number'],
+      description: json['description'],
+      patientCategory: json['patient_category'],
+      professionalId: json['professional_id'],
+      address: address == null ? null : AddressDto.fromJson(address),
+      bankInfo: json['bank_info'],
+      maritalStatus: json['marital_status'],
+      familyIncome: json['family_income'],
+      clinicalCase: json['clinical_case'],
+      selfResponsible: json['self_responsible'],
+      responsible: json['responsible'],
+    );
+  }
+
+  // DTO → Model de domínio. Valores desconhecidos de enum viram `null`.
+  UserRegistrationModel toDomain() {
+    final bankInfo = this.bankInfo;
+    final responsible = this.responsible;
+    return UserRegistrationModel(
+      name: name,
+      email: email,
+      phone: phone,
+      birthDate: birthDate ?? '',
+      role: UserRole.values.asNameMap()[role] ?? UserRole.patient,
+      document: document,
+      councilNumber: councilNumber,
+      description: description,
+      patientCategory: PatientCategory.values.asNameMap()[patientCategory],
+      professionalId: professionalId,
+      address: address?.toDomain(),
+      bankInfo: bankInfo == null
+          ? null
+          : BankInfoModel(
+              bank: bankInfo['bank'],
+              agency: bankInfo['agency'],
+              account: bankInfo['account'],
+              accountType: AccountType.values
+                  .asNameMap()[bankInfo['account_type']],
+              pixKeyType: PixKeyType.values
+                  .asNameMap()[bankInfo['pix_key_type']],
+              pixKey: bankInfo['pix_key'],
+            ),
+      maritalStatus: MaritalStatus.values.asNameMap()[maritalStatus],
+      familyIncome: FamilyIncome.values.asNameMap()[familyIncome],
+      clinicalCase: clinicalCase,
+      selfResponsible: selfResponsible ?? false,
+      responsible: responsible == null
+          ? null
+          : PatientResponsibleModel(
+              name: responsible['name'] ?? '',
+              email: responsible['email'] ?? '',
+              phone: responsible['phone'] ?? '',
+              birthDate: responsible['birth_date'] ?? '',
+            ),
+    );
   }
 
   // DTO → JSON (campos vazios não são enviados)

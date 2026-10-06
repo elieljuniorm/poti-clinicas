@@ -16,10 +16,7 @@ class LoginController extends Notifier<LoginState> {
     return const LoginInitial();
   }
 
-  Future<void> entrar({
-    required String email,
-    required String password,
-  }) async {
+  Future<void> entrar({required String email, required String password}) async {
     state = const LoginLoading();
 
     try {
@@ -33,9 +30,7 @@ class LoginController extends Notifier<LoginState> {
       // 3. Avisa a tela para navegar
       state = LoginSuccess(user);
     } catch (e) {
-      state = LoginError(
-        e.toString().replaceFirst('Exception: ', ''),
-      );
+      state = LoginError(e.toString().replaceFirst('Exception: ', ''));
     }
   }
 
@@ -47,12 +42,14 @@ class LoginController extends Notifier<LoginState> {
 // Providers
 // ============================================================
 
-final loginDataSourceProvider =
-    Provider<LoginDataSource>((ref) => LoginDataSource());
+final loginDataSourceProvider = Provider<LoginDataSource>(
+  (ref) => LoginDataSource(),
+);
 
 final loginRepositoryProvider = Provider<LoginRepository>((ref) {
   return LoginRepositoryImpl(ref.watch(loginDataSourceProvider));
 });
 
-final loginControllerProvider =
-    NotifierProvider<LoginController, LoginState>(LoginController.new);
+final loginControllerProvider = NotifierProvider<LoginController, LoginState>(
+  LoginController.new,
+);
