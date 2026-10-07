@@ -12,6 +12,11 @@
 *.log
 *.orig
 .DS_Store
+migrate_working_dir/
+
+# Símbolos e source maps de builds com --obfuscate / --split-debug-info
+app.*.symbols
+app.*.map.json
 
 # ===== Android =====
 **/android/**/gradle-wrapper.jar
@@ -22,6 +27,11 @@
 **/android/**/GeneratedPluginRegistrant.java
 **/android/key.properties
 *.jks
+*.keystore
+.cxx/
+**/android/app/debug
+**/android/app/profile
+**/android/app/release
 **/android/local.properties
 
 # ===== iOS =====
@@ -34,7 +44,6 @@
 **/ios/Flutter/.last_build_id
 **/ios/Pods/
 **/ios/.symlinks/
-**/ios/ Podfile.lock
 **/ios/Runner/GeneratedPluginRegistrant.*
 **/ios/Runner.xcworkspace/xcuserdata/
 **/ios/Runner.xcodeproj/xcuserdata/
@@ -51,9 +60,14 @@
 **/*.hmap
 **/*.ipa
 **/*.dSYM
+**/ios/Flutter/.swiftpm/
 
 # ===== macOS =====
 **/macos/Flutter/ephemeral/
 **/macos/Pods/
 **/macos/.symlinks/
 **/macos/Flutter/GeneratedPluginRegistrant.swift
+**/macos/Flutter/.swiftpm/
+**/macos/Flutter/Flutter.podspec
+**/macos/Runner.xcworkspace/xcuserdata/
+**/macos/Runner.xcodeproj/xcuserdata/
