@@ -4,12 +4,12 @@ import '../../../../../core/ui/theme/app_colors.dart';
 import '../../../../../core/ui/theme/app_text_styles.dart';
 import '../../../../../core/ui/widgets/app_action_buttons.dart';
 import '../../../../../core/ui/widgets/app_section_divider.dart';
-import '../../../../../core/utils/datas.dart';
 import '../../../../../core/utils/form_validators.dart';
 import '../../../../profile/ui/widgets/profile_field.dart';
 import '../../../domain/models/medical_record_content.dart';
 import '../../../domain/models/medical_record_create_model.dart';
 import '../../../domain/models/medical_record_details_model.dart';
+import '../evolution/evolution_form_fields.dart';
 
 /// Formulário do prontuário: as seções (anamnese, avaliação física e
 /// plano terapêutico) com os seus campos.
@@ -27,6 +27,9 @@ class MedicalRecordForm extends StatefulWidget {
   final VoidCallback aoCancelar;
   final MedicalRecordSection? secaoInicial;
 
+  /// Profissionais ativos (id → nome) para a evolução do primeiro cadastro.
+  final Map<String, String> profissionais;
+
   const MedicalRecordForm({
     super.key,
     required this.details,
@@ -35,6 +38,7 @@ class MedicalRecordForm extends StatefulWidget {
     required this.aoCancelar,
     this.salvando = false,
     this.secaoInicial,
+    this.profissionais = const {},
   });
 
   @override
@@ -50,7 +54,10 @@ class _MedicalRecordFormState extends State<MedicalRecordForm> {
     for (final campo in MedicalRecordField.values)
       campo: TextEditingController(text: widget.details.record?.content[campo]),
   };
-  final _evolucaoController = TextEditingController();
+  // A sessão a evoluir é a última realizada: a data já vem preenchida.
+  late final _evolucao = EvolutionFormControllers(
+    dataSessao: widget.details.summary.lastSession,
+  );
 
   /// A evolução só existe no cadastro e se houve sessão para evoluir.
   late final bool _podeEvoluir =
@@ -83,7 +90,7 @@ class _MedicalRecordFormState extends State<MedicalRecordForm> {
     for (final controller in _campos.values) {
       controller.dispose();
     }
-    _evolucaoController.dispose();
+    _evolucao.dispose();
     super.dispose();
   }
 
@@ -103,7 +110,7 @@ class _MedicalRecordFormState extends State<MedicalRecordForm> {
       MedicalRecordCreateModel(
         content: conteudo,
         evolution: _podeEvoluir && _registrarEvolucao
-            ? _evolucaoController.text.trim()
+            ? _evolucao.dados(widget.details.proximaSessao)
             : null,
       ),
     );
@@ -155,9 +162,6 @@ class _MedicalRecordFormState extends State<MedicalRecordForm> {
 
   /// "EVOLUÇÃO": registra junto a evolução da última sessão realizada.
   Widget _buildEvolucao(bool salvando) {
-    final details = widget.details;
-    final sessao = details.summary.lastSession!;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -190,26 +194,15 @@ class _MedicalRecordFormState extends State<MedicalRecordForm> {
             ],
           ),
         ),
-        // Desmarcado: o campo sai do Form e não é validado.
+        // Desmarcado: os campos saem do Form e não são validados.
         if (_registrarEvolucao) ...[
-          Padding(
-            padding: const EdgeInsets.fromLTRB(4, 8, 4, 8),
-            child: Text(
-              'Sessão #${details.sessionCount} - ${Datas.data(sessao)}',
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: AppColors.borderAccent,
-              ),
-            ),
-          ),
-          ProfileField(
-            rotulo: 'EVOLUÇÃO DA SESSÃO *',
-            controller: _evolucaoController,
+          const SizedBox(height: 8),
+          // Mesmos campos do modal "Nova Evolução".
+          EvolutionFormFields(
+            controllers: _evolucao,
+            numeroSessao: widget.details.proximaSessao,
+            profissionais: widget.profissionais,
             habilitado: !salvando,
-            multilinha: true,
-            dica: 'Como o paciente evoluiu e o que foi realizado na sessão',
-            validator: FormValidators.obrigatorio,
           ),
         ] else
           const Padding(

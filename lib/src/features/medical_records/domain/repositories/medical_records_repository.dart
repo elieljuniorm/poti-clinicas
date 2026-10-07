@@ -1,4 +1,5 @@
 import '../models/discharge_model.dart';
+import '../models/evolution_model.dart';
 import '../models/medical_record_content.dart';
 import '../models/medical_record_create_model.dart';
 import '../models/medical_record_details_model.dart';
@@ -20,6 +21,12 @@ abstract class MedicalRecordsRepository {
   Future<MedicalRecordDetailsModel> atualizarProntuario(
     String patientId,
     MedicalRecordContent anamnese,
+  );
+
+  /// Nova evolução: passa a ser a mais recente e pode tirar a pendência.
+  Future<MedicalRecordDetailsModel> registrarEvolucao(
+    String patientId,
+    EvolutionCreateModel evolucao,
   );
 
   /// Protocolo de alta: fecha o prontuário com o [motivo] relatado.

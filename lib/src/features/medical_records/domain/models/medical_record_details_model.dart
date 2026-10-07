@@ -32,4 +32,10 @@ class MedicalRecordDetailsModel {
     this.latestEvolution,
     this.discharge,
   });
+
+  /// Número da próxima evolução: a seguinte à mais recente.
+  int get proximaSessao => (latestEvolution?.sessionNumber ?? 0) + 1;
+
+  /// Prontuário aberto: recebe evoluções e pode ser editado.
+  bool get aberto => record != null && !summary.discharged;
 }

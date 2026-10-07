@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:poti_5f/src/features/medical_records/application/medical_record_controller.dart';
 import 'package:poti_5f/src/features/medical_records/application/medical_records_controller.dart';
+import 'package:poti_5f/src/features/medical_records/domain/models/evolution_model.dart';
 import 'package:poti_5f/src/features/medical_records/domain/models/medical_record_content.dart';
 import 'package:poti_5f/src/features/medical_records/domain/models/medical_record_create_model.dart';
 import 'package:poti_5f/src/features/medical_records/domain/models/medical_record_status.dart';
@@ -83,9 +84,15 @@ void main() {
       await container
           .read(medicalRecordFormControllerProvider(patientId).notifier)
           .criar(
-            const MedicalRecordCreateModel(
+            MedicalRecordCreateModel(
               content: anamnese,
-              evolution: 'Primeira avaliação.',
+              evolution: EvolutionCreateModel(
+                sessionNumber: 1,
+                sessionDate: DateTime.now(),
+                professionalId: '1',
+                description: 'Primeira avaliação.',
+                patientStatus: EvolutionPatientStatus.inTherapy,
+              ),
             ),
           );
       await Future<void>.delayed(Duration.zero);
@@ -95,7 +102,10 @@ void main() {
       );
       expect(state, isA<MedicalRecordFormSuccess>());
       expect((state as MedicalRecordFormSuccess).criado, isTrue);
-      expect(repository.criados.single.evolution, 'Primeira avaliação.');
+      expect(
+        repository.criados.single.evolution!.description,
+        'Primeira avaliação.',
+      );
 
       // Tela do prontuário e lista com o status novo.
       expect(

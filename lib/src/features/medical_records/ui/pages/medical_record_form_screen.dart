@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/ui/theme/app_colors.dart';
 import '../../../../core/ui/widgets/app_back_button.dart';
 import '../../../../core/ui/widgets/app_scaffold.dart';
+import '../../application/evolution_controller.dart';
 import '../../application/medical_record_controller.dart';
 import '../../domain/models/medical_record_content.dart';
 import '../states/medical_record_state.dart';
@@ -94,6 +95,7 @@ class MedicalRecordFormScreen extends ConsumerWidget {
             aoEditar: controller.atualizarProntuario,
             aoCancelar: cancelar,
             secaoInicial: secao,
+            profissionais: ref.watch(evolutionProfessionalsProvider),
           ),
         ],
       ),

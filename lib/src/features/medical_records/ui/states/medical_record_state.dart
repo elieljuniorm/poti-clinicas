@@ -70,3 +70,26 @@ class DischargeError extends DischargeState {
   final String message;
   const DischargeError(this.message);
 }
+
+/// Registro de uma nova evolução (modal "Nova Evolução").
+sealed class EvolutionFormState {
+  const EvolutionFormState();
+}
+
+class EvolutionFormInitial extends EvolutionFormState {
+  const EvolutionFormInitial();
+}
+
+class EvolutionFormSaving extends EvolutionFormState {
+  const EvolutionFormSaving();
+}
+
+class EvolutionFormSuccess extends EvolutionFormState {
+  final int sessionNumber;
+  const EvolutionFormSuccess(this.sessionNumber);
+}
+
+class EvolutionFormError extends EvolutionFormState {
+  final String message;
+  const EvolutionFormError(this.message);
+}

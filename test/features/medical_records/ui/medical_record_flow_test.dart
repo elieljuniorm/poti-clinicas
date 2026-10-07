@@ -5,12 +5,17 @@ import 'package:go_router/go_router.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:poti_5f/src/features/medical_records/application/medical_records_controller.dart';
 import 'package:poti_5f/src/features/medical_records/domain/models/discharge_model.dart';
+import 'package:poti_5f/src/features/medical_records/domain/models/evolution_model.dart';
 import 'package:poti_5f/src/features/medical_records/domain/models/medical_record_content.dart';
 import 'package:poti_5f/src/features/medical_records/domain/models/medical_record_summary_model.dart';
 import 'package:poti_5f/src/features/medical_records/ui/pages/medical_record_form_screen.dart';
 import 'package:poti_5f/src/features/medical_records/ui/pages/medical_record_screen.dart';
 import 'package:poti_5f/src/features/medical_records/ui/pages/medical_records_screen.dart';
+import 'package:poti_5f/src/features/medical_records/ui/widgets/evolution/evolution_details_modal.dart';
+import 'package:poti_5f/src/features/medical_records/ui/widgets/evolution/new_evolution_modal.dart';
+import 'package:poti_5f/src/features/users/application/users_controller.dart';
 
+import '../../users/application/fake_users_repository.dart';
 import '../application/fake_medical_records_repository.dart';
 
 void main() {
@@ -40,6 +45,15 @@ void main() {
       specialty: 'Fisioterapia',
       lastSession: tresDiasAtras,
       hasRecord: true,
+    ),
+    // Prontuário criado e sessão sem evolução há 3 dias: Pendente.
+    MedicalRecordSummaryModel(
+      patientId: '9',
+      patientName: 'Lucas Freitas',
+      specialty: 'Fisioterapia',
+      lastSession: tresDiasAtras,
+      hasRecord: true,
+      pendingEvolutionSince: tresDiasAtras,
     ),
     MedicalRecordSummaryModel(
       patientId: '8',
@@ -103,6 +117,8 @@ void main() {
       ProviderScope(
         overrides: [
           medicalRecordsRepositoryProvider.overrideWithValue(repository),
+          // Profissionais do select da evolução.
+          usersRepositoryProvider.overrideWithValue(FakeUsersRepository()),
         ],
         child: MaterialApp.router(routerConfig: router),
       ),
@@ -117,6 +133,25 @@ void main() {
         .first,
     matching: find.byType(TextFormField),
   );
+
+  /// Abre o select do [rotulo] e escolhe a [opcao].
+  Future<void> escolher(
+    WidgetTester tester,
+    String rotulo,
+    String opcao,
+  ) async {
+    final bloco = find
+        .ancestor(of: find.text(rotulo), matching: find.byType(Column))
+        .first;
+    await tester.ensureVisible(bloco);
+    // O primeiro InkWell do bloco é o cabeçalho do select.
+    await tester.tap(
+      find.descendant(of: bloco, matching: find.byType(InkWell)).first,
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(opcao).last);
+    await tester.pumpAndSettle();
+  }
 
   Future<void> salvar(WidgetTester tester) async {
     await tester.tap(find.text('SALVAR'));
@@ -147,21 +182,27 @@ void main() {
       expect(find.text('QUEIXA SECUNDÁRIA'), findsOneWidget);
       expect(find.text('EXAMES'), findsOneWidget);
 
-      // Evolução da sessão junto, marcada por padrão.
-      expect(find.textContaining('Sessão #3 - '), findsOneWidget);
+      // Evolução da sessão junto, marcada por padrão: mesmos campos do
+      // modal, com a data da última sessão e o número 1.
+      expect(find.text('DATA DA SESSÃO *'), findsOneWidget);
+      expect(find.widgetWithText(TextFormField, '1'), findsOneWidget);
 
       await salvar(tester);
-      // Queixa principal, diagnóstico e evolução.
+      // Queixa principal, diagnóstico e descrição da sessão; profissional
+      // e status do paciente.
       expect(find.text('Campo obrigatório'), findsNWidgets(3));
+      expect(find.text('Selecione uma opção'), findsNWidgets(2));
       expect(repository.criados, isEmpty);
 
       await tester.enterText(campo('QUEIXA PRINCIPAL *'), 'Dor no ombro.');
       await tester.enterText(campo('DIAGNÓSTICO MÉDICO *'), 'Tendinite.');
       await tester.enterText(campo('EXAMES'), 'Ultrassom.');
+      await escolher(tester, 'PROFISSIONAL *', 'Arnaldo Ribeiro');
       await tester.enterText(
-        campo('EVOLUÇÃO DA SESSÃO *'),
+        campo('DESCRIÇÃO DA SESSÃO (CONDUTA REALIZADA) *'),
         'Primeira avaliação.',
       );
+      await escolher(tester, 'STATUS DO PACIENTE *', 'Estável');
       await salvar(tester);
 
       final criado = repository.criados.single;
@@ -171,7 +212,12 @@ void main() {
       );
       expect(criado.content[MedicalRecordField.exams], 'Ultrassom.');
       expect(criado.content[MedicalRecordField.secondaryComplaint], '');
-      expect(criado.evolution, 'Primeira avaliação.');
+      final evolucao = criado.evolution!;
+      expect(evolucao.sessionNumber, 1);
+      expect(evolucao.professionalId, '1');
+      expect(evolucao.description, 'Primeira avaliação.');
+      expect(evolucao.patientStatus, EvolutionPatientStatus.stable);
+      expect(evolucao.scale, isNull);
 
       // Vai para a visualização, já com o status novo.
       expect(find.text('Visualizar Prontuário'), findsOneWidget);
@@ -188,7 +234,7 @@ void main() {
 
     await tester.tap(find.byType(Checkbox));
     await tester.pumpAndSettle();
-    expect(find.text('EVOLUÇÃO DA SESSÃO *'), findsNothing);
+    expect(find.text('DATA DA SESSÃO *'), findsNothing);
 
     await tester.enterText(campo('QUEIXA PRINCIPAL *'), 'Dor no ombro.');
     await tester.enterText(campo('DIAGNÓSTICO MÉDICO *'), 'Tendinite.');
@@ -207,7 +253,7 @@ void main() {
 
     expect(find.text('Novo'), findsOneWidget);
     expect(find.byType(Checkbox), findsNothing);
-    expect(find.text('EVOLUÇÃO DA SESSÃO *'), findsNothing);
+    expect(find.text('DATA DA SESSÃO *'), findsNothing);
   });
 
   testWidgets('visualizar e editar: o lápis abre o formulário preenchido', (
@@ -381,5 +427,142 @@ void main() {
     expect(find.text('Registrar Alta'), findsNothing);
     expect(find.byIcon(Symbols.edit), findsNothing);
     expect(find.text('+ Nova Evolução'), findsNothing);
+  });
+
+  testWidgets(
+    'nova evolução: modal valida, salva e tira o paciente de Pendente',
+    (tester) async {
+      await abrir(tester, '/prontuario/9');
+      expect(find.text('Pendente'), findsOneWidget);
+
+      await tester.tap(find.text('+ Nova Evolução'));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(NewEvolutionModal), findsOneWidget);
+      expect(
+        find.text('PREENCHA OS DADOS PARA CRIAR A NOVA EVOLUÇÃO'),
+        findsOneWidget,
+      );
+      // Sem evolução anterior: sessão nº 1, fixa.
+      expect(find.widgetWithText(TextFormField, '1'), findsOneWidget);
+      expect(find.text('ESCALAS DE AVALIAÇÃO'), findsOneWidget);
+
+      await tester.tap(find.text('SALVAR EVOLUÇÃO'));
+      await tester.pumpAndSettle();
+      // Data e descrição; profissional e status.
+      expect(find.text('Campo obrigatório'), findsNWidgets(2));
+      expect(find.text('Selecione uma opção'), findsNWidgets(2));
+      expect(repository.evolucoesRegistradas, isEmpty);
+
+      await tester.enterText(campo('DATA DA SESSÃO *'), '01032026');
+      await escolher(tester, 'PROFISSIONAL *', 'Arnaldo Ribeiro');
+      await tester.enterText(
+        campo('DESCRIÇÃO DA SESSÃO (CONDUTA REALIZADA) *'),
+        'Mobilização passiva segmentar.',
+      );
+      await tester.enterText(
+        campo('OBSERVAÇÕES RELEVANTES'),
+        'Fadiga muscular residual.',
+      );
+      await escolher(tester, 'STATUS DO PACIENTE *', 'Em Melhora');
+
+      // Com escala, o resultado vira obrigatório.
+      await escolher(
+        tester,
+        'ESCALA DE AVALIAÇÃO',
+        'EVA - Escala Visual Analógica da dor',
+      );
+      await tester.tap(find.text('SALVAR EVOLUÇÃO'));
+      await tester.pumpAndSettle();
+      expect(find.text('Campo obrigatório'), findsOneWidget);
+      expect(repository.evolucoesRegistradas, isEmpty);
+
+      await tester.enterText(campo('RESULTADO DA ESCALA *'), '3/10');
+      await tester.tap(find.text('SALVAR EVOLUÇÃO'));
+      await tester.pumpAndSettle();
+
+      final evolucao = repository.evolucoesRegistradas.single;
+      expect(evolucao.sessionNumber, 1);
+      expect(evolucao.sessionDate, DateTime(2026, 3, 1));
+      expect(evolucao.professionalId, '1');
+      expect(evolucao.observations, 'Fadiga muscular residual.');
+      expect(evolucao.clinicalProgress, '');
+      expect(evolucao.patientStatus, EvolutionPatientStatus.improving);
+      expect(evolucao.scale!.scale, AssessmentScale.eva);
+      expect(evolucao.scale!.result, '3/10');
+
+      // O modal fecha; a evolução recente e o status já mudaram.
+      expect(find.byType(NewEvolutionModal), findsNothing);
+      expect(find.text('Evolução da sessão #1 salva'), findsOneWidget);
+      expect(find.text('Mobilização passiva segmentar.'), findsOneWidget);
+      expect(find.text('Em Terapia'), findsOneWidget);
+    },
+  );
+
+  testWidgets('descartar fecha o modal sem salvar', (tester) async {
+    await abrir(tester, '/prontuario/9');
+
+    await tester.tap(find.text('+ Nova Evolução'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Descartar evolução'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(NewEvolutionModal), findsNothing);
+    expect(repository.evolucoesRegistradas, isEmpty);
+  });
+
+  testWidgets('tocar na evolução recente abre a evolução completa', (
+    tester,
+  ) async {
+    // Paciente sem evolução: o card não abre nada.
+    await abrir(tester, '/prontuario/9');
+    await tester.tap(find.text('Nenhuma evolução registrada'));
+    await tester.pumpAndSettle();
+    expect(find.byType(EvolutionDetailsModal), findsNothing);
+
+    // Evolução registrada por fora; a tela recarrega ao voltar a ela.
+    await repository.registrarEvolucao(
+      '9',
+      EvolutionCreateModel(
+        sessionNumber: 13,
+        sessionDate: DateTime(2026, 2, 13),
+        professionalId: '1',
+        description: 'Mobilização articular passiva.',
+        clinicalProgress: 'Ganho gradual de amplitude.',
+        patientStatus: EvolutionPatientStatus.inTherapy,
+        scale: const EvolutionScaleModel(
+          scale: AssessmentScale.eva,
+          result: '3/10',
+        ),
+      ),
+    );
+    router.goNamed('prontuario');
+    await tester.pumpAndSettle();
+    router.goNamed('prontuario-registro', pathParameters: {'patientId': '9'});
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Mobilização articular passiva.'));
+    await tester.pumpAndSettle();
+
+    final modal = find.byType(EvolutionDetailsModal);
+    expect(modal, findsOneWidget);
+    Finder noModal(String texto) =>
+        find.descendant(of: modal, matching: find.text(texto));
+    expect(noModal('Sessão #13'), findsOneWidget);
+    expect(noModal('13/02/2026'), findsOneWidget);
+    expect(noModal('PROFISSIONAL'), findsOneWidget);
+    expect(noModal('Em Terapia'), findsOneWidget);
+    expect(
+      noModal('Registrado por Fernanda Lima - 02/03/${DateTime.now().year}'),
+      findsOneWidget,
+    );
+    expect(noModal('DESCRIÇÃO DA SESSÃO'), findsOneWidget);
+    expect(noModal('EVOLUÇÃO / PROGRESSO CLÍNICO'), findsOneWidget);
+    // Observações em branco não aparecem.
+    expect(noModal('OBSERVAÇÕES RELEVANTES'), findsNothing);
+    expect(
+      noModal('EVA - Escala Visual Analógica da dor: 3/10'),
+      findsOneWidget,
+    );
   });
 }

@@ -25,8 +25,7 @@ class MedicalRecordsDataSource {
     return MedicalRecordDetailsDto.fromJson(_paciente(patientId));
   }
 
-  // Simula POST /medical-records/{patientId}. A evolução, quando vem,
-  // é da última sessão realizada e tira a pendência de evolução.
+  // Simula POST /medical-records/{patientId}. A evolução pode vir junto.
   Future<MedicalRecordDetailsDto> criarProntuario(
     String patientId,
     Map<String, dynamic> json,
@@ -38,11 +37,6 @@ class MedicalRecordsDataSource {
       throw Exception('Este paciente já tem prontuário');
     }
 
-    final evolucao = json['evolution'] as Map<String, dynamic>?;
-    if (evolucao != null && paciente['last_session_at'] == null) {
-      throw Exception('Nenhuma sessão realizada para registrar a evolução');
-    }
-
     final agora = DateTime.now().toIso8601String();
     paciente['has_record'] = true;
     paciente['record'] = {
@@ -50,16 +44,62 @@ class MedicalRecordsDataSource {
       'updated_at': agora,
       'content': json['content'],
     };
-    if (evolucao != null) {
-      paciente['latest_evolution'] = {
-        'session_number': paciente['session_count'],
-        'session_date': paciente['last_session_at'],
-        'professional_name': paciente['professional_name'],
-        'description': evolucao['description'],
-      };
+    final evolucao = json['evolution'] as Map<String, dynamic>?;
+    if (evolucao != null) _salvarEvolucao(paciente, evolucao);
+    return MedicalRecordDetailsDto.fromJson(paciente);
+  }
+
+  // Simula POST /medical-records/{patientId}/evolutions.
+  Future<MedicalRecordDetailsDto> registrarEvolucao(
+    String patientId,
+    Map<String, dynamic> json,
+  ) async {
+    await Future.delayed(const Duration(seconds: 1));
+
+    final paciente = _paciente(patientId);
+    if (paciente['record'] == null) {
+      throw Exception('Crie o prontuário antes de registrar evoluções');
+    }
+    if (paciente['discharged'] == true) {
+      throw Exception('O prontuário está fechado (alta)');
+    }
+
+    _salvarEvolucao(paciente, json);
+    return MedicalRecordDetailsDto.fromJson(paciente);
+  }
+
+  /// Profissionais (como o banco faria o join pelo id).
+  static const _profissionais = {
+    '1': 'Arnaldo Ribeiro',
+    '3': 'Beatriz Nogueira',
+  };
+
+  /// A evolução vira a mais recente. Se ela chega até a última sessão
+  /// realizada, as sessões ficam todas evoluídas e a pendência some.
+  static void _salvarEvolucao(
+    Map<String, dynamic> paciente,
+    Map<String, dynamic> json,
+  ) {
+    final numero = json['session_number'] as int;
+    final profissional =
+        _profissionais[json['professional_id']] ?? 'Profissional';
+
+    paciente['latest_evolution'] = {
+      ...json,
+      'professional_name': profissional,
+      // A API usa o usuário logado; o mock, o profissional da sessão.
+      'registered_by': profissional,
+      'registered_at': DateTime.now().toIso8601String(),
+    };
+
+    // Sessão nova (fora da agenda): passa a contar como realizada.
+    if (numero > (paciente['session_count'] as int)) {
+      paciente['session_count'] = numero;
+      paciente['last_session_at'] = json['session_date'];
+    }
+    if (numero >= (paciente['session_count'] as int)) {
       paciente['pending_evolution_since'] = null;
     }
-    return MedicalRecordDetailsDto.fromJson(paciente);
   }
 
   // Simula PUT /medical-records/{patientId}.
@@ -134,12 +174,25 @@ class MedicalRecordsDataSource {
       int numero,
       String sessao,
       String profissional,
-      String descricao,
-    ) => {
+      String descricao, {
+      String? observacoes,
+      String? progresso,
+      String status = 'inTherapy',
+      Map<String, String>? escala,
+    }) => {
       'session_number': numero,
       'session_date': sessao,
       'professional_name': profissional,
       'description': descricao,
+      'observations': ?observacoes,
+      'clinical_progress': ?progresso,
+      'patient_status': status,
+      'scale': ?escala,
+      'registered_by': profissional,
+      // Registrada no fim do dia da sessão.
+      'registered_at': DateTime.parse(sessao)
+          .copyWith(hour: 19)
+          .toIso8601String(),
     };
 
     const lombar = {
@@ -240,6 +293,13 @@ class MedicalRecordsDataSource {
           data(7, 13, 30),
           'Arnaldo Ribeiro',
           melhora,
+          observacoes:
+              'Paciente queixou-se de fadiga muscular residual no final do '
+              'protocolo.',
+          progresso:
+              'Ganho gradual de amplitude sem manifestação de dor irradiada.',
+          status: 'improving',
+          escala: const {'type': 'eva', 'result': '3/10'},
         ),
       },
       {

@@ -1,9 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:poti_5f/src/features/medical_records/data/data_sources/medical_records_remote_data_source.dart';
 import 'package:poti_5f/src/features/medical_records/data/dtos/medical_record_content_dto.dart';
+import 'package:poti_5f/src/features/medical_records/data/dtos/evolution_dto.dart';
 import 'package:poti_5f/src/features/medical_records/data/dtos/medical_record_details_dto.dart';
 import 'package:poti_5f/src/features/medical_records/data/repository/medical_records_repository_impl.dart';
 import 'package:poti_5f/src/features/medical_records/domain/models/discharge_model.dart';
+import 'package:poti_5f/src/features/medical_records/domain/models/evolution_model.dart';
 import 'package:poti_5f/src/features/medical_records/domain/models/medical_record_content.dart';
 import 'package:poti_5f/src/features/medical_records/domain/models/medical_record_create_model.dart';
 import 'package:poti_5f/src/features/medical_records/domain/models/medical_record_status.dart';
@@ -83,14 +85,57 @@ void main() {
       expect(details.latestEvolution!.sessionNumber, 12);
     });
 
-    test('evolução vazia não é enviada na criação', () {
+    test('sem evolução, a criação não envia "evolution"', () {
       final json = MedicalRecordDetailsDto.createJson(
-        const MedicalRecordCreateModel(
-          content: MedicalRecordContent(),
-          evolution: '  ',
-        ),
+        const MedicalRecordCreateModel(content: MedicalRecordContent()),
       );
       expect(json.containsKey('evolution'), isFalse);
+    });
+  });
+
+  group('EvolutionDto', () {
+    test('envia os campos da API; textos vazios ficam de fora', () {
+      final json = EvolutionDto.createJson(
+        EvolutionCreateModel(
+          sessionNumber: 13,
+          sessionDate: DateTime(2026, 2, 13, 15, 30),
+          professionalId: '1',
+          description: ' Mobilização passiva. ',
+          observations: '  ',
+          clinicalProgress: 'Ganho de amplitude.',
+          patientStatus: EvolutionPatientStatus.improving,
+          scale: const EvolutionScaleModel(
+            scale: AssessmentScale.eva,
+            result: '3/10',
+          ),
+        ),
+      );
+
+      expect(json, {
+        'session_number': 13,
+        'session_date': '2026-02-13T00:00:00.000',
+        'professional_id': '1',
+        'description': 'Mobilização passiva.',
+        'clinical_progress': 'Ganho de amplitude.',
+        'patient_status': 'improving',
+        'scale': {'type': 'eva', 'result': '3/10'},
+      });
+    });
+
+    test('evolução antiga, sem os campos novos, não quebra', () {
+      final model = EvolutionDto({
+        'session_number': 3,
+        'session_date': '2026-02-01T10:00:00',
+        'professional_name': 'Arnaldo Ribeiro',
+        'description': 'Boa resposta.',
+      }).toDomain();
+
+      expect(model.observations, '');
+      expect(model.patientStatus, isNull);
+      expect(model.scale, isNull);
+      // Sem quem registrou: o profissional, na data da sessão.
+      expect(model.registeredBy, 'Arnaldo Ribeiro');
+      expect(model.registeredAt, DateTime(2026, 2, 1, 10));
     });
   });
 
@@ -101,6 +146,47 @@ void main() {
       () =>
           repository = MedicalRecordsRepositoryImpl(MedicalRecordsDataSource()),
     );
+
+    EvolutionCreateModel evolucao(int numero, String descricao) =>
+        EvolutionCreateModel(
+          sessionNumber: numero,
+          sessionDate: DateTime.now(),
+          professionalId: '1',
+          description: descricao,
+          patientStatus: EvolutionPatientStatus.inTherapy,
+        );
+
+    test('nova evolução da sessão pendente: sai de Pendente', () async {
+      // Lucas: 4 sessões, última evolução #3, sessão #4 sem evolução.
+      final antes = await repository.buscarProntuario('8');
+      expect(antes.summary.status, MedicalRecordStatus.pending);
+      expect(antes.proximaSessao, 4);
+
+      final details = await repository.registrarEvolucao(
+        '8',
+        evolucao(4, 'Melhora na preensão.'),
+      );
+
+      expect(details.summary.status, MedicalRecordStatus.inTherapy);
+      expect(details.latestEvolution!.sessionNumber, 4);
+      expect(details.latestEvolution!.professionalName, 'Arnaldo Ribeiro');
+      expect(
+        details.latestEvolution!.patientStatus,
+        EvolutionPatientStatus.inTherapy,
+      );
+      expect(details.proximaSessao, 5);
+    });
+
+    test('evolução precisa de prontuário aberto', () {
+      expect(
+        repository.registrarEvolucao('12', evolucao(1, 'x')),
+        throwsA(isA<Exception>()),
+      );
+      expect(
+        repository.registrarEvolucao('11', evolucao(11, 'x')),
+        throwsA(isA<Exception>()),
+      );
+    });
 
     const anamnese = MedicalRecordContent({
       MedicalRecordField.chiefComplaint: 'Dor no ombro.',
@@ -116,9 +202,9 @@ void main() {
 
       final details = await repository.criarProntuario(
         '6',
-        const MedicalRecordCreateModel(
+        MedicalRecordCreateModel(
           content: anamnese,
-          evolution: 'Primeira avaliação.',
+          evolution: evolucao(1, 'Primeira avaliação.'),
         ),
       );
 
@@ -145,25 +231,15 @@ void main() {
       expect(details.summary.status, MedicalRecordStatus.pending);
     });
 
-    test(
-      'sem sessão, não aceita evolução; prontuário duplicado também não',
-      () {
-        expect(
-          repository.criarProntuario(
-            '12',
-            const MedicalRecordCreateModel(content: anamnese, evolution: 'x'),
-          ),
-          throwsA(isA<Exception>()),
-        );
-        expect(
-          repository.criarProntuario(
-            '2',
-            const MedicalRecordCreateModel(content: anamnese),
-          ),
-          throwsA(isA<Exception>()),
-        );
-      },
-    );
+    test('prontuário duplicado não é aceito', () {
+      expect(
+        repository.criarProntuario(
+          '2',
+          const MedicalRecordCreateModel(content: anamnese),
+        ),
+        throwsA(isA<Exception>()),
+      );
+    });
 
     test('editar troca a anamnese e registra a modificação', () async {
       final antes = await repository.buscarProntuario('9');

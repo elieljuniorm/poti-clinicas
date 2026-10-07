@@ -1,10 +1,12 @@
 import '../../domain/models/discharge_model.dart';
+import '../../domain/models/evolution_model.dart';
 import '../../domain/models/medical_record_content.dart';
 import '../../domain/models/medical_record_create_model.dart';
 import '../../domain/models/medical_record_details_model.dart';
 import '../../domain/models/medical_record_summary_model.dart';
 import '../../domain/repositories/medical_records_repository.dart';
 import '../data_sources/medical_records_remote_data_source.dart';
+import '../dtos/evolution_dto.dart';
 import '../dtos/medical_record_content_dto.dart';
 import '../dtos/medical_record_details_dto.dart';
 
@@ -47,6 +49,18 @@ class MedicalRecordsRepositoryImpl implements MedicalRecordsRepository {
     final dto = await _dataSource.atualizarProntuario(
       patientId,
       MedicalRecordContentDto.fromDomain(anamnese).toJson(),
+    );
+    return dto.toDomain();
+  }
+
+  @override
+  Future<MedicalRecordDetailsModel> registrarEvolucao(
+    String patientId,
+    EvolutionCreateModel evolucao,
+  ) async {
+    final dto = await _dataSource.registrarEvolucao(
+      patientId,
+      EvolutionDto.createJson(evolucao),
     );
     return dto.toDomain();
   }

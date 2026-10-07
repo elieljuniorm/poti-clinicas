@@ -13,6 +13,8 @@ import '../../application/medical_record_controller.dart';
 import '../../domain/models/medical_record_content.dart';
 import '../../domain/models/medical_record_details_model.dart';
 import '../states/medical_record_state.dart';
+import '../widgets/evolution/evolution_details_modal.dart';
+import '../widgets/evolution/new_evolution_modal.dart';
 import '../widgets/record/discharge_card.dart';
 import '../widgets/record/discharge_dialog.dart';
 import '../widgets/record/latest_evolution_card.dart';
@@ -119,21 +121,21 @@ class MedicalRecordScreen extends ConsumerWidget {
               style: AppTextStyles.detailsSectionTitle,
             ),
           ),
-          if (!fechado && record != null)
+          if (details.aberto)
             _NovaEvolucaoButton(
-              // O modal da evolução ainda será feito.
-              onPressed: () => ScaffoldMessenger.of(context)
-                ..hideCurrentSnackBar()
-                ..showSnackBar(
-                  const SnackBar(
-                    content: Text('Registro de evolução em construção'),
-                  ),
-                ),
+              onPressed: () => showNewEvolutionModal(
+                context,
+                patientId: patientId,
+                numeroSessao: details.proximaSessao,
+              ),
             ),
         ],
       ),
       const SizedBox(height: 12),
-      LatestEvolutionCard(evolution: details.latestEvolution),
+      LatestEvolutionCard(
+        evolution: details.latestEvolution,
+        aoAbrir: (evolucao) => showEvolutionDetailsModal(context, evolucao),
+      ),
       const SizedBox(height: 12),
 
       // ---------- Seções do prontuário ----------

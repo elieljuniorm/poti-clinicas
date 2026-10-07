@@ -1,8 +1,8 @@
 import '../../domain/models/discharge_model.dart';
-import '../../domain/models/evolution_model.dart';
 import '../../domain/models/medical_record_create_model.dart';
 import '../../domain/models/medical_record_details_model.dart';
 import '../../domain/models/medical_record_model.dart';
+import 'evolution_dto.dart';
 import 'medical_record_content_dto.dart';
 import 'medical_record_summary_dto.dart';
 
@@ -62,12 +62,7 @@ class MedicalRecordDetailsDto {
             ),
       latestEvolution: evolution == null
           ? null
-          : EvolutionModel(
-              sessionNumber: evolution['session_number'],
-              sessionDate: DateTime.parse(evolution['session_date']),
-              professionalName: evolution['professional_name'] ?? '',
-              description: evolution['description'] ?? '',
-            ),
+          : EvolutionDto(evolution).toDomain(),
       discharge: discharge == null
           ? null
           : DischargeModel(
@@ -83,11 +78,10 @@ class MedicalRecordDetailsDto {
 
   /// Corpo do POST /medical-records/{patientId}.
   static Map<String, dynamic> createJson(MedicalRecordCreateModel model) {
-    final evolucao = model.evolution?.trim();
+    final evolucao = model.evolution;
     return {
       'content': MedicalRecordContentDto.fromDomain(model.content).toJson(),
-      if (evolucao != null && evolucao.isNotEmpty)
-        'evolution': {'description': evolucao},
+      if (evolucao != null) 'evolution': EvolutionDto.createJson(evolucao),
     };
   }
 

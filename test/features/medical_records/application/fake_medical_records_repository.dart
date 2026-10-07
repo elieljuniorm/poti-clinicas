@@ -78,6 +78,7 @@ class FakeMedicalRecordsRepository implements MedicalRecordsRepository {
         ),
   };
   final Map<String, EvolutionModel> _evolucoes = {};
+  final List<EvolutionCreateModel> evolucoesRegistradas = [];
   final Map<String, DischargeModel> altas = {};
 
   /// Resumo atual: criar o prontuário (e a evolução) muda o status.
@@ -128,14 +129,7 @@ class FakeMedicalRecordsRepository implements MedicalRecordsRepository {
       updatedAt: criacao,
     );
     final evolucao = prontuario.evolution;
-    if (evolucao != null) {
-      _evolucoes[patientId] = EvolutionModel(
-        sessionNumber: 3,
-        sessionDate: _resumo(patientId).lastSession!,
-        professionalName: 'Arnaldo Ribeiro',
-        description: evolucao,
-      );
-    }
+    if (evolucao != null) _salvarEvolucao(patientId, evolucao);
     return _detalhes(patientId);
   }
 
@@ -170,5 +164,32 @@ class FakeMedicalRecordsRepository implements MedicalRecordsRepository {
       professionalName: 'Arnaldo Ribeiro',
     );
     return _detalhes(patientId);
+  }
+
+  @override
+  Future<MedicalRecordDetailsModel> registrarEvolucao(
+    String patientId,
+    EvolutionCreateModel evolucao,
+  ) async {
+    final erro = erroSalvar;
+    if (erro != null) throw Exception(erro);
+    evolucoesRegistradas.add(evolucao);
+    _salvarEvolucao(patientId, evolucao);
+    return _detalhes(patientId);
+  }
+
+  void _salvarEvolucao(String patientId, EvolutionCreateModel evolucao) {
+    _evolucoes[patientId] = EvolutionModel(
+      sessionNumber: evolucao.sessionNumber,
+      sessionDate: evolucao.sessionDate,
+      professionalName: 'Arnaldo Ribeiro',
+      description: evolucao.description,
+      observations: evolucao.observations,
+      clinicalProgress: evolucao.clinicalProgress,
+      patientStatus: evolucao.patientStatus,
+      scale: evolucao.scale,
+      registeredBy: 'Fernanda Lima',
+      registeredAt: DateTime(_ano, 3, 2, 18),
+    );
   }
 }
