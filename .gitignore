@@ -1,4 +1,4 @@
-# Flutter/Dart/Pub related
+# ===== Flutter/Dart =====
 **/doc/api/
 .dart_tool/
 .flutter-plugins
@@ -6,8 +6,14 @@
 .pub-cache/
 .pub/
 /build/
+*.iml
+.idea/
+.vscode/
+*.log
+*.orig
+.DS_Store
 
-# Android related
+# ===== Android =====
 **/android/**/gradle-wrapper.jar
 .gradle/
 **/android/captures/
@@ -16,4 +22,38 @@
 **/android/**/GeneratedPluginRegistrant.java
 **/android/key.properties
 *.jks
-local.properties
+**/android/local.properties
+
+# ===== iOS =====
+**/ios/Flutter/App.framework
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/ephemeral/
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/Flutter/.last_build_id
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/ Podfile.lock
+**/ios/Runner/GeneratedPluginRegistrant.*
+**/ios/Runner.xcworkspace/xcuserdata/
+**/ios/Runner.xcodeproj/xcuserdata/
+**/ios/Runner.xcodeproj/project.xcworkspace/xcuserdata/
+**/ios/DerivedData/
+**/ios/build/
+**/*.xcuserstate
+**/*.xccheckout
+**/*.moved-aside
+**/*.pbxuser
+**/*.mode1v3
+**/*.mode2v3
+**/*.perspectivev3
+**/*.hmap
+**/*.ipa
+**/*.dSYM
+
+# ===== macOS =====
+**/macos/Flutter/ephemeral/
+**/macos/Pods/
+**/macos/.symlinks/
+**/macos/Flutter/GeneratedPluginRegistrant.swift
