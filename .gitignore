@@ -1,11 +1,11 @@
 # ===== Flutter/Dart =====
 **/doc/api/
-.dart_tool/
+**/.dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
 .pub-cache/
 .pub/
-/build/
+**/build/
 *.iml
 .idea/
 .vscode/
