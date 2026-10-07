@@ -157,8 +157,6 @@ flutter build macos              # macOS
 ### Resumo rápido
 
 ```bash
-git clone <url-do-repositorio> poti-clinicas
-cd poti-clinicas
 flutter doctor
 flutter pub get
 flutter run -d chrome
