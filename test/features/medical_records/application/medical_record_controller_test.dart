@@ -1,13 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/features/medical_records/application/medical_record_controller.dart';
-import 'package:poti_5f/src/features/medical_records/application/medical_records_controller.dart';
-import 'package:poti_5f/src/features/medical_records/domain/models/evolution_model.dart';
-import 'package:poti_5f/src/features/medical_records/domain/models/medical_record_content.dart';
-import 'package:poti_5f/src/features/medical_records/domain/models/medical_record_create_model.dart';
-import 'package:poti_5f/src/features/medical_records/domain/models/medical_record_status.dart';
-import 'package:poti_5f/src/features/medical_records/domain/models/medical_record_summary_model.dart';
-import 'package:poti_5f/src/features/medical_records/ui/states/medical_record_state.dart';
+import 'package:multiclinica_app/src/features/medical_records/application/medical_record_controller.dart';
+import 'package:multiclinica_app/src/features/medical_records/application/medical_records_controller.dart';
+import 'package:multiclinica_app/src/features/medical_records/domain/models/evolution_model.dart';
+import 'package:multiclinica_app/src/features/medical_records/domain/models/medical_record_content.dart';
+import 'package:multiclinica_app/src/features/medical_records/domain/models/medical_record_create_model.dart';
+import 'package:multiclinica_app/src/features/medical_records/domain/models/medical_record_status.dart';
+import 'package:multiclinica_app/src/features/medical_records/domain/models/medical_record_summary_model.dart';
+import 'package:multiclinica_app/src/features/medical_records/ui/states/medical_record_state.dart';
 
 import 'fake_medical_records_repository.dart';
 

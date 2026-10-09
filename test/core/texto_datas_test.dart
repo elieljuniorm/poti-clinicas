@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/core/utils/datas.dart';
-import 'package:poti_5f/src/core/utils/texto.dart';
+import 'package:multiclinica_app/src/core/utils/datas.dart';
+import 'package:multiclinica_app/src/core/utils/texto.dart';
 
 void main() {
   group('Texto', () {

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
-import 'package:poti_5f/src/features/finance/application/finance_controller.dart';
-import 'package:poti_5f/src/features/finance/domain/models/new_invoice_model.dart';
-import 'package:poti_5f/src/features/finance/domain/models/pre_invoice_model.dart';
-import 'package:poti_5f/src/features/finance/ui/pages/new_invoice_screen.dart';
-import 'package:poti_5f/src/features/users/application/users_controller.dart';
+import 'package:multiclinica_app/src/features/finance/application/finance_controller.dart';
+import 'package:multiclinica_app/src/features/finance/domain/models/new_invoice_model.dart';
+import 'package:multiclinica_app/src/features/finance/domain/models/pre_invoice_model.dart';
+import 'package:multiclinica_app/src/features/finance/ui/pages/new_invoice_screen.dart';
+import 'package:multiclinica_app/src/features/users/application/users_controller.dart';
 
 import '../../users/application/fake_users_repository.dart';
 import '../application/fake_finance_repository.dart';

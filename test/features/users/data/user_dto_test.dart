@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/features/users/data/dtos/user_dto.dart';
-import 'package:poti_5f/src/features/users/domain/models/patient_category.dart';
-import 'package:poti_5f/src/features/users/domain/models/user_model.dart';
-import 'package:poti_5f/src/features/users/domain/models/user_role.dart';
+import 'package:multiclinica_app/src/features/users/data/dtos/user_dto.dart';
+import 'package:multiclinica_app/src/features/users/domain/models/patient_category.dart';
+import 'package:multiclinica_app/src/features/users/domain/models/user_model.dart';
+import 'package:multiclinica_app/src/features/users/domain/models/user_role.dart';
 
 void main() {
   group('UserDto', () {

@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/features/scheduling/data/dtos/new_appointment_dto.dart';
-import 'package:poti_5f/src/features/scheduling/domain/models/new_appointment_model.dart';
+import 'package:multiclinica_app/src/features/scheduling/data/dtos/new_appointment_dto.dart';
+import 'package:multiclinica_app/src/features/scheduling/domain/models/new_appointment_model.dart';
 
 NewAppointmentModel agendamento({String? caso, DateTime? fim}) {
   return NewAppointmentModel(

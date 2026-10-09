@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/features/finance/data/dtos/appointment_billing_dto.dart';
-import 'package:poti_5f/src/features/finance/data/dtos/finance_dashboard_dto.dart';
-import 'package:poti_5f/src/features/finance/data/dtos/new_invoice_dto.dart';
-import 'package:poti_5f/src/features/finance/data/dtos/pre_invoice_dto.dart';
-import 'package:poti_5f/src/features/finance/domain/models/new_invoice_model.dart';
+import 'package:multiclinica_app/src/features/finance/data/dtos/appointment_billing_dto.dart';
+import 'package:multiclinica_app/src/features/finance/data/dtos/finance_dashboard_dto.dart';
+import 'package:multiclinica_app/src/features/finance/data/dtos/new_invoice_dto.dart';
+import 'package:multiclinica_app/src/features/finance/data/dtos/pre_invoice_dto.dart';
+import 'package:multiclinica_app/src/features/finance/domain/models/new_invoice_model.dart';
 
 void main() {
   const preFaturaJson = {

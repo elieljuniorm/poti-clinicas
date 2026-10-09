@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/core/ui/formatters/cep_input_formatter.dart';
-import 'package:poti_5f/src/core/utils/cep.dart';
+import 'package:multiclinica_app/src/core/ui/formatters/cep_input_formatter.dart';
+import 'package:multiclinica_app/src/core/utils/cep.dart';
 
 void main() {
   group('Cep', () {

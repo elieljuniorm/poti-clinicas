@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/features/medical_records/domain/models/medical_record_filter.dart';
-import 'package:poti_5f/src/features/medical_records/domain/models/medical_record_status.dart';
-import 'package:poti_5f/src/features/medical_records/domain/models/medical_record_summary_model.dart';
+import 'package:multiclinica_app/src/features/medical_records/domain/models/medical_record_filter.dart';
+import 'package:multiclinica_app/src/features/medical_records/domain/models/medical_record_status.dart';
+import 'package:multiclinica_app/src/features/medical_records/domain/models/medical_record_summary_model.dart';
 
 final agora = DateTime(2026, 10, 6, 12);
 final sessao = agora.subtract(const Duration(days: 3));

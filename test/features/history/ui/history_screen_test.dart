@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/features/history/application/history_controller.dart';
-import 'package:poti_5f/src/features/history/ui/pages/history_screen.dart';
-import 'package:poti_5f/src/features/home/ui/widgets/financial_entry_card.dart';
+import 'package:multiclinica_app/src/features/history/application/history_controller.dart';
+import 'package:multiclinica_app/src/features/history/ui/pages/history_screen.dart';
+import 'package:multiclinica_app/src/features/home/ui/widgets/financial_entry_card.dart';
 
 import '../application/fake_history_repository.dart';
 

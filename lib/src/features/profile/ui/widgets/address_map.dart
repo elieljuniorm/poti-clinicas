@@ -106,7 +106,7 @@ class _AddressMapState extends ConsumerState<AddressMap> {
                     TileLayer(
                       urlTemplate:
                           'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                      userAgentPackageName: 'com.example.poti_5f',
+                      userAgentPackageName: 'com.example.multiclinica_app',
                     ),
                     if (mapa.marcador != null)
                       MarkerLayer(

@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/core/utils/datas.dart';
-import 'package:poti_5f/src/core/utils/documento.dart';
+import 'package:multiclinica_app/src/core/utils/datas.dart';
+import 'package:multiclinica_app/src/core/utils/documento.dart';
 
 void main() {
   test('data, mês/ano e hora', () {

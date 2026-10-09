@@ -1,7 +1,7 @@
-import 'package:poti_5f/src/features/history/domain/models/appointment_history_model.dart';
-import 'package:poti_5f/src/features/history/domain/models/appointment_history_status.dart';
-import 'package:poti_5f/src/features/history/domain/repositories/history_repository.dart';
-import 'package:poti_5f/src/features/home/domain/models/financial_summary_model.dart';
+import 'package:multiclinica_app/src/features/history/domain/models/appointment_history_model.dart';
+import 'package:multiclinica_app/src/features/history/domain/models/appointment_history_status.dart';
+import 'package:multiclinica_app/src/features/history/domain/repositories/history_repository.dart';
+import 'package:multiclinica_app/src/features/home/domain/models/financial_summary_model.dart';
 
 class FakeHistoryRepository implements HistoryRepository {
   bool deveFalhar;

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/features/scheduling/ui/states/new_appointment_draft.dart';
-import 'package:poti_5f/src/features/users/domain/models/user_model.dart';
-import 'package:poti_5f/src/features/users/domain/models/user_role.dart';
+import 'package:multiclinica_app/src/features/scheduling/ui/states/new_appointment_draft.dart';
+import 'package:multiclinica_app/src/features/users/domain/models/user_model.dart';
+import 'package:multiclinica_app/src/features/users/domain/models/user_role.dart';
 
 void main() {
   final d15 = DateTime(2030, 7, 15);

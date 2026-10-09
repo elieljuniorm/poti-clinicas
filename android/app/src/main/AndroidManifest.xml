@@ -2,7 +2,7 @@
     <!-- Mapa (tiles do OpenStreetMap) e busca de endereço -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:label="poti_5f"
+        android:label="multiclinica-app"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

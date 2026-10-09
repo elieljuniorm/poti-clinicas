@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/features/history/application/history_controller.dart';
-import 'package:poti_5f/src/features/history/domain/models/history_tab.dart';
-import 'package:poti_5f/src/features/history/ui/states/history_state.dart';
+import 'package:multiclinica_app/src/features/history/application/history_controller.dart';
+import 'package:multiclinica_app/src/features/history/domain/models/history_tab.dart';
+import 'package:multiclinica_app/src/features/history/ui/states/history_state.dart';
 
 import 'fake_history_repository.dart';
 

@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/core/ui/formatters/moeda_input_formatter.dart';
-import 'package:poti_5f/src/core/utils/moeda.dart';
+import 'package:multiclinica_app/src/core/ui/formatters/moeda_input_formatter.dart';
+import 'package:multiclinica_app/src/core/utils/moeda.dart';
 
 void main() {
   test('centavos e separador de milhar', () {

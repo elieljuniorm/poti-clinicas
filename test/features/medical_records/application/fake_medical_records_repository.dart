@@ -1,11 +1,11 @@
-import 'package:poti_5f/src/features/medical_records/domain/models/medical_record_content.dart';
-import 'package:poti_5f/src/features/medical_records/domain/models/discharge_model.dart';
-import 'package:poti_5f/src/features/medical_records/domain/models/evolution_model.dart';
-import 'package:poti_5f/src/features/medical_records/domain/models/medical_record_create_model.dart';
-import 'package:poti_5f/src/features/medical_records/domain/models/medical_record_details_model.dart';
-import 'package:poti_5f/src/features/medical_records/domain/models/medical_record_model.dart';
-import 'package:poti_5f/src/features/medical_records/domain/models/medical_record_summary_model.dart';
-import 'package:poti_5f/src/features/medical_records/domain/repositories/medical_records_repository.dart';
+import 'package:multiclinica_app/src/features/medical_records/domain/models/medical_record_content.dart';
+import 'package:multiclinica_app/src/features/medical_records/domain/models/discharge_model.dart';
+import 'package:multiclinica_app/src/features/medical_records/domain/models/evolution_model.dart';
+import 'package:multiclinica_app/src/features/medical_records/domain/models/medical_record_create_model.dart';
+import 'package:multiclinica_app/src/features/medical_records/domain/models/medical_record_details_model.dart';
+import 'package:multiclinica_app/src/features/medical_records/domain/models/medical_record_model.dart';
+import 'package:multiclinica_app/src/features/medical_records/domain/models/medical_record_summary_model.dart';
+import 'package:multiclinica_app/src/features/medical_records/domain/repositories/medical_records_repository.dart';
 
 class FakeMedicalRecordsRepository implements MedicalRecordsRepository {
   bool deveFalhar;

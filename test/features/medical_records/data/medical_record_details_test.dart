@@ -1,14 +1,14 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/features/medical_records/data/data_sources/medical_records_remote_data_source.dart';
-import 'package:poti_5f/src/features/medical_records/data/dtos/medical_record_content_dto.dart';
-import 'package:poti_5f/src/features/medical_records/data/dtos/evolution_dto.dart';
-import 'package:poti_5f/src/features/medical_records/data/dtos/medical_record_details_dto.dart';
-import 'package:poti_5f/src/features/medical_records/data/repository/medical_records_repository_impl.dart';
-import 'package:poti_5f/src/features/medical_records/domain/models/discharge_model.dart';
-import 'package:poti_5f/src/features/medical_records/domain/models/evolution_model.dart';
-import 'package:poti_5f/src/features/medical_records/domain/models/medical_record_content.dart';
-import 'package:poti_5f/src/features/medical_records/domain/models/medical_record_create_model.dart';
-import 'package:poti_5f/src/features/medical_records/domain/models/medical_record_status.dart';
+import 'package:multiclinica_app/src/features/medical_records/data/data_sources/medical_records_remote_data_source.dart';
+import 'package:multiclinica_app/src/features/medical_records/data/dtos/medical_record_content_dto.dart';
+import 'package:multiclinica_app/src/features/medical_records/data/dtos/evolution_dto.dart';
+import 'package:multiclinica_app/src/features/medical_records/data/dtos/medical_record_details_dto.dart';
+import 'package:multiclinica_app/src/features/medical_records/data/repository/medical_records_repository_impl.dart';
+import 'package:multiclinica_app/src/features/medical_records/domain/models/discharge_model.dart';
+import 'package:multiclinica_app/src/features/medical_records/domain/models/evolution_model.dart';
+import 'package:multiclinica_app/src/features/medical_records/domain/models/medical_record_content.dart';
+import 'package:multiclinica_app/src/features/medical_records/domain/models/medical_record_create_model.dart';
+import 'package:multiclinica_app/src/features/medical_records/domain/models/medical_record_status.dart';
 
 void main() {
   group('MedicalRecordContentDto', () {

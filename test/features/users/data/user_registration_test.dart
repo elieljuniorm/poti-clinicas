@@ -1,11 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/features/profile/domain/models/address_model.dart';
-import 'package:poti_5f/src/features/users/data/data_sources/users_remote_data_source.dart';
-import 'package:poti_5f/src/features/users/data/dtos/user_registration_dto.dart';
-import 'package:poti_5f/src/features/users/domain/models/bank_info_model.dart';
-import 'package:poti_5f/src/features/users/domain/models/patient_category.dart';
-import 'package:poti_5f/src/features/users/domain/models/user_registration_model.dart';
-import 'package:poti_5f/src/features/users/domain/models/user_role.dart';
+import 'package:multiclinica_app/src/features/profile/domain/models/address_model.dart';
+import 'package:multiclinica_app/src/features/users/data/data_sources/users_remote_data_source.dart';
+import 'package:multiclinica_app/src/features/users/data/dtos/user_registration_dto.dart';
+import 'package:multiclinica_app/src/features/users/domain/models/bank_info_model.dart';
+import 'package:multiclinica_app/src/features/users/domain/models/patient_category.dart';
+import 'package:multiclinica_app/src/features/users/domain/models/user_registration_model.dart';
+import 'package:multiclinica_app/src/features/users/domain/models/user_role.dart';
 
 void main() {
   const paciente = UserRegistrationModel(

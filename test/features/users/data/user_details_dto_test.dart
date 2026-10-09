@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/features/users/data/dtos/user_details_dto.dart';
+import 'package:multiclinica_app/src/features/users/data/dtos/user_details_dto.dart';
 
 void main() {
   group('UserDetailsDto', () {

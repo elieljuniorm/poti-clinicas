@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/features/medical_records/application/medical_records_controller.dart';
-import 'package:poti_5f/src/features/medical_records/domain/models/medical_record_filter.dart';
+import 'package:multiclinica_app/src/features/medical_records/application/medical_records_controller.dart';
+import 'package:multiclinica_app/src/features/medical_records/domain/models/medical_record_filter.dart';
 
 import 'fake_medical_records_repository.dart';
 

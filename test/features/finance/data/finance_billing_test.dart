@@ -1,11 +1,11 @@
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/features/finance/data/data_sources/finance_remote_data_source.dart';
-import 'package:poti_5f/src/features/finance/data/dtos/appointment_billing_dto.dart';
-import 'package:poti_5f/src/features/finance/data/dtos/new_invoice_dto.dart';
-import 'package:poti_5f/src/features/finance/domain/models/appointment_billing_model.dart';
-import 'package:poti_5f/src/features/finance/domain/models/finance_dashboard_model.dart';
-import 'package:poti_5f/src/features/finance/domain/models/new_invoice_model.dart';
+import 'package:multiclinica_app/src/features/finance/data/data_sources/finance_remote_data_source.dart';
+import 'package:multiclinica_app/src/features/finance/data/dtos/appointment_billing_dto.dart';
+import 'package:multiclinica_app/src/features/finance/data/dtos/new_invoice_dto.dart';
+import 'package:multiclinica_app/src/features/finance/domain/models/appointment_billing_model.dart';
+import 'package:multiclinica_app/src/features/finance/domain/models/finance_dashboard_model.dart';
+import 'package:multiclinica_app/src/features/finance/domain/models/new_invoice_model.dart';
 
 /// Regras de faturamento da API simulada: pré-fatura só a partir de
 /// atendimento, créditos de agendamento a partir de fatura avulsa.

@@ -1,4 +1,4 @@
-import 'package:poti_5f/src/features/scheduling/domain/models/scheduling_appointment_model.dart';
+import 'package:multiclinica_app/src/features/scheduling/domain/models/scheduling_appointment_model.dart';
 
 /// Atendimento de teste: 15/07/2030 das 14:30 às 15:30, pendente.
 SchedulingAppointmentModel atendimentoDeTeste({

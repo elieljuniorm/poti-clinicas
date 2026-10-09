@@ -1,9 +1,9 @@
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/features/profile/application/address_map_controller.dart';
-import 'package:poti_5f/src/features/profile/domain/models/address_model.dart';
-import 'package:poti_5f/src/features/profile/domain/models/geo_point_model.dart';
+import 'package:multiclinica_app/src/features/profile/application/address_map_controller.dart';
+import 'package:multiclinica_app/src/features/profile/domain/models/address_model.dart';
+import 'package:multiclinica_app/src/features/profile/domain/models/geo_point_model.dart';
 
 import 'fake_geocoding_repository.dart';
 

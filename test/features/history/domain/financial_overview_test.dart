@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/features/history/domain/models/financial_overview_model.dart';
-import 'package:poti_5f/src/features/home/domain/models/financial_summary_model.dart';
+import 'package:multiclinica_app/src/features/history/domain/models/financial_overview_model.dart';
+import 'package:multiclinica_app/src/features/home/domain/models/financial_summary_model.dart';
 
 FinancialSummaryModel lancamento(double valor, PaymentStatus status) =>
     FinancialSummaryModel(

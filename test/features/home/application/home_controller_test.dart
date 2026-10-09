@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/features/home/application/home_controller.dart';
-import 'package:poti_5f/src/features/home/domain/models/daily_appointment_model.dart';
-import 'package:poti_5f/src/features/home/domain/models/evolution_model.dart';
-import 'package:poti_5f/src/features/home/domain/models/financial_summary_model.dart';
-import 'package:poti_5f/src/features/home/domain/repositories/home_repository.dart';
+import 'package:multiclinica_app/src/features/home/application/home_controller.dart';
+import 'package:multiclinica_app/src/features/home/domain/models/daily_appointment_model.dart';
+import 'package:multiclinica_app/src/features/home/domain/models/evolution_model.dart';
+import 'package:multiclinica_app/src/features/home/domain/models/financial_summary_model.dart';
+import 'package:multiclinica_app/src/features/home/domain/repositories/home_repository.dart';
 
 class _FakeHomeRepository implements HomeRepository {
   bool deveFalhar;

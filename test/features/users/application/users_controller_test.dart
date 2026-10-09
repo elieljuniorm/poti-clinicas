@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/features/users/application/users_controller.dart';
-import 'package:poti_5f/src/features/users/domain/models/user_filter.dart';
-import 'package:poti_5f/src/features/users/domain/repositories/users_repository.dart';
+import 'package:multiclinica_app/src/features/users/application/users_controller.dart';
+import 'package:multiclinica_app/src/features/users/domain/models/user_filter.dart';
+import 'package:multiclinica_app/src/features/users/domain/repositories/users_repository.dart';
 
 import 'fake_users_repository.dart';
 

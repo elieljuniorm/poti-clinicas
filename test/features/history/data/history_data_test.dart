@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/features/history/data/data_sources/history_remote_data_source.dart';
-import 'package:poti_5f/src/features/history/data/dtos/appointment_history_dto.dart';
-import 'package:poti_5f/src/features/history/domain/models/appointment_history_model.dart';
-import 'package:poti_5f/src/features/history/domain/models/appointment_history_status.dart';
-import 'package:poti_5f/src/features/history/domain/models/financial_overview_model.dart';
+import 'package:multiclinica_app/src/features/history/data/data_sources/history_remote_data_source.dart';
+import 'package:multiclinica_app/src/features/history/data/dtos/appointment_history_dto.dart';
+import 'package:multiclinica_app/src/features/history/domain/models/appointment_history_model.dart';
+import 'package:multiclinica_app/src/features/history/domain/models/appointment_history_status.dart';
+import 'package:multiclinica_app/src/features/history/domain/models/financial_overview_model.dart';
 
 void main() {
   group('AppointmentHistoryDto', () {

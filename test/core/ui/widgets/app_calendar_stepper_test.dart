@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/core/ui/widgets/app_multi_date_calendar.dart';
-import 'package:poti_5f/src/core/ui/widgets/app_quantity_stepper.dart';
+import 'package:multiclinica_app/src/core/ui/widgets/app_multi_date_calendar.dart';
+import 'package:multiclinica_app/src/core/ui/widgets/app_quantity_stepper.dart';
 
 void main() {
   group('AppMultiDateCalendar', () {

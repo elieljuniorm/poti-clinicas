@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/features/finance/application/finance_controller.dart';
-import 'package:poti_5f/src/features/finance/application/new_invoice_controller.dart';
-import 'package:poti_5f/src/features/finance/domain/models/new_invoice_model.dart';
-import 'package:poti_5f/src/features/finance/domain/models/pre_invoice_model.dart';
-import 'package:poti_5f/src/features/finance/ui/states/new_invoice_state.dart';
+import 'package:multiclinica_app/src/features/finance/application/finance_controller.dart';
+import 'package:multiclinica_app/src/features/finance/application/new_invoice_controller.dart';
+import 'package:multiclinica_app/src/features/finance/domain/models/new_invoice_model.dart';
+import 'package:multiclinica_app/src/features/finance/domain/models/pre_invoice_model.dart';
+import 'package:multiclinica_app/src/features/finance/ui/states/new_invoice_state.dart';
 
 import 'fake_finance_repository.dart';
 

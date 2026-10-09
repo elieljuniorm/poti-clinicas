@@ -4,12 +4,12 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
-import 'package:poti_5f/src/features/auth/application/auth_controller.dart';
-import 'package:poti_5f/src/features/auth/domain/models/user.dart';
-import 'package:poti_5f/src/features/profile/application/address_map_controller.dart';
-import 'package:poti_5f/src/features/profile/ui/widgets/address_map.dart';
-import 'package:poti_5f/src/features/profile/ui/pages/profile_edit_screen.dart';
-import 'package:poti_5f/src/features/profile/ui/pages/profile_screen.dart';
+import 'package:multiclinica_app/src/features/auth/application/auth_controller.dart';
+import 'package:multiclinica_app/src/features/auth/domain/models/user.dart';
+import 'package:multiclinica_app/src/features/profile/application/address_map_controller.dart';
+import 'package:multiclinica_app/src/features/profile/ui/widgets/address_map.dart';
+import 'package:multiclinica_app/src/features/profile/ui/pages/profile_edit_screen.dart';
+import 'package:multiclinica_app/src/features/profile/ui/pages/profile_screen.dart';
 
 import '../application/fake_geocoding_repository.dart';
 

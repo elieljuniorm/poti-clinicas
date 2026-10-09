@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/main.dart';
-import 'package:poti_5f/src/core/ui/widgets/app_bottom_nav.dart';
-import 'package:poti_5f/src/features/finance/ui/pages/finance_screen.dart';
-import 'package:poti_5f/src/features/finance/ui/pages/new_invoice_screen.dart';
-import 'package:poti_5f/src/features/history/ui/pages/history_screen.dart';
-import 'package:poti_5f/src/features/home/ui/pages/home_screen.dart';
-import 'package:poti_5f/src/features/login/ui/pages/login_screen.dart';
-import 'package:poti_5f/src/features/profile/ui/pages/profile_screen.dart';
-import 'package:poti_5f/src/features/splash/ui/pages/splash_screen.dart';
+import 'package:multiclinica_app/main.dart';
+import 'package:multiclinica_app/src/core/ui/widgets/app_bottom_nav.dart';
+import 'package:multiclinica_app/src/features/finance/ui/pages/finance_screen.dart';
+import 'package:multiclinica_app/src/features/finance/ui/pages/new_invoice_screen.dart';
+import 'package:multiclinica_app/src/features/history/ui/pages/history_screen.dart';
+import 'package:multiclinica_app/src/features/home/ui/pages/home_screen.dart';
+import 'package:multiclinica_app/src/features/login/ui/pages/login_screen.dart';
+import 'package:multiclinica_app/src/features/profile/ui/pages/profile_screen.dart';
+import 'package:multiclinica_app/src/features/splash/ui/pages/splash_screen.dart';
 
 /// Jornada completa usando o código real (data sources com mocks e delays).
 ///

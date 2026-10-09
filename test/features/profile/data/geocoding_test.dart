@@ -3,11 +3,11 @@ import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
-import 'package:poti_5f/src/features/profile/data/data_sources/geocoding_remote_data_source.dart';
-import 'package:poti_5f/src/features/profile/data/dtos/nominatim_place_dto.dart';
-import 'package:poti_5f/src/features/profile/data/repository/geocoding_repository_impl.dart';
-import 'package:poti_5f/src/features/profile/domain/models/address_model.dart';
-import 'package:poti_5f/src/features/profile/domain/models/geo_point_model.dart';
+import 'package:multiclinica_app/src/features/profile/data/data_sources/geocoding_remote_data_source.dart';
+import 'package:multiclinica_app/src/features/profile/data/dtos/nominatim_place_dto.dart';
+import 'package:multiclinica_app/src/features/profile/data/repository/geocoding_repository_impl.dart';
+import 'package:multiclinica_app/src/features/profile/domain/models/address_model.dart';
+import 'package:multiclinica_app/src/features/profile/domain/models/geo_point_model.dart';
 
 void main() {
   final lugar = {

@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/features/profile/data/dtos/profile_dto.dart';
-import 'package:poti_5f/src/features/profile/domain/models/address_model.dart';
+import 'package:multiclinica_app/src/features/profile/data/dtos/profile_dto.dart';
+import 'package:multiclinica_app/src/features/profile/domain/models/address_model.dart';
 
 void main() {
   final json = {

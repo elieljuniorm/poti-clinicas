@@ -1,5 +1,5 @@
-import 'package:poti_5f/src/features/profile/domain/models/profile_model.dart';
-import 'package:poti_5f/src/features/profile/domain/repositories/profile_repository.dart';
+import 'package:multiclinica_app/src/features/profile/domain/models/profile_model.dart';
+import 'package:multiclinica_app/src/features/profile/domain/repositories/profile_repository.dart';
 
 class FakeProfileRepository implements ProfileRepository {
   ProfileModel perfil = const ProfileModel(

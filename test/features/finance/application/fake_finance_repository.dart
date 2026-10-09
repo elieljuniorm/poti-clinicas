@@ -1,10 +1,10 @@
-import 'package:poti_5f/src/features/finance/domain/models/appointment_billing_model.dart';
-import 'package:poti_5f/src/features/finance/domain/models/daily_revenue_model.dart';
-import 'package:poti_5f/src/features/finance/domain/models/finance_dashboard_model.dart';
-import 'package:poti_5f/src/features/finance/domain/models/new_invoice_model.dart';
-import 'package:poti_5f/src/features/finance/domain/models/pre_invoice_model.dart';
-import 'package:poti_5f/src/features/finance/domain/models/professional_payout_model.dart';
-import 'package:poti_5f/src/features/finance/domain/repositories/finance_repository.dart';
+import 'package:multiclinica_app/src/features/finance/domain/models/appointment_billing_model.dart';
+import 'package:multiclinica_app/src/features/finance/domain/models/daily_revenue_model.dart';
+import 'package:multiclinica_app/src/features/finance/domain/models/finance_dashboard_model.dart';
+import 'package:multiclinica_app/src/features/finance/domain/models/new_invoice_model.dart';
+import 'package:multiclinica_app/src/features/finance/domain/models/pre_invoice_model.dart';
+import 'package:multiclinica_app/src/features/finance/domain/models/professional_payout_model.dart';
+import 'package:multiclinica_app/src/features/finance/domain/repositories/finance_repository.dart';
 
 class FakeFinanceRepository implements FinanceRepository {
   bool deveFalhar;

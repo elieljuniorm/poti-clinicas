@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/features/scheduling/data/data_sources/scheduling_remote_data_source.dart';
-import 'package:poti_5f/src/features/scheduling/data/dtos/new_appointment_dto.dart';
-import 'package:poti_5f/src/features/scheduling/data/dtos/scheduling_appointment_dto.dart';
-import 'package:poti_5f/src/features/scheduling/domain/models/new_appointment_model.dart';
-import 'package:poti_5f/src/features/scheduling/domain/models/scheduling_appointment_model.dart';
+import 'package:multiclinica_app/src/features/scheduling/data/data_sources/scheduling_remote_data_source.dart';
+import 'package:multiclinica_app/src/features/scheduling/data/dtos/new_appointment_dto.dart';
+import 'package:multiclinica_app/src/features/scheduling/data/dtos/scheduling_appointment_dto.dart';
+import 'package:multiclinica_app/src/features/scheduling/domain/models/new_appointment_model.dart';
+import 'package:multiclinica_app/src/features/scheduling/domain/models/scheduling_appointment_model.dart';
 
 void main() {
   // Quarta, 15/07/2026: semana de 12 (dom) a 18 (sáb).

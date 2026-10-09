@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/features/home/data/dtos/daily_appointment_dto.dart';
-import 'package:poti_5f/src/features/home/data/dtos/evolution_dto.dart';
-import 'package:poti_5f/src/features/home/data/dtos/financial_summary_dto.dart';
-import 'package:poti_5f/src/features/home/domain/models/daily_appointment_model.dart';
-import 'package:poti_5f/src/features/home/domain/models/evolution_model.dart';
-import 'package:poti_5f/src/features/home/domain/models/financial_summary_model.dart';
+import 'package:multiclinica_app/src/features/home/data/dtos/daily_appointment_dto.dart';
+import 'package:multiclinica_app/src/features/home/data/dtos/evolution_dto.dart';
+import 'package:multiclinica_app/src/features/home/data/dtos/financial_summary_dto.dart';
+import 'package:multiclinica_app/src/features/home/domain/models/daily_appointment_model.dart';
+import 'package:multiclinica_app/src/features/home/domain/models/evolution_model.dart';
+import 'package:multiclinica_app/src/features/home/domain/models/financial_summary_model.dart';
 
 void main() {
   group('DailyAppointmentDto', () {

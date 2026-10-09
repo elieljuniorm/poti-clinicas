@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/features/scheduling/domain/models/scheduling_appointment_model.dart';
-import 'package:poti_5f/src/features/scheduling/ui/states/edit_appointment_draft.dart';
+import 'package:multiclinica_app/src/features/scheduling/domain/models/scheduling_appointment_model.dart';
+import 'package:multiclinica_app/src/features/scheduling/ui/states/edit_appointment_draft.dart';
 
 import '../application/appointment_fixture.dart';
 

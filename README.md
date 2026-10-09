@@ -1,6 +1,6 @@
 # Poti Clínicas
 
-Aplicativo Flutter da Poti Clínicas (pacote `poti_5f`), com alvo em Android, iOS, Web e macOS.
+Aplicativo Flutter da Poti Clínicas (pacote `multiclinica_app`), com alvo em Android, iOS, Web e macOS.
 
 Para entender como o código em `lib/` está organizado e como criar novas telas, veja [arquitetura.md](arquitetura.md).
 

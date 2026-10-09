@@ -1,8 +1,8 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/core/ui/formatters/mask_input_formatter.dart';
-import 'package:poti_5f/src/core/utils/documento.dart';
-import 'package:poti_5f/src/core/utils/form_validators.dart';
+import 'package:multiclinica_app/src/core/ui/formatters/mask_input_formatter.dart';
+import 'package:multiclinica_app/src/core/utils/documento.dart';
+import 'package:multiclinica_app/src/core/utils/form_validators.dart';
 
 TextEditingValue _digitar(TextInputFormatter formatter, String texto) {
   return formatter.formatEditUpdate(

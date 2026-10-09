@@ -1,4 +1,4 @@
-package com.example.poti_5f
+package com.example.multiclinica_app
 
 import io.flutter.embedding.android.FlutterActivity
 

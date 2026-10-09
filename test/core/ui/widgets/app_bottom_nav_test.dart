@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:poti_5f/src/core/ui/theme/app_colors.dart';
-import 'package:poti_5f/src/core/ui/widgets/app_bottom_nav.dart';
-import 'package:poti_5f/src/core/ui/widgets/app_bottom_spacer.dart';
-import 'package:poti_5f/src/core/ui/widgets/app_scaffold.dart';
+import 'package:multiclinica_app/src/core/ui/theme/app_colors.dart';
+import 'package:multiclinica_app/src/core/ui/widgets/app_bottom_nav.dart';
+import 'package:multiclinica_app/src/core/ui/widgets/app_bottom_spacer.dart';
+import 'package:multiclinica_app/src/core/ui/widgets/app_scaffold.dart';
 
 /// Página mínima que usa o [AppScaffold], como as telas reais.
 class _Pagina extends StatelessWidget {

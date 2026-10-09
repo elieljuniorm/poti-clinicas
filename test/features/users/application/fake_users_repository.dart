@@ -1,10 +1,10 @@
-import 'package:poti_5f/src/features/users/domain/models/consumption_model.dart';
-import 'package:poti_5f/src/features/users/domain/models/user_details_model.dart';
-import 'package:poti_5f/src/features/users/domain/models/user_edit_model.dart';
-import 'package:poti_5f/src/features/users/domain/models/user_model.dart';
-import 'package:poti_5f/src/features/users/domain/models/user_registration_model.dart';
-import 'package:poti_5f/src/features/users/domain/models/user_role.dart';
-import 'package:poti_5f/src/features/users/domain/repositories/users_repository.dart';
+import 'package:multiclinica_app/src/features/users/domain/models/consumption_model.dart';
+import 'package:multiclinica_app/src/features/users/domain/models/user_details_model.dart';
+import 'package:multiclinica_app/src/features/users/domain/models/user_edit_model.dart';
+import 'package:multiclinica_app/src/features/users/domain/models/user_model.dart';
+import 'package:multiclinica_app/src/features/users/domain/models/user_registration_model.dart';
+import 'package:multiclinica_app/src/features/users/domain/models/user_role.dart';
+import 'package:multiclinica_app/src/features/users/domain/repositories/users_repository.dart';
 
 class FakeUsersRepository implements UsersRepository {
   bool deveFalhar;

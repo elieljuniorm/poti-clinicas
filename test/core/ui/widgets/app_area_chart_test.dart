@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/core/ui/widgets/app_area_chart.dart';
-import 'package:poti_5f/src/core/utils/moeda.dart';
+import 'package:multiclinica_app/src/core/ui/widgets/app_area_chart.dart';
+import 'package:multiclinica_app/src/core/utils/moeda.dart';
 
 void main() {
   group('escala do eixo Y', () {

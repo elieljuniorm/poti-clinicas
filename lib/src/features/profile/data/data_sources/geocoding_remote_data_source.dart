@@ -17,7 +17,7 @@ class GeocodingDataSource {
   static const _ehWeb = bool.fromEnvironment('dart.library.js_interop');
 
   /// Só ASCII: o `dart:io` recusa cabeçalhos com acento.
-  static const userAgent = 'poti_5f/1.0 (app Poti Clinicas)';
+  static const userAgent = 'multiclinica-app/1.0 (app Poti Clinicas)';
 
   final http.Client _client;
   DateTime? _ultimaRequisicao;

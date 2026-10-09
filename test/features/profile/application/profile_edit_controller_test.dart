@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/features/auth/application/auth_controller.dart';
-import 'package:poti_5f/src/features/auth/domain/models/user.dart';
-import 'package:poti_5f/src/features/profile/application/profile_controller.dart';
-import 'package:poti_5f/src/features/profile/application/profile_edit_controller.dart';
-import 'package:poti_5f/src/features/profile/ui/states/profile_edit_state.dart';
+import 'package:multiclinica_app/src/features/auth/application/auth_controller.dart';
+import 'package:multiclinica_app/src/features/auth/domain/models/user.dart';
+import 'package:multiclinica_app/src/features/profile/application/profile_controller.dart';
+import 'package:multiclinica_app/src/features/profile/application/profile_edit_controller.dart';
+import 'package:multiclinica_app/src/features/profile/ui/states/profile_edit_state.dart';
 
 import 'fake_profile_repository.dart';
 

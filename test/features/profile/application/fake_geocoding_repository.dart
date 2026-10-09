@@ -1,6 +1,6 @@
-import 'package:poti_5f/src/features/profile/domain/models/address_model.dart';
-import 'package:poti_5f/src/features/profile/domain/models/geo_point_model.dart';
-import 'package:poti_5f/src/features/profile/domain/repositories/geocoding_repository.dart';
+import 'package:multiclinica_app/src/features/profile/domain/models/address_model.dart';
+import 'package:multiclinica_app/src/features/profile/domain/models/geo_point_model.dart';
+import 'package:multiclinica_app/src/features/profile/domain/repositories/geocoding_repository.dart';
 
 /// Geocodificação em memória: não acessa a rede.
 class FakeGeocodingRepository implements GeocodingRepository {

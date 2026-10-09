@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/features/auth/domain/models/user.dart';
-import 'package:poti_5f/src/features/login/data/dtos/user_dto.dart';
+import 'package:multiclinica_app/src/features/auth/domain/models/user.dart';
+import 'package:multiclinica_app/src/features/login/data/dtos/user_dto.dart';
 
 void main() {
   test('fromJson + toDomain convertem os campos da API para User', () {

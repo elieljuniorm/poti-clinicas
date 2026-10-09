@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/features/finance/application/finance_controller.dart';
-import 'package:poti_5f/src/features/scheduling/application/new_appointment_controller.dart';
-import 'package:poti_5f/src/features/scheduling/application/scheduling_controller.dart';
-import 'package:poti_5f/src/features/scheduling/domain/models/new_appointment_model.dart';
-import 'package:poti_5f/src/features/scheduling/ui/states/new_appointment_state.dart';
+import 'package:multiclinica_app/src/features/finance/application/finance_controller.dart';
+import 'package:multiclinica_app/src/features/scheduling/application/new_appointment_controller.dart';
+import 'package:multiclinica_app/src/features/scheduling/application/scheduling_controller.dart';
+import 'package:multiclinica_app/src/features/scheduling/domain/models/new_appointment_model.dart';
+import 'package:multiclinica_app/src/features/scheduling/ui/states/new_appointment_state.dart';
 
 import '../../finance/application/fake_finance_repository.dart';
 import 'fake_scheduling_repository.dart';

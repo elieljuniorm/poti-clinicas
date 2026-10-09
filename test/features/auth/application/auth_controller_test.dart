@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/features/auth/application/auth_controller.dart';
-import 'package:poti_5f/src/features/auth/domain/models/user.dart';
+import 'package:multiclinica_app/src/features/auth/application/auth_controller.dart';
+import 'package:multiclinica_app/src/features/auth/domain/models/user.dart';
 
 void main() {
   const usuario = User(id: '1', name: 'Ana', email: 'ana@x.com', token: 't');

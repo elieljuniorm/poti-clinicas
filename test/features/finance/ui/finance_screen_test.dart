@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
-import 'package:poti_5f/src/core/ui/widgets/app_area_chart.dart';
-import 'package:poti_5f/src/features/finance/application/finance_controller.dart';
-import 'package:poti_5f/src/features/finance/domain/models/pre_invoice_model.dart';
-import 'package:poti_5f/src/features/finance/ui/pages/finance_screen.dart';
-import 'package:poti_5f/src/features/finance/ui/widgets/pre_invoice_card.dart';
-import 'package:poti_5f/src/features/finance/ui/widgets/professional_payout_card.dart';
+import 'package:multiclinica_app/src/core/ui/widgets/app_area_chart.dart';
+import 'package:multiclinica_app/src/features/finance/application/finance_controller.dart';
+import 'package:multiclinica_app/src/features/finance/domain/models/pre_invoice_model.dart';
+import 'package:multiclinica_app/src/features/finance/ui/pages/finance_screen.dart';
+import 'package:multiclinica_app/src/features/finance/ui/widgets/pre_invoice_card.dart';
+import 'package:multiclinica_app/src/features/finance/ui/widgets/professional_payout_card.dart';
 
 import '../application/fake_finance_repository.dart';
 

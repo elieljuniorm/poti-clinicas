@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/core/ui/theme/app_colors.dart';
-import 'package:poti_5f/src/core/ui/widgets/app_action_buttons.dart';
+import 'package:multiclinica_app/src/core/ui/theme/app_colors.dart';
+import 'package:multiclinica_app/src/core/ui/widgets/app_action_buttons.dart';
 
 Widget _app(Widget child, {double largura = 800}) {
   return MaterialApp(

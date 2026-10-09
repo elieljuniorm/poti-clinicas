@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/core/ui/widgets/app_bottom_nav.dart';
-import 'package:poti_5f/src/features/users/application/users_controller.dart';
-import 'package:poti_5f/src/features/users/ui/pages/users_screen.dart';
-import 'package:poti_5f/src/features/users/ui/widgets/user_details_modal.dart';
+import 'package:multiclinica_app/src/core/ui/widgets/app_bottom_nav.dart';
+import 'package:multiclinica_app/src/features/users/application/users_controller.dart';
+import 'package:multiclinica_app/src/features/users/ui/pages/users_screen.dart';
+import 'package:multiclinica_app/src/features/users/ui/widgets/user_details_modal.dart';
 
 import '../application/fake_users_repository.dart';
 

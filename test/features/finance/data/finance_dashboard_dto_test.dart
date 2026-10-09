@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/features/finance/data/data_sources/finance_remote_data_source.dart';
-import 'package:poti_5f/src/features/finance/data/dtos/finance_dashboard_dto.dart';
+import 'package:multiclinica_app/src/features/finance/data/data_sources/finance_remote_data_source.dart';
+import 'package:multiclinica_app/src/features/finance/data/dtos/finance_dashboard_dto.dart';
 
 void main() {
   group('FinanceDashboardDto', () {

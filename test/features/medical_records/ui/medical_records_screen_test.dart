@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
-import 'package:poti_5f/src/features/medical_records/application/medical_records_controller.dart';
-import 'package:poti_5f/src/features/medical_records/ui/pages/medical_records_screen.dart';
+import 'package:multiclinica_app/src/features/medical_records/application/medical_records_controller.dart';
+import 'package:multiclinica_app/src/features/medical_records/ui/pages/medical_records_screen.dart';
 
 import '../application/fake_medical_records_repository.dart';
 

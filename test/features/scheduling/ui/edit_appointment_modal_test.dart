@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poti_5f/src/features/scheduling/application/scheduling_controller.dart';
-import 'package:poti_5f/src/features/scheduling/domain/models/scheduling_appointment_model.dart';
-import 'package:poti_5f/src/features/scheduling/ui/pages/scheduling_screen.dart';
-import 'package:poti_5f/src/features/scheduling/ui/widgets/edit_appointment/edit_appointment_modal.dart';
-import 'package:poti_5f/src/features/users/application/users_controller.dart';
-import 'package:poti_5f/src/features/users/domain/models/patient_category.dart';
-import 'package:poti_5f/src/features/users/domain/models/user_model.dart';
-import 'package:poti_5f/src/features/users/domain/models/user_role.dart';
+import 'package:multiclinica_app/src/features/scheduling/application/scheduling_controller.dart';
+import 'package:multiclinica_app/src/features/scheduling/domain/models/scheduling_appointment_model.dart';
+import 'package:multiclinica_app/src/features/scheduling/ui/pages/scheduling_screen.dart';
+import 'package:multiclinica_app/src/features/scheduling/ui/widgets/edit_appointment/edit_appointment_modal.dart';
+import 'package:multiclinica_app/src/features/users/application/users_controller.dart';
+import 'package:multiclinica_app/src/features/users/domain/models/patient_category.dart';
+import 'package:multiclinica_app/src/features/users/domain/models/user_model.dart';
+import 'package:multiclinica_app/src/features/users/domain/models/user_role.dart';
 
 import '../../users/application/fake_users_repository.dart';
 import '../application/appointment_fixture.dart';

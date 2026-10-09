@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
-import 'package:poti_5f/src/core/ui/widgets/app_back_button.dart';
+import 'package:multiclinica_app/src/core/ui/widgets/app_back_button.dart';
 
 void main() {
   Future<GoRouter> abrir(WidgetTester tester, String inicio) async {
